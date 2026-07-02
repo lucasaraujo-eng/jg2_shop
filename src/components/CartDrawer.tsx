@@ -1,67 +1,211 @@
 'use client';
 
+import { useState } from 'react';
 import { useCart } from '@/stores/cart';
+import { submitQuote } from '@/server/actions/quote';
+import { QuoteFormFields, isQuoteFormValid, type QuoteFormValue } from '@/components/QuoteFormFields';
 
-/**
- * Stub do drawer de orçamento (Bloco 1: só abre/fecha e lista itens).
- * O fluxo completo (2 etapas + formulário + envio) entra no Bloco 5.
- */
+const EMPTY_FORM: QuoteFormValue = { name: '', email: '', phone: '', cnpj: '', purpose: '', message: '' };
+
+type Step = 'cart' | 'form' | 'sent';
+
 export function CartDrawer() {
   const isOpen = useCart((s) => s.isOpen);
   const close = useCart((s) => s.close);
   const items = useCart((s) => s.items);
   const remove = useCart((s) => s.remove);
+  const setQty = useCart((s) => s.setQty);
+  const clear = useCart((s) => s.clear);
+
+  const [step, setStep] = useState<Step>('cart');
+  const [form, setForm] = useState<QuoteFormValue>(EMPTY_FORM);
+  const [privacyChecked, setPrivacyChecked] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
+
+  function handleClose() {
+    close();
+    setStep('cart');
+    setForm(EMPTY_FORM);
+    setPrivacyChecked(false);
+    setError('');
+  }
+
+  async function handleSubmit() {
+    setSending(true);
+    setError('');
+    const result = await submitQuote({
+      ...form,
+      items: items.map((i) => ({
+        code: i.code,
+        name: i.name,
+        quantity: i.quantity,
+        variantLabel: i.variantLabel,
+        productId: i.productId,
+      })),
+    });
+    setSending(false);
+    if (result.ok) {
+      clear();
+      setStep('sent');
+    } else {
+      setError(result.error);
+    }
+  }
 
   if (!isOpen) return null;
 
+  const totalQty = items.reduce((n, i) => n + i.quantity, 0);
+  const panelWidth = step === 'form' ? 'max-w-[880px]' : 'max-w-[420px]';
+
   return (
     <div className="fixed inset-0 z-[70]" role="dialog" aria-modal="true" aria-label="Seu orçamento">
-      <button
-        className="absolute inset-0 bg-ink/40"
-        style={{ animation: 'jg-fade .25s ease both' }}
-        onClick={close}
-        aria-label="Fechar"
-      />
+      <button className="absolute inset-0 bg-ink/40" style={{ animation: 'jg-fade .25s ease both' }} onClick={handleClose} aria-label="Fechar" />
+
       <div
-        className="absolute right-0 top-0 flex h-full w-full max-w-[420px] flex-col bg-white shadow-[-20px_0_60px_rgba(0,0,0,.25)]"
+        className={`absolute right-0 top-0 flex h-full w-full flex-col bg-white shadow-[-20px_0_60px_rgba(0,0,0,.25)] ${panelWidth}`}
         style={{ animation: 'jg-slide-in .32s cubic-bezier(.22,.61,.36,1) both' }}
       >
-        <header className="flex items-center justify-between border-b border-border-soft p-5">
-          <h2 className="font-display text-lg font-black">Seu orçamento ({items.length})</h2>
-          <button onClick={close} aria-label="Fechar" className="p-1 text-ink/60 hover:text-brand">
-            ✕
-          </button>
-        </header>
+        {step === 'sent' ? (
+          <SentPanel itemCount={totalQty} onClose={handleClose} />
+        ) : (
+          <>
+            <header className="flex flex-none items-center justify-between border-b border-border-soft p-5">
+              <h2 className="font-display text-lg font-black text-ink">Seu orçamento ({items.length})</h2>
+              <button onClick={handleClose} aria-label="Fechar" className="p-1 text-ink/60 hover:text-brand">
+                ✕
+              </button>
+            </header>
 
-        <div className="flex-1 overflow-y-auto p-5">
-          {items.length === 0 ? (
-            <p className="text-sm text-tertiary">
-              Seu orçamento está vazio. Adicione produtos do catálogo para solicitar a cotação.
-            </p>
-          ) : (
-            <ul className="flex flex-col gap-4">
-              {items.map((i) => (
-                <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex items-center justify-between gap-3 text-sm">
-                  <div>
-                    <p className="font-semibold">{i.name}</p>
-                    <p className="font-mono text-xs text-tertiary">
-                      {i.code} · qtd {i.quantity}
-                      {i.variantLabel ? ` · ${i.variantLabel}` : ''}
-                    </p>
+            <div className="flex min-h-0 flex-1">
+              {/* coluna de itens — sempre visível, scroll independente */}
+              <div className="flex min-h-0 flex-1 flex-col">
+                <div className="flex-1 overflow-y-auto p-5">
+                  {items.length === 0 ? (
+                    <EmptyState onClose={handleClose} />
+                  ) : (
+                    <ul className="flex flex-col gap-4">
+                      {items.map((i) => (
+                        <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex gap-3 text-sm">
+                          <div className="h-14 w-14 flex-none rounded-lg border border-border-soft bg-surface-alt" />
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate font-semibold text-ink">{i.name}</p>
+                            <p className="font-mono text-xs text-tertiary">
+                              {i.code}
+                              {i.variantLabel && <span className="text-brand"> · {i.variantLabel}</span>}
+                            </p>
+                            <div className="mt-1.5 flex items-center gap-2">
+                              <button
+                                onClick={() => setQty(i.code, i.quantity - 1, i.variantLabel)}
+                                aria-label="Diminuir"
+                                className="flex h-6 w-6 items-center justify-center rounded border border-border text-xs font-bold text-muted-2"
+                              >
+                                −
+                              </button>
+                              <span className="w-5 text-center text-xs font-bold">{i.quantity}</span>
+                              <button
+                                onClick={() => setQty(i.code, i.quantity + 1, i.variantLabel)}
+                                aria-label="Aumentar"
+                                className="flex h-6 w-6 items-center justify-center rounded border border-border text-xs font-bold text-muted-2"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                          <button onClick={() => remove(i.code, i.variantLabel)} aria-label={`Remover ${i.name}`} className="flex-none self-start text-tertiary hover:text-brand">
+                            🗑
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {items.length > 0 && (
+                  <div className="flex-none border-t border-border-soft p-5">
+                    {step === 'cart' ? (
+                      <div className="flex flex-col gap-2">
+                        <button
+                          onClick={() => setStep('form')}
+                          className="rounded-full bg-brand py-3 font-bold text-white transition hover:bg-brand-dark"
+                        >
+                          Solicitar uma cotação →
+                        </button>
+                        <button onClick={handleClose} className="rounded-full border border-border py-3 font-bold text-muted-2 transition hover:border-brand hover:text-brand">
+                          Selecionar mais itens
+                        </button>
+                      </div>
+                    ) : (
+                      <button onClick={() => setStep('cart')} className="text-sm font-bold text-muted-2 hover:text-brand">
+                        ← Voltar
+                      </button>
+                    )}
                   </div>
-                  <button
-                    onClick={() => remove(i.code, i.variantLabel)}
-                    aria-label={`Remover ${i.name}`}
-                    className="text-tertiary hover:text-brand"
-                  >
-                    🗑
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+                )}
+              </div>
+
+              {/* coluna de formulário — só na etapa 2 */}
+              {step === 'form' && (
+                <div className="flex w-[440px] flex-none flex-col bg-surface-card" style={{ animation: 'jg-form-in .42s cubic-bezier(.22,.61,.36,1) both' }}>
+                  <div className="flex-1 overflow-y-auto p-6">
+                    <h3 className="font-display text-base font-black uppercase tracking-wide text-ink">Seus dados</h3>
+                    <div className="mt-4">
+                      <QuoteFormFields value={form} onChange={(patch) => setForm((f) => ({ ...f, ...patch }))} />
+                    </div>
+                    <label className="mt-4 flex items-start gap-2.5 text-xs text-muted-2">
+                      <input
+                        type="checkbox"
+                        checked={privacyChecked}
+                        onChange={(e) => setPrivacyChecked(e.target.checked)}
+                        className="mt-0.5"
+                      />
+                      Estou de acordo com a política de privacidade da JG2.
+                    </label>
+                    {error && <p className="mt-3 text-sm font-semibold text-brand">{error}</p>}
+                  </div>
+                  <div className="flex-none border-t border-border-soft p-5">
+                    <button
+                      onClick={handleSubmit}
+                      disabled={!isQuoteFormValid(form, privacyChecked) || sending}
+                      className="w-full rounded-full bg-brand py-3 font-bold text-white transition hover:bg-brand-dark disabled:bg-brand-disabled"
+                    >
+                      {sending ? 'Enviando…' : 'Solicitar uma cotação →'}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
+    </div>
+  );
+}
+
+function EmptyState({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="flex h-full flex-col items-center justify-center text-center">
+      <span className="text-4xl">🛍️</span>
+      <p className="mt-4 font-bold text-ink">Seu orçamento está vazio</p>
+      <p className="mt-1 text-sm text-tertiary">Adicione produtos do catálogo para solicitar a cotação.</p>
+      <button onClick={onClose} className="mt-5 rounded-full border border-border px-5 py-2.5 text-sm font-bold text-muted-2 hover:border-brand hover:text-brand">
+        Continuar navegando
+      </button>
+    </div>
+  );
+}
+
+function SentPanel({ itemCount, onClose }: { itemCount: number; onClose: () => void }) {
+  return (
+    <div className="flex h-full flex-col items-center justify-center px-8 text-center">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-3xl font-black text-success">✓</div>
+      <h2 className="mt-5 font-display text-xl font-black text-ink">Cotação solicitada!</h2>
+      <p className="mt-2 text-sm text-muted-2">
+        Recebemos sua solicitação com <strong>{itemCount} itens</strong>. Nossa equipe retorna com valores e prazos em até 1 dia útil.
+      </p>
+      <button onClick={onClose} className="mt-6 rounded-full bg-brand px-6 py-3 font-bold text-white hover:bg-brand-dark">
+        Fechar
+      </button>
     </div>
   );
 }

@@ -31,22 +31,50 @@ export default async function PublicLayout({ children }: { children: React.React
           <div>
             <p className="font-display text-sm font-black uppercase tracking-wide text-ink">Menu rápido</p>
             <ul className="mt-4 flex flex-col gap-2 text-sm text-muted-2">
-              <li>Home</li>
+              <li>
+                <Link href="/" className="hover:text-brand">
+                  Home
+                </Link>
+              </li>
               <li>Serviços</li>
               <li>Software</li>
               <li>Sobre nós</li>
-              <li>Orçamento</li>
+              <li>
+                <Link href="/orcamento" className="hover:text-brand">
+                  Orçamento
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div>
             <p className="font-display text-sm font-black uppercase tracking-wide text-ink">Produtos</p>
             <ul className="mt-4 flex flex-col gap-2 text-sm text-muted-2">
-              <li>Cadeados de Bloqueio</li>
-              <li>Etiquetas e Placas</li>
-              <li>Garras de Bloqueio</li>
-              <li>Bloqueio de Válvulas</li>
-              <li>Bloqueios Elétricos</li>
+              <li>
+                <Link href="/produtos/cadeados-de-bloqueio" className="hover:text-brand">
+                  Cadeados de Bloqueio
+                </Link>
+              </li>
+              <li>
+                <Link href="/produtos/etiquetas-e-placas" className="hover:text-brand">
+                  Etiquetas e Placas
+                </Link>
+              </li>
+              <li>
+                <Link href="/produtos/garras-de-bloqueio" className="hover:text-brand">
+                  Garras de Bloqueio
+                </Link>
+              </li>
+              <li>
+                <Link href="/produtos/bloqueio-de-valvulas" className="hover:text-brand">
+                  Bloqueio de Válvulas
+                </Link>
+              </li>
+              <li>
+                <Link href="/produtos/bloqueios-eletricos" className="hover:text-brand">
+                  Bloqueios Elétricos
+                </Link>
+              </li>
             </ul>
           </div>
 

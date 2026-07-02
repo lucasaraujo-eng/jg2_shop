@@ -20,6 +20,16 @@ export const quoteRequestSchema = z.object({
 });
 export type QuoteRequestInput = z.infer<typeof quoteRequestSchema>;
 
+// ---------- Contato (fale conosco — sem itens/CNPJ, mensagem avulsa) ----------
+export const contactMessageSchema = z.object({
+  name: z.string().min(2, 'Informe seu nome'),
+  email: z.string().email('E-mail inválido'),
+  phone: z.string().optional().nullable(),
+  subject: z.string().optional().nullable(),
+  message: z.string().min(5, 'Escreva sua mensagem'),
+});
+export type ContactMessageInput = z.infer<typeof contactMessageSchema>;
+
 // ---------- Produto (admin) ----------
 export const productSchema = z.object({
   code: z.string().min(1, 'Informe o SKU'),
