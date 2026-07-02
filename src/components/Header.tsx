@@ -193,6 +193,9 @@ export function Header({ categories }: { categories: Categories }) {
                   {l.label}
                 </Link>
               ))}
+              <Link href="/servicos" className="mt-1 block rounded-lg border-t border-border-soft px-3 pt-3 text-sm font-bold normal-case text-brand hover:bg-surface-alt">
+                → Ver todos os serviços
+              </Link>
             </div>
           </DropdownNav>
 
@@ -279,6 +282,9 @@ function MobileMenu({ categories, onClose }: { categories: Categories; onClose: 
           ))}
 
           <p className="mt-3 px-3 font-mono text-[11px] uppercase tracking-wider text-brand">Serviços</p>
+          <Link href="/servicos" onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 font-bold hover:bg-surface-alt">
+            Ver todos os serviços
+          </Link>
           {SERVICOS_LINKS.map((l) => (
             <Link key={l.href} href={l.href} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 hover:bg-surface-alt">
               {l.label}
