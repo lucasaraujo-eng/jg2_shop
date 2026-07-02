@@ -11,10 +11,6 @@ import { NewsletterForm } from '@/components/NewsletterForm';
  * perguntas da sanfona foram extraídos literalmente do HTML fonte — nada
  * inventado. Fotos/vídeo reais ainda não existem: uso placeholders
  * (listrado diagonal, igual ao próprio protótipo usa em produtos sem foto).
- *
- * Rotas /servicos/* e /setores/* ainda não existem (entram nos Blocos 8/10)
- * — os links já apontam para lá de propósito; até serem construídas, caem
- * na 404 global.
  */
 
 const STRIPE_BG = {
