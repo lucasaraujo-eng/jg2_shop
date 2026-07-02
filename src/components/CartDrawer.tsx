@@ -63,7 +63,7 @@ export function CartDrawer() {
       <button className="absolute inset-0 bg-ink/40" style={{ animation: 'jg-fade .25s ease both' }} onClick={handleClose} aria-label="Fechar" />
 
       <div
-        className={`absolute right-0 top-0 flex h-full w-full flex-col bg-white shadow-[-20px_0_60px_rgba(0,0,0,.25)] ${panelWidth}`}
+        className={`absolute right-0 top-0 flex h-full w-full flex-col overflow-hidden bg-white shadow-[-20px_0_60px_rgba(0,0,0,.25)] ${panelWidth}`}
         style={{ animation: 'jg-slide-in .32s cubic-bezier(.22,.61,.36,1) both' }}
       >
         {step === 'sent' ? (
@@ -72,7 +72,11 @@ export function CartDrawer() {
           <>
             <header className="flex flex-none items-center justify-between border-b border-border-soft p-5">
               <h2 className="font-display text-lg font-black text-ink">Seu orçamento ({items.length})</h2>
-              <button onClick={handleClose} aria-label="Fechar" className="p-1 text-ink/60 hover:text-brand">
+              <button
+                onClick={handleClose}
+                aria-label="Fechar"
+                className="flex h-9 w-9 flex-none items-center justify-center rounded-lg text-ink/60 transition hover:bg-surface-alt hover:text-brand"
+              >
                 ✕
               </button>
             </header>
@@ -80,40 +84,44 @@ export function CartDrawer() {
             <div className="flex min-h-0 flex-1">
               {/* coluna de itens — no mobile some durante a etapa de formulário (a coluna de
                   formulário assume a tela toda); no desktop as duas colunas ficam lado a lado */}
-              <div className={`min-h-0 flex-col ${step === 'form' ? 'hidden md:flex md:flex-1' : 'flex flex-1'}`}>
-                <div className="flex-1 overflow-y-auto p-5">
+              <div className={`min-h-0 min-w-0 flex-col ${step === 'form' ? 'hidden md:flex md:flex-1' : 'flex flex-1'}`}>
+                <div className="min-w-0 flex-1 overflow-y-auto overflow-x-hidden p-5">
                   {items.length === 0 ? (
                     <EmptyState onClose={handleClose} />
                   ) : (
                     <ul className="flex flex-col gap-4">
                       {items.map((i) => (
-                        <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex gap-3 text-sm">
+                        <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex min-w-0 gap-3 text-sm">
                           <div className="h-14 w-14 flex-none rounded-lg border border-border-soft bg-surface-alt" />
                           <div className="min-w-0 flex-1">
                             <p className="truncate font-semibold text-ink">{i.name}</p>
-                            <p className="font-mono text-xs text-tertiary">
+                            <p className="truncate font-mono text-xs text-tertiary">
                               {i.code}
                               {i.variantLabel && <span className="text-brand"> · {i.variantLabel}</span>}
                             </p>
-                            <div className="mt-1.5 flex items-center gap-2">
+                            <div className="mt-2 flex items-center gap-2.5">
                               <button
                                 onClick={() => setQty(i.code, i.quantity - 1, i.variantLabel)}
                                 aria-label="Diminuir"
-                                className="flex h-6 w-6 items-center justify-center rounded border border-border text-xs font-bold text-muted-2"
+                                className="flex h-8 w-8 flex-none items-center justify-center rounded-lg border border-border text-sm font-bold text-muted-2 transition hover:border-brand hover:text-brand active:bg-surface-alt"
                               >
                                 −
                               </button>
-                              <span className="w-5 text-center text-xs font-bold">{i.quantity}</span>
+                              <span className="w-5 flex-none text-center text-xs font-bold">{i.quantity}</span>
                               <button
                                 onClick={() => setQty(i.code, i.quantity + 1, i.variantLabel)}
                                 aria-label="Aumentar"
-                                className="flex h-6 w-6 items-center justify-center rounded border border-border text-xs font-bold text-muted-2"
+                                className="flex h-8 w-8 flex-none items-center justify-center rounded-lg border border-border text-sm font-bold text-muted-2 transition hover:border-brand hover:text-brand active:bg-surface-alt"
                               >
                                 +
                               </button>
                             </div>
                           </div>
-                          <button onClick={() => remove(i.code, i.variantLabel)} aria-label={`Remover ${i.name}`} className="flex-none self-start text-tertiary hover:text-brand">
+                          <button
+                            onClick={() => remove(i.code, i.variantLabel)}
+                            aria-label={`Remover ${i.name}`}
+                            className="flex h-8 w-8 flex-none items-center justify-center self-start rounded-lg text-tertiary transition hover:bg-surface-alt hover:text-brand"
+                          >
                             🗑
                           </button>
                         </li>
