@@ -3,16 +3,18 @@ import Credentials from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
+import { authConfig } from '@/lib/auth.config';
 
 /**
- * Auth.js v5. Admins logam com e-mail + senha (Credentials).
- * O hash da senha fica em `AdminUser.passwordHash` (bcrypt).
+ * Auth.js v5 — config completa (adapter Prisma + Credentials/bcrypt), usada
+ * pela rota /api/auth/*, pelas Server Actions e pelas páginas admin. Roda em
+ * Node.js runtime. Para o proxy.ts (Edge Function), ver auth.config.ts.
+ * Admins logam com e-mail + senha; hash em `AdminUser.passwordHash`.
  * Primeiro acesso: rode scripts/create-admin.ts.
  */
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(prisma),
-  session: { strategy: 'jwt' },
-  pages: { signIn: '/admin/login' },
   providers: [
     Credentials({
       name: 'credentials',
@@ -34,14 +36,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) token.role = (user as { role?: string }).role;
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) (session.user as typeof session.user & { role?: string }).role = token.role as string | undefined;
-      return session;
-    },
-  },
 });
