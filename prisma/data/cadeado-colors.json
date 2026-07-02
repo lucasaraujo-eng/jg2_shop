@@ -1,0 +1,42 @@
+[
+  {
+    "code": "VM",
+    "name": "Vermelho"
+  },
+  {
+    "code": "AM",
+    "name": "Amarelo"
+  },
+  {
+    "code": "VD",
+    "name": "Verde"
+  },
+  {
+    "code": "LR",
+    "name": "Laranja"
+  },
+  {
+    "code": "AZ",
+    "name": "Azul"
+  },
+  {
+    "code": "PT",
+    "name": "Preto"
+  },
+  {
+    "code": "CZ",
+    "name": "Cinza"
+  },
+  {
+    "code": "BC",
+    "name": "Branco"
+  },
+  {
+    "code": "MR",
+    "name": "Marrom"
+  },
+  {
+    "code": "RX",
+    "name": "Roxo"
+  }
+]

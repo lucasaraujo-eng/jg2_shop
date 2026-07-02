@@ -1,0 +1,126 @@
+{
+  "applications": [
+    {
+      "key": "mecanico",
+      "label": "Dispositivo Mecânico",
+      "order": 0,
+      "models": [
+        {
+          "key": "flange",
+          "label": "Flange"
+        },
+        {
+          "key": "valv_borboleta",
+          "label": "Válvula Borboleta"
+        },
+        {
+          "key": "valv_cilindro_gas",
+          "label": "Válvula de Cilindro de Gás"
+        },
+        {
+          "key": "valv_esfera",
+          "label": "Válvula Esfera"
+        },
+        {
+          "key": "valv_gaveta",
+          "label": "Válvula Gaveta / Globo / Volante"
+        },
+        {
+          "key": "valv_pneumatica",
+          "label": "Válvula Pneumática"
+        },
+        {
+          "key": "valv_registro",
+          "label": "Válvula Registro"
+        }
+      ]
+    },
+    {
+      "key": "eletrico",
+      "label": "Dispositivo Elétrico",
+      "order": 1,
+      "models": [
+        {
+          "key": "botao_pulso",
+          "label": "Botão de Pulso"
+        },
+        {
+          "key": "botao_emergencial",
+          "label": "Botão Emergencial"
+        },
+        {
+          "key": "chave_seccionadora",
+          "label": "Chave Seccionadora"
+        },
+        {
+          "key": "chave_seletora",
+          "label": "Chave Seletora"
+        },
+        {
+          "key": "controle_ponte",
+          "label": "Controle de Ponte Rolante"
+        },
+        {
+          "key": "disjuntor_motor",
+          "label": "Disjuntor Motor"
+        },
+        {
+          "key": "disjuntor_motorizado",
+          "label": "Disjuntor Motorizado / Motorizável"
+        },
+        {
+          "key": "disjuntor_din",
+          "label": "Disjuntor Norma Din",
+          "configs": [
+            {
+              "key": "din_monopolar",
+              "label": "Monopolar"
+            },
+            {
+              "key": "din_bipolar",
+              "label": "Bipolar"
+            },
+            {
+              "key": "din_tripolar",
+              "label": "Tripolar"
+            }
+          ]
+        },
+        {
+          "key": "disjuntor_nema",
+          "label": "Disjuntor Norma Nema",
+          "configs": [
+            {
+              "key": "nema_dupla_tripla",
+              "label": "Chave dupla ou tripla"
+            },
+            {
+              "key": "nema_220_380",
+              "label": "220–380V"
+            },
+            {
+              "key": "nema_380_600",
+              "label": "380–600V"
+            },
+            {
+              "key": "nema_440_660",
+              "label": "440–660V"
+            }
+          ]
+        },
+        {
+          "key": "manopla",
+          "label": "Manopla Rotativa Seccionadora"
+        },
+        {
+          "key": "plugue_eletrico",
+          "label": "Plugue Elétrico"
+        },
+        {
+          "key": "porta_painel",
+          "label": "Porta do Painel Elétrico"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "title": "Lockout/Tagout: o guia definitivo para começar na sua indústria",
+    "slug": "guia-loto",
+    "excerpt": "Entenda as etapas essenciais para estruturar um programa de bloqueio e etiquetagem eficaz, da matriz de bloqueio à auditoria.",
+    "tag": "Guia",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>\n<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>",
+    "status": "PUBLISHED",
+    "order": 0
+  },
+  {
+    "title": "5 erros comuns na adequação à NR-12 (e como evitá-los)",
+    "slug": "nr12-erros",
+    "excerpt": "Os deslizes mais frequentes que geram retrabalho e passivos durante a adequação de máquinas e equipamentos.",
+    "tag": "NR-12",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>\n<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>",
+    "status": "PUBLISHED",
+    "order": 1
+  },
+  {
+    "title": "Como escolher o cadeado de bloqueio certo para cada energia",
+    "slug": "escolher-cadeado",
+    "excerpt": "Material, chaveamento e identificação por equipe: o que considerar na hora de especificar seus cadeados LOTO.",
+    "tag": "Cadeados",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>\n<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>",
+    "status": "PUBLISHED",
+    "order": 2
+  },
+  {
+    "title": "Mãos Seguras: engajando equipes na cultura de segurança",
+    "slug": "maos-seguras",
+    "excerpt": "Estratégias práticas para reduzir acidentes de mão e fortalecer o comportamento seguro no chão de fábrica.",
+    "tag": "Cultura",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>\n<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>",
+    "status": "PUBLISHED",
+    "order": 3
+  },
+  {
+    "title": "Bloqueio de válvulas: tipos, aplicações e melhores práticas",
+    "slug": "valvulas-bloqueio",
+    "excerpt": "Esfera, gaveta ou borboleta? Conheça os dispositivos certos para cada tipo de válvula da sua planta.",
+    "tag": "Válvulas",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>\n<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>",
+    "status": "PUBLISHED",
+    "order": 4
+  },
+  {
+    "title": "Como preparar sua operação para uma auditoria de LOTO",
+    "slug": "auditoria-loto",
+    "excerpt": "Checklist e rastreabilidade: garanta que seu programa de bloqueio passe em qualquer auditoria sem surpresas.",
+    "tag": "Gestão",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>\n<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>",
+    "status": "PUBLISHED",
+    "order": 5
+  }
+]

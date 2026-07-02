@@ -1,0 +1,88 @@
+[
+  {
+    "type": "LOTO",
+    "name": "Cadeados de Bloqueio",
+    "order": 0,
+    "subcategories": [
+      "Haste Cromada",
+      "Haste Plástica",
+      "Haste de Alumínio",
+      "Haste de Inox"
+    ]
+  },
+  {
+    "type": "LOTO",
+    "name": "Garras de Bloqueio",
+    "order": 1,
+    "subcategories": [
+      "Garra de Travamento em Aço",
+      "Garra de Travamento em Alumínio",
+      "Garra de Travamento Plástica"
+    ]
+  },
+  {
+    "type": "LOTO",
+    "name": "Bloqueios Elétricos",
+    "order": 2,
+    "subcategories": [
+      "Bloqueios Para Disjuntor",
+      "Bloqueios para Chaves e Botões",
+      "Bloqueios para Plugues Elétricos / Bloqueios para Plugues Pneumáticos",
+      "Bloqueios para Plugues Elétricos",
+      "Bloqueios para Ponte Rolante"
+    ]
+  },
+  {
+    "type": "LOTO",
+    "name": "Bloqueio de Válvulas",
+    "order": 3,
+    "subcategories": [
+      "Bloqueios de Cabo Mutiuso",
+      "Bloqueios para Válvulas Gaveta/ Globo/ Volante/ Registro",
+      "Bloqueios para Válvulas Esfera",
+      "Bloqueio Universal para Válvulas (Aparece como Categoria, mas leva direto para a página do bloqueio) Deve Aparecer nas páginas de bloqueio para válvula esfera, bloqueio para válvula gaveta e bloqueio para válvula Borboleta",
+      "Bloqueios para Válvulas Borboleta",
+      "Bloqueios para Válvula de Cilindro de Gás",
+      "Bloqueios para Plugues Pneumáticos",
+      "Bloqueios para Plugues Elétricos, Válvulas Pneumáticas"
+    ]
+  },
+  {
+    "type": "LOTO",
+    "name": "Caixas e Estações",
+    "order": 4,
+    "subcategories": [
+      "Caixas de Bloqueio",
+      "Estações de Bloqueio",
+      "Etiquetas de Bloqueio"
+    ]
+  },
+  {
+    "type": "LOTO",
+    "name": "Etiquetas e Placas",
+    "order": 5,
+    "subcategories": [
+      "Etiquetas de Bloqueio"
+    ]
+  },
+  {
+    "type": "LOTO",
+    "name": "Malas e Bolsas",
+    "order": 6,
+    "subcategories": [
+      "Malas e Bolsas LOTO"
+    ]
+  },
+  {
+    "type": "MAOS_SEGURAS",
+    "name": "Mãos Seguras",
+    "order": 7,
+    "subcategories": [
+      "Extensores Industriais",
+      "Proteção de Impacto",
+      "Movimentação e Transporte",
+      "Armazenamento Seguro",
+      "Fixação e Ajuste"
+    ]
+  }
+]

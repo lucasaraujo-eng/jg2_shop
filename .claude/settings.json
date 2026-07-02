@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "PowerShell(Get-Command docker -ErrorAction SilentlyContinue)",
+      "PowerShell(docker --version 2>&1)",
+      "PowerShell(docker info 2>&1)",
+      "Bash(npx prisma *)",
+      "Bash(node -e ' *)",
+      "Bash(xargs grep -o \"Space[A-Za-z_]*\")",
+      "Bash(npx eslint *)"
+    ]
+  }
+}

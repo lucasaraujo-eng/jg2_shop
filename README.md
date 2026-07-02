@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JG2 — Catálogo & Orçamentos
 
-## Getting Started
+Site institucional e catálogo de produtos de segurança industrial da JG2 — bloqueio e
+etiquetagem (LOTO) e Mãos Seguras — com montagem de orçamento e área administrativa.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js 16** (App Router, Turbopack) + **React 19** + **TypeScript**
+- **Tailwind CSS v4**
+- **Prisma 7** + **PostgreSQL** (Neon, via driver adapter `@prisma/adapter-neon`)
+- **Auth.js v5** — login admin por credenciais
+- **Zustand** — carrinho de orçamento (persistido em localStorage)
+- **Resend** — e-mail de orçamento (a configurar)
+- **Cloudflare R2** — upload de imagens (a configurar)
+
+## Status do desenvolvimento
+
+- [x] Setup técnico — schema Prisma, seed (108 produtos reais, categorias, taxonomia do
+      filtro de dispositivos, posts do blog), Server Actions, autenticação admin
+- [x] Home — 14 seções, header com busca e mega-menu, footer, reveal/stagger ao rolar
+- [x] Catálogo — sidebar de categorias, filtro horizontal de dispositivos (3 etapas:
+      aplicação → modelo → configuração), busca local
+- [x] Página de produto — galeria, variações de cadeado (cor × segredo), abas com
+      scroll-spy, "veja também", texto de apoio SEO
+- [ ] Carrinho de orçamento completo (drawer em 2 etapas) + `/orcamento` + `/contato`
+- [ ] Blog (índice + artigo)
+- [ ] Admin — CRUD de produtos e blog com upload de imagem, lista de orçamentos
+- [ ] Institucional — Serviços, Consultorias (LOTOTO/NR-12/Mãos Seguras), Sobre nós,
+      páginas de setor de atuação, Downloads, Vídeos
+
+## Estrutura
+
+```
+prisma/
+  schema.prisma       # modelos
+  seed.ts              # carga inicial (108 produtos, filtro, blog)
+  data/*.json          # dados reais extraídos do protótipo de referência
+scripts/
+  create-admin.ts       # cria/atualiza o usuário administrador
+src/
+  app/
+    (public)/           # site público — home, catálogo, produto, blog, contato
+    admin/               # área administrativa (protegida por proxy.ts)
+    api/                 # rotas de auth e upload
+  components/            # Header, componentes de catálogo e produto, carrinho
+  lib/                    # prisma, auth, email, storage, validations, utils
+  server/                 # leituras (Server Components) + Server Actions
+  stores/cart.ts           # estado do carrinho (Zustand)
+  proxy.ts                  # protege as rotas /admin (ex-middleware.ts no Next 16)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup local
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+cp .env.example .env        # preencha DATABASE_URL/DIRECT_URL (Neon) e AUTH_SECRET
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+npx prisma migrate dev      # cria as tabelas
+npx prisma db seed          # carrega os 108 produtos + filtro + blog
 
-## Learn More
+npx tsx scripts/create-admin.ts "Nome" email@dominio.com "senhaForte"
 
-To learn more about Next.js, take a look at the following resources:
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Site em `http://localhost:3000`, admin em `/admin/login`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Notas
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Imagens de produto**: ainda não há fotos reais — os cards mostram um placeholder de
+  texto até a integração com o Cloudflare R2 estar configurada.
+- **Blog**: o corpo dos artigos vem do protótipo de referência como Lorem Ipsum — precisa
+  de redação real antes de produção. Títulos, tags e resumos já são reais.
