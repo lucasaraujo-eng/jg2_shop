@@ -72,7 +72,7 @@ export function ProductForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex max-w-2xl flex-col gap-5">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="font-bold text-ink">SKU (código)*</span>
           <input required value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className={inputClass} />
@@ -88,7 +88,7 @@ export function ProductForm({
         <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClass} />
       </label>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="font-bold text-ink">Categoria*</span>
           <select

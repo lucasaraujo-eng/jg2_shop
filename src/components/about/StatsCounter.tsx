@@ -43,7 +43,7 @@ export function StatsCounter({ stats }: { stats: Stat[] }) {
           key={s.label}
           className="rounded-2xl border border-dark-border bg-dark-card p-6 transition hover:-translate-y-1 hover:border-brand hover:bg-dark-card-2"
         >
-          <div className="font-display text-[38px] font-black leading-none text-white">
+          <div className="font-display text-[32px] font-black leading-none text-white sm:text-[38px]">
             {isAnimated(s) ? `${s.prefix ?? ''}${Math.round(s.value * progress).toLocaleString('pt-BR')}${s.suffix ?? ''}` : s.text}
           </div>
           <div className="mt-2 text-sm font-semibold leading-snug text-white/60">{s.label}</div>
