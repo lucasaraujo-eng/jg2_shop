@@ -117,3 +117,12 @@ export async function listAdminProducts(query?: string) {
     include: { images: { take: 1, orderBy: { order: 'asc' } }, category: true },
   });
 }
+
+/** Produto para pré-preencher o formulário de edição. */
+export async function getAdminProduct(id: string) {
+  await requireAdmin();
+  return prisma.product.findUnique({
+    where: { id },
+    include: { images: { orderBy: { order: 'asc' }, take: 1 }, filterTags: true },
+  });
+}
