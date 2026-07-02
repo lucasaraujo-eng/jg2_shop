@@ -78,8 +78,9 @@ export function CartDrawer() {
             </header>
 
             <div className="flex min-h-0 flex-1">
-              {/* coluna de itens — sempre visível, scroll independente */}
-              <div className="flex min-h-0 flex-1 flex-col">
+              {/* coluna de itens — no mobile some durante a etapa de formulário (a coluna de
+                  formulário assume a tela toda); no desktop as duas colunas ficam lado a lado */}
+              <div className={`min-h-0 flex-col ${step === 'form' ? 'hidden md:flex md:flex-1' : 'flex flex-1'}`}>
                 <div className="flex-1 overflow-y-auto p-5">
                   {items.length === 0 ? (
                     <EmptyState onClose={handleClose} />
@@ -121,33 +122,30 @@ export function CartDrawer() {
                   )}
                 </div>
 
-                {items.length > 0 && (
+                {items.length > 0 && step === 'cart' && (
                   <div className="flex-none border-t border-border-soft p-5">
-                    {step === 'cart' ? (
-                      <div className="flex flex-col gap-2">
-                        <button
-                          onClick={() => setStep('form')}
-                          className="rounded-full bg-brand py-3 font-bold text-white transition hover:bg-brand-dark"
-                        >
-                          Solicitar uma cotação →
-                        </button>
-                        <button onClick={handleClose} className="rounded-full border border-border py-3 font-bold text-muted-2 transition hover:border-brand hover:text-brand">
-                          Selecionar mais itens
-                        </button>
-                      </div>
-                    ) : (
-                      <button onClick={() => setStep('cart')} className="text-sm font-bold text-muted-2 hover:text-brand">
-                        ← Voltar
+                    <div className="flex flex-col gap-2">
+                      <button
+                        onClick={() => setStep('form')}
+                        className="rounded-full bg-brand py-3 font-bold text-white transition hover:bg-brand-dark"
+                      >
+                        Solicitar uma cotação →
                       </button>
-                    )}
+                      <button onClick={handleClose} className="rounded-full border border-border py-3 font-bold text-muted-2 transition hover:border-brand hover:text-brand">
+                        Selecionar mais itens
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
 
-              {/* coluna de formulário — só na etapa 2 */}
+              {/* coluna de formulário — só na etapa 2; ocupa a tela toda no mobile */}
               {step === 'form' && (
-                <div className="flex w-[440px] flex-none flex-col bg-surface-card" style={{ animation: 'jg-form-in .42s cubic-bezier(.22,.61,.36,1) both' }}>
+                <div className="flex w-full flex-1 flex-col bg-surface-card md:w-[440px] md:flex-none" style={{ animation: 'jg-form-in .42s cubic-bezier(.22,.61,.36,1) both' }}>
                   <div className="flex-1 overflow-y-auto p-6">
+                    <button onClick={() => setStep('cart')} className="mb-4 text-sm font-bold text-muted-2 hover:text-brand">
+                      ← Voltar
+                    </button>
                     <h3 className="font-display text-base font-black uppercase tracking-wide text-ink">Seus dados</h3>
                     <div className="mt-4">
                       <QuoteFormFields value={form} onChange={(patch) => setForm((f) => ({ ...f, ...patch }))} />

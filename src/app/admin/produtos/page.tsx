@@ -30,39 +30,41 @@ export default async function AdminProductsPage({
       </form>
 
       <div className="mt-6 overflow-hidden rounded-xl border border-border-soft bg-white">
-        <table className="w-full text-sm">
-          <thead className="border-b border-border-soft bg-surface-alt text-left text-xs uppercase text-tertiary">
-            <tr>
-              <th className="px-4 py-3">Código</th>
-              <th className="px-4 py-3">Nome</th>
-              <th className="px-4 py-3">Categoria</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3" />
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((p) => (
-              <tr key={p.id} className="border-b border-border-soft last:border-0">
-                <td className="px-4 py-3 font-mono text-brand">{p.code}</td>
-                <td className="px-4 py-3 font-semibold text-ink">{p.name}</td>
-                <td className="px-4 py-3 text-muted-2">{p.category.name}</td>
-                <td className="px-4 py-3">
-                  <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${p.active ? 'bg-success/10 text-success' : 'bg-surface-alt text-tertiary'}`}>
-                    {p.active ? 'Ativo' : 'Oculto'}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <div className="flex justify-end gap-4">
-                    <Link href={`/admin/produtos/${p.id}`} className="text-xs font-bold text-ink hover:text-brand">
-                      Editar
-                    </Link>
-                    <DeleteProductButton id={p.id} name={p.name} />
-                  </div>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[640px] text-sm">
+            <thead className="border-b border-border-soft bg-surface-alt text-left text-xs uppercase text-tertiary">
+              <tr>
+                <th className="px-4 py-3">Código</th>
+                <th className="px-4 py-3">Nome</th>
+                <th className="px-4 py-3">Categoria</th>
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3" />
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {products.map((p) => (
+                <tr key={p.id} className="border-b border-border-soft last:border-0">
+                  <td className="px-4 py-3 font-mono text-brand">{p.code}</td>
+                  <td className="px-4 py-3 font-semibold text-ink">{p.name}</td>
+                  <td className="px-4 py-3 text-muted-2">{p.category.name}</td>
+                  <td className="px-4 py-3">
+                    <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${p.active ? 'bg-success/10 text-success' : 'bg-surface-alt text-tertiary'}`}>
+                      {p.active ? 'Ativo' : 'Oculto'}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <div className="flex justify-end gap-4">
+                      <Link href={`/admin/produtos/${p.id}`} className="text-xs font-bold text-ink hover:text-brand">
+                        Editar
+                      </Link>
+                      <DeleteProductButton id={p.id} name={p.name} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         {products.length === 0 && <p className="p-6 text-center text-sm text-tertiary">Nenhum produto encontrado.</p>}
       </div>
     </div>

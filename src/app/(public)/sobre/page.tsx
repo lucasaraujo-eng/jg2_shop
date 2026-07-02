@@ -68,7 +68,7 @@ export default function SobrePage() {
           <p className="mt-4 inline-block rounded-full bg-brand px-4 py-2 text-xs font-bold uppercase tracking-wide text-white">
             Grupo JG2 · Quem somos
           </p>
-          <h1 className="mt-5 max-w-3xl font-display text-5xl font-black leading-[1.02] text-white sm:text-6xl">
+          <h1 className="mt-5 max-w-3xl font-display text-4xl font-black leading-tight text-white sm:text-5xl">
             Nosso Compromisso
             <br />
             Salva Vidas
@@ -228,7 +228,7 @@ export default function SobrePage() {
       {/* Missão / Visão / Compromisso */}
       <section className="bg-ink-deeper py-20">
         <div className="mx-auto max-w-[1340px] px-7">
-          <div className="jg-card-grid grid gap-5 sm:grid-cols-3">
+          <div className="jg-card-grid grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <div className="rounded-2xl border border-dark-border p-8 transition hover:-translate-y-1">
               <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Missão</p>
               <p className="mt-3.5 leading-relaxed text-white/80">

@@ -118,7 +118,7 @@ export default async function ProductPage({
                   <tbody>
                     {product.specs.map((s) => (
                       <tr key={s.id} className="border-b border-border-soft">
-                        <td className="w-[200px] py-2.5 pr-4 font-semibold text-muted-2">{s.label}</td>
+                        <td className="w-[130px] py-2.5 pr-3 font-semibold text-muted-2 sm:w-[200px] sm:pr-4">{s.label}</td>
                         <td className="py-2.5">{s.value}</td>
                       </tr>
                     ))}

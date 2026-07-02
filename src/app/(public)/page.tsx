@@ -148,7 +148,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-ink-deep via-ink-deep/95 to-ink-deep/70" />
         <div className="relative mx-auto max-w-[1340px] px-7">
           <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Grupo JG2</p>
-          <h1 className="mt-4 max-w-3xl font-display text-5xl font-black leading-tight tracking-tight">
+          <h1 className="mt-4 max-w-3xl font-display text-4xl font-black leading-tight tracking-tight sm:text-5xl">
             Adequação Completa em Segurança Industrial
           </h1>
           <p className="mt-5 max-w-xl text-lg text-white/70">
