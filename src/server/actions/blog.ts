@@ -90,3 +90,9 @@ export async function listAdminPosts() {
   await requireAdmin();
   return prisma.blogPost.findMany({ orderBy: { updatedAt: 'desc' } });
 }
+
+/** Post para pré-preencher o formulário de edição. */
+export async function getAdminPost(id: string) {
+  await requireAdmin();
+  return prisma.blogPost.findUnique({ where: { id } });
+}

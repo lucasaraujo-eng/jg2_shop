@@ -1,27 +1,51 @@
-import { prisma } from '@/lib/prisma';
-import { auth } from '@/lib/auth';
+import { listAdminQuotes } from '@/server/actions/quotes';
+import { QuoteStatusSelect } from '@/components/admin/QuoteStatusSelect';
 
-/** Stub (Bloco 1): confirma listagem + auth. UI completa entra no Bloco 7. */
 export default async function AdminQuotesPage() {
-  const session = await auth();
-  if (!session?.user) return null; // middleware já redireciona; guarda extra
-
-  const quotes = await prisma.quoteRequest.findMany({
-    orderBy: { createdAt: 'desc' },
-    include: { items: true },
-  });
+  const quotes = await listAdminQuotes();
 
   return (
     <div>
       <h1 className="font-display text-2xl font-black text-ink">Orçamentos ({quotes.length})</h1>
-      <ul className="mt-6 flex flex-col gap-2">
+
+      <div className="mt-6 flex flex-col gap-4">
         {quotes.map((q) => (
-          <li key={q.id} className="rounded-lg border border-border-soft bg-white px-4 py-3 text-sm">
-            <span className="font-semibold">{q.name}</span> — {q.email} — {q.items.length} item(ns){' '}
-            <span className="text-tertiary">({q.status})</span>
-          </li>
+          <div key={q.id} className="rounded-xl border border-border-soft bg-white p-5">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className="font-bold text-ink">{q.name}</p>
+                <p className="text-sm text-muted-2">
+                  {q.email} · {q.phone} · CNPJ {q.cnpj}
+                </p>
+                <p className="mt-1 text-xs text-tertiary">
+                  {q.purpose} · {new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(q.createdAt)}
+                </p>
+              </div>
+              <QuoteStatusSelect id={q.id} status={q.status} />
+            </div>
+
+            {q.message && <p className="mt-3 rounded-lg bg-surface-alt p-3 text-sm text-muted-2">{q.message}</p>}
+
+            <ul className="mt-4 flex flex-col gap-1.5 border-t border-border-soft pt-4 text-sm">
+              {q.items.map((item) => (
+                <li key={item.id} className="flex justify-between text-muted-2">
+                  <span>
+                    <span className="font-mono text-xs text-tertiary">{item.code}</span> {item.name}
+                    {item.variantLabel && <span className="text-brand"> · {item.variantLabel}</span>}
+                  </span>
+                  <span className="font-bold text-ink">×{item.quantity}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
-      </ul>
+
+        {quotes.length === 0 && (
+          <p className="rounded-xl border border-border-soft bg-white p-6 text-center text-sm text-tertiary">
+            Nenhum orçamento recebido ainda.
+          </p>
+        )}
+      </div>
     </div>
   );
 }
