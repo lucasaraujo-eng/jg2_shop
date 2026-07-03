@@ -25,11 +25,11 @@ export function ProductCard({ product, variant = 'compact' }: { product: CardPro
 
   if (variant === 'catalog') {
     return (
-      <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-soft bg-white transition hover:-translate-y-1 hover:shadow-xl">
+      <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border-soft bg-white transition hover:-translate-y-1 hover:shadow-xl">
         <Link href={href} className="flex h-[190px] items-center justify-center overflow-hidden bg-white p-3">
           {image ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={image} alt={product.name} className="max-h-full max-w-full object-contain" />
+            <img src={image} alt={product.name} className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110" />
           ) : (
             <span className="text-center font-mono text-[11px] text-code">[ foto: {product.name} ]</span>
           )}
@@ -60,11 +60,11 @@ export function ProductCard({ product, variant = 'compact' }: { product: CardPro
   }
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-soft bg-white transition hover:-translate-y-1 hover:shadow-xl">
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border-soft bg-white transition hover:-translate-y-1 hover:shadow-xl">
       <Link href={href} className="flex h-[180px] items-center justify-center overflow-hidden bg-white p-3">
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={image} alt={product.name} className="max-h-full max-w-full object-contain" />
+          <img src={image} alt={product.name} className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110" />
         ) : (
           <span className="text-center font-mono text-[11px] text-code">[ foto: {product.name} ]</span>
         )}

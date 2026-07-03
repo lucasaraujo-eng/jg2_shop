@@ -6,7 +6,7 @@
  */
 
 export type ConsultoriaStep = { n: string; title: string; body: string };
-export type ConsultoriaShowcaseItem = { title: string; desc: string; img: string; fit: 'cover' | 'contain' };
+export type ConsultoriaShowcaseItem = { title: string; desc: string; img: string; fit: 'cover' | 'contain'; position?: 'center' | 'top' };
 export type ConsultoriaDiff = { title: string; body: string };
 export type ConsultoriaFaq = { q: string; a: string };
 
@@ -21,6 +21,8 @@ export type ConsultoriaData = {
   problemParas: string[];
   problemImg: string;
   problemFit: 'cover' | 'contain';
+  /** Retratos verticais (rosto próximo do topo) precisam de 'top' pra não cortar o rosto no crop 'cover'. */
+  problemPosition?: 'center' | 'top';
   gainsTitle: string;
   gains: string[];
   stagesTitle: string;
@@ -206,6 +208,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
     problemTitle: 'Por que tantas operações continuam expostas a acidentes com as mãos',
     problemImg: '/uploads/maoscons/atendimento.jpg',
     problemFit: 'cover',
+    problemPosition: 'top',
     problemParas: [
       'Em muitas plantas o risco é conhecido, mas a solução não é tratada da forma certa. A empresa continua dependendo de hábito, atenção individual ou ferramenta inadequada para tarefas que deixam as mãos próximas da zona de perigo — o que aparece em forma de cortes, esmagamentos, perfurações e mutilações.',
       'Com a JG2, sua empresa trata isso da forma correta: com engenharia aplicada à operação, não com improviso.',
@@ -240,7 +243,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
     showcaseTitle: 'Como a JG2 conduz a consultoria em Mãos Seguras',
     showcaseText: 'Da análise da atividade em campo ao acompanhamento contínuo — cada etapa desenvolve uma solução aderente à sua operação real.',
     showcase: [
-      { title: 'Atendimento especializado', desc: 'Entendemos seu cenário com critério técnico: tipo de atividade, risco envolvido, limitações operacionais e objetivo da solução. Você começa com atendimento técnico, não com tentativa e erro.', img: '/uploads/maoscons/atendimento.jpg', fit: 'cover' },
+      { title: 'Atendimento especializado', desc: 'Entendemos seu cenário com critério técnico: tipo de atividade, risco envolvido, limitações operacionais e objetivo da solução. Você começa com atendimento técnico, não com tentativa e erro.', img: '/uploads/maoscons/atendimento.jpg', fit: 'cover', position: 'top' },
       { title: 'Levantamento de atividades', desc: 'Observamos como a tarefa acontece na prática, identificamos o ponto exato de exposição e entendemos os movimentos, alcances e rotinas que precisam ser tratados.', img: '/uploads/maoscons/levantamento.png', fit: 'cover' },
       { title: 'Projetos conceituais e detalhados', desc: 'Você visualiza a proposta e valida a aplicação antes de fabricar. Depois da validação conceitual, avançamos para o detalhamento técnico — reduzindo o risco de retrabalho.', img: '/uploads/maoscons/projeto.png', fit: 'contain' },
       { title: 'Fabricação de dispositivos personalizados', desc: 'Desenvolvemos dispositivos sob medida para a atividade, fabricados em aço galvanizado com pintura eletrostática ou aço inox, conforme a aplicação e o ambiente.', img: '/uploads/maoscons/fabricacao.png', fit: 'contain' },

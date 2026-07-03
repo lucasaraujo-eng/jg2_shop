@@ -43,8 +43,8 @@ export function ImageUpload({
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <span className="text-xs font-bold text-muted-2">{label}</span>
+    <div className="flex flex-col gap-1.5 text-sm">
+      <span className="font-bold text-ink">{label}</span>
 
       <div
         onClick={() => inputRef.current?.click()}
@@ -59,7 +59,7 @@ export function ImageUpload({
           upload(e.dataTransfer.files);
         }}
         className={`flex cursor-pointer items-center gap-4 rounded-xl border-2 border-dashed p-4 transition ${
-          dragging ? 'border-brand bg-surface-badge' : 'border-border hover:border-brand'
+          dragging ? 'border-brand bg-surface-badge' : 'border-border bg-surface-card hover:border-brand'
         }`}
       >
         <div className="flex h-20 w-20 flex-none items-center justify-center overflow-hidden rounded-lg border border-border bg-surface-alt">

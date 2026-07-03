@@ -193,8 +193,10 @@ export default async function HomePage() {
                     ↗
                   </span>
                 </div>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={f.img} alt="" className="h-[200px] w-full object-cover" />
+                <div className="h-[200px] w-full overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={f.img} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                </div>
               </Link>
             ))}
           </div>
@@ -455,10 +457,14 @@ function ActionBanner({
   return (
     <section className="mx-auto max-w-[1340px] px-7 py-6">
       <p className="mb-6 text-center font-display text-xl font-black text-ink">{title}</p>
-      <div className={`grid overflow-hidden rounded-2xl shadow-xl lg:grid-cols-[1fr_1.15fr] ${panelClassName}`}>
-        <div className="relative min-h-[260px]">
+      <div className={`group grid overflow-hidden rounded-2xl shadow-xl lg:grid-cols-[1fr_1.15fr] ${panelClassName}`}>
+        <div className="relative min-h-[260px] overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={imageSrc} alt="" className={`absolute inset-0 h-full w-full object-cover ${imagePosition}`} />
+          <img
+            src={imageSrc}
+            alt=""
+            className={`absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${imagePosition}`}
+          />
         </div>
         <div className="flex flex-col justify-center p-9 sm:p-11">
           {kicker && <span className={`mb-2 text-sm font-black uppercase tracking-wide ${kickerColor}`}>{kicker}</span>}

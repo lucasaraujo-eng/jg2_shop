@@ -24,10 +24,10 @@ export function ProductGallery({
 
   return (
     <div className="lg:sticky lg:top-[96px]">
-      <div className="flex h-[440px] items-center justify-center rounded-2xl border border-border-soft bg-white p-6">
+      <div className="group flex h-[440px] items-center justify-center overflow-hidden rounded-2xl border border-border-soft bg-white p-6">
         {current ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={current} alt={name} className="max-h-full max-w-full object-contain" />
+          <img src={current} alt={name} className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105" />
         ) : (
           <div className="flex h-full w-full items-center justify-center rounded-xl" style={STRIPE_BG}>
             <span className="rounded bg-white/90 px-3 py-1.5 text-center font-mono text-xs text-code">
@@ -44,12 +44,12 @@ export function ProductGallery({
               key={url}
               onClick={() => setActive(i)}
               aria-label={`Ver imagem ${i + 1}`}
-              className={`h-20 w-20 flex-none overflow-hidden rounded-lg border-2 bg-white p-1 ${
-                i === active ? 'border-brand' : 'border-border'
+              className={`group h-20 w-20 flex-none overflow-hidden rounded-lg border-2 bg-white p-1 transition ${
+                i === active ? 'border-brand' : 'border-border hover:border-brand/50'
               }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={url} alt="" className="h-full w-full object-contain" />
+              <img src={url} alt="" className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-110" />
             </button>
           ))}
         </div>

@@ -25,11 +25,15 @@ export function ClientsMarquee() {
         </p>
       </div>
       <div className="jg-noscroll overflow-hidden">
-        <div className="flex w-max items-center gap-10" style={{ animation: 'jg-marquee 44s linear infinite' }}>
+        <div className="flex w-max items-center gap-10 hover:[animation-play-state:paused]" style={{ animation: 'jg-marquee 44s linear infinite' }}>
           {[...CLIENTS, ...CLIENTS].map((c, i) => (
             <div key={`${c.name}-${i}`} className="flex h-14 flex-none items-center justify-center px-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/uploads/clientes/${c.file}.png`} alt={c.name} className="h-14 w-[150px] object-contain" />
+              <img
+                src={`/uploads/clientes/${c.file}.png`}
+                alt={c.name}
+                className="h-14 w-[150px] object-contain transition-transform duration-300 hover:scale-110"
+              />
             </div>
           ))}
         </div>
