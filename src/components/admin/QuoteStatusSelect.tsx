@@ -10,6 +10,13 @@ const STATUS_LABELS: Record<string, string> = {
   ARCHIVED: 'Arquivado',
 };
 
+const STATUS_COLORS: Record<string, string> = {
+  NEW: 'border-brand/40 bg-surface-badge text-brand',
+  IN_PROGRESS: 'border-gold/40 bg-gold/10 text-gold',
+  SENT: 'border-success/40 bg-success/10 text-success',
+  ARCHIVED: 'border-border bg-surface-alt text-tertiary',
+};
+
 export function QuoteStatusSelect({ id, status }: { id: string; status: string }) {
   const [value, setValue] = useState(status);
   const [pending, startTransition] = useTransition();
@@ -30,7 +37,7 @@ export function QuoteStatusSelect({ id, status }: { id: string; status: string }
       value={value}
       disabled={pending}
       onChange={(e) => handleChange(e.target.value)}
-      className="rounded-full border border-border bg-white px-3 py-1.5 text-xs font-bold text-ink outline-none focus:border-brand disabled:opacity-50"
+      className={`flex-none rounded-full border px-3.5 py-2 text-xs font-bold outline-none transition disabled:opacity-50 ${STATUS_COLORS[value] ?? STATUS_COLORS.NEW}`}
     >
       {Object.entries(STATUS_LABELS).map(([key, label]) => (
         <option key={key} value={key}>
