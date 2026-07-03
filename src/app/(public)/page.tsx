@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getFeaturedProducts } from '@/server/catalog';
 import { ProductCarousel } from '@/components/ProductCarousel';
+import { ScrollCarousel } from '@/components/ScrollCarousel';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
 import { FaqAccordion } from '@/components/FaqAccordion';
 import { NewsletterForm } from '@/components/NewsletterForm';
@@ -269,6 +270,8 @@ export default async function HomePage() {
         textColor="text-white/90"
         panelClassName="bg-[linear-gradient(135deg,#c8121f_0%,#a3101a_100%)]"
         imageSrc="/uploads/banner-lototo.jpg"
+        ctaClassName="bg-white text-brand hover:bg-ink-deep hover:text-white"
+        showAccent
       />
 
       {/* 6. Carrossel "Produtos mais vendidos" */}
@@ -283,19 +286,22 @@ export default async function HomePage() {
               Ver catálogo completo →
             </Link>
           </div>
-          <ProductCarousel products={loto} />
+          <ProductCarousel products={loto} autoPlay />
         </div>
       </section>
 
       {/* 7. Banner ação NR-12 */}
       <ActionBanner
         title="Adequação Completa à NR-12"
+        kicker="NR-12"
+        kickerColor="text-gold"
         heading="NR-12: Conformidade completa para sua indústria"
         headingColor="text-gold"
         text="Da apreciação de riscos ao laudo técnico com ART — a JG2 entrega cada etapa da adequação NR-12: inventário, apreciação de riscos, projetos conceituais e detalhados, fabricação personalizada, instalação, laudos técnicos, treinamentos e auditorias."
         textColor="text-muted-2"
         panelClassName="bg-white"
         imageSrc="/uploads/banner-nr12.jpg"
+        ctaClassName="bg-brand text-white hover:bg-brand-dark"
       />
 
       {/* 8. Carrossel Mãos Seguras mais vendidos */}
@@ -312,13 +318,15 @@ export default async function HomePage() {
               Ver catálogo completo →
             </Link>
           </div>
-          <ProductCarousel products={maos} />
+          <ProductCarousel products={maos} autoPlay />
         </div>
       </section>
 
       {/* 9. Banner ação Mãos Seguras */}
       <ActionBanner
         title="Reduza os Riscos dos Trabalhos Manuais Agora"
+        kicker="MÃOS SEGURAS"
+        kickerColor="text-gold"
         heading="Mãos Seguras: Dispositivos Necessários para Sua Operação"
         headingColor="text-gold"
         text="Te guiamos da identificação da aplicação ao apoio técnico especializado — a JG2 entrega cada etapa da solução Mãos Seguras: análise da demanda, definição do produto ideal, desenvolvimento da aplicação, suporte técnico e orientação para implementação segura na operação."
@@ -326,30 +334,33 @@ export default async function HomePage() {
         panelClassName="bg-surface-alt"
         imageSrc="/uploads/banner-maos.png"
         imagePosition="object-top"
+        ctaClassName="bg-brand text-white hover:bg-brand-dark"
       />
 
       {/* 10. Áreas de atuação */}
       <section className="mx-auto max-w-[1340px] px-7 py-16">
         <p className="font-mono text-xs uppercase tracking-widest text-brand">Onde atuamos</p>
         <h2 className="mt-2 font-display text-3xl font-black text-ink sm:text-4xl">Áreas de atuação</h2>
-        <div className="jg-card-grid mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {SETORES.map((sec) => (
-            <Link
-              key={sec.id}
-              href={`/setores/${sec.id}`}
-              className="group relative flex h-[180px] items-end justify-between overflow-hidden rounded-2xl bg-ink p-4 shadow-sm transition hover:shadow-2xl"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={sec.img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/20 to-transparent" />
-              <span className="relative text-sm font-bold leading-tight text-white [text-shadow:0_1px_6px_rgba(0,0,0,.4)]">
-                {sec.name}
-              </span>
-              <span className="relative flex h-[30px] w-[30px] flex-none items-center justify-center rounded-full bg-brand text-white">
-                ↗
-              </span>
-            </Link>
-          ))}
+        <div className="mt-8">
+          <ScrollCarousel autoPlay speed={65}>
+            {SETORES.map((sec) => (
+              <Link
+                key={sec.id}
+                href={`/setores/${sec.id}`}
+                className="group relative flex h-[180px] w-[240px] flex-none items-end justify-between overflow-hidden rounded-2xl bg-ink p-4 shadow-sm transition hover:shadow-2xl"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={sec.img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/20 to-transparent" />
+                <span className="relative text-sm font-bold leading-tight text-white [text-shadow:0_1px_6px_rgba(0,0,0,.4)]">
+                  {sec.name}
+                </span>
+                <span className="relative flex h-[30px] w-[30px] flex-none items-center justify-center rounded-full bg-brand text-white">
+                  ↗
+                </span>
+              </Link>
+            ))}
+          </ScrollCarousel>
         </div>
       </section>
 
@@ -442,6 +453,8 @@ function ActionBanner({
   panelClassName,
   imageSrc,
   imagePosition = 'object-center',
+  ctaClassName,
+  showAccent = false,
 }: {
   title: string;
   kicker?: string;
@@ -453,11 +466,15 @@ function ActionBanner({
   panelClassName: string;
   imageSrc: string;
   imagePosition?: string;
+  ctaClassName: string;
+  showAccent?: boolean;
 }) {
   return (
     <section className="mx-auto max-w-[1340px] px-7 py-6">
       <p className="mb-6 text-center font-display text-xl font-black text-ink">{title}</p>
-      <div className={`group grid overflow-hidden rounded-2xl shadow-xl lg:grid-cols-[1fr_1.15fr] ${panelClassName}`}>
+      <div
+        className={`group grid overflow-hidden rounded-2xl border border-border-soft shadow-xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl lg:grid-cols-[1fr_1.15fr] ${panelClassName}`}
+      >
         <div className="relative min-h-[260px] overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -465,13 +482,20 @@ function ActionBanner({
             alt=""
             className={`absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${imagePosition}`}
           />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/15 lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-black/20" />
         </div>
-        <div className="flex flex-col justify-center p-9 sm:p-11">
-          {kicker && <span className={`mb-2 text-sm font-black uppercase tracking-wide ${kickerColor}`}>{kicker}</span>}
-          <h3 className={`text-2xl font-black leading-tight sm:text-[27px] ${headingColor}`}>{heading}</h3>
-          <p className={`mt-4 text-sm leading-relaxed sm:text-[14.5px] ${textColor}`}>{text}</p>
-          <Link href="/contato" className={`mt-6 inline-flex items-center gap-2.5 self-start font-bold transition hover:gap-4 ${headingColor}`}>
-            <span className="text-xl">→</span> Solicitar Proposta
+        <div className="relative flex flex-col justify-center overflow-hidden p-9 sm:p-11">
+          {showAccent && (
+            <div className="pointer-events-none absolute -right-14 -top-14 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,.12)_0%,transparent_70%)]" />
+          )}
+          {kicker && <span className={`relative mb-2 text-sm font-black uppercase tracking-wide ${kickerColor}`}>{kicker}</span>}
+          <h3 className={`relative text-2xl font-black leading-tight sm:text-[27px] ${headingColor}`}>{heading}</h3>
+          <p className={`relative mt-4 text-sm leading-relaxed sm:text-[14.5px] ${textColor}`}>{text}</p>
+          <Link
+            href="/contato"
+            className={`relative mt-7 inline-flex items-center gap-2.5 self-end rounded-full px-6 py-3 text-sm font-bold transition hover:gap-3.5 ${ctaClassName}`}
+          >
+            Solicitar Proposta <span className="text-lg">→</span>
           </Link>
         </div>
       </div>

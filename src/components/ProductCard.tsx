@@ -49,7 +49,7 @@ export function ProductCard({ product, variant = 'compact' }: { product: CardPro
             </Link>
             <button
               onClick={() => add({ productId: product.id, code: product.code, name: product.name, image, category: product.category })}
-              className="flex-1 whitespace-nowrap rounded-lg bg-ink py-2.5 text-[13px] font-bold text-white transition hover:bg-brand"
+              className="flex-1 whitespace-nowrap rounded-lg bg-brand py-2.5 text-[13px] font-bold text-white transition hover:bg-ink"
             >
               + Orçamento
             </button>
@@ -76,7 +76,7 @@ export function ProductCard({ product, variant = 'compact' }: { product: CardPro
         </Link>
         <button
           onClick={() => add({ productId: product.id, code: product.code, name: product.name, image })}
-          className="w-full rounded-lg bg-ink py-2.5 text-[13px] font-bold text-white transition hover:bg-brand"
+          className="w-full rounded-lg bg-brand py-2.5 text-[13px] font-bold text-white transition hover:bg-ink"
         >
           + Adicionar ao orçamento
         </button>
