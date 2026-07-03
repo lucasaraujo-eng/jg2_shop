@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
 import { QuoteFormFields, isQuoteFormValid, type QuoteFormValue } from '@/components/QuoteFormFields';
@@ -63,7 +64,7 @@ export function CartDrawer() {
       <button className="absolute inset-0 bg-ink/40" style={{ animation: 'jg-fade .25s ease both' }} onClick={handleClose} aria-label="Fechar" />
 
       <div
-        className={`absolute right-0 top-0 flex h-full w-full flex-col bg-white shadow-[-20px_0_60px_rgba(0,0,0,.25)] ${panelWidth}`}
+        className={`absolute right-0 top-0 flex h-full w-full flex-col overflow-hidden bg-white shadow-[-20px_0_60px_rgba(0,0,0,.25)] ${panelWidth}`}
         style={{ animation: 'jg-slide-in .32s cubic-bezier(.22,.61,.36,1) both' }}
       >
         {step === 'sent' ? (
@@ -72,7 +73,11 @@ export function CartDrawer() {
           <>
             <header className="flex flex-none items-center justify-between border-b border-border-soft p-5">
               <h2 className="font-display text-lg font-black text-ink">Seu orçamento ({items.length})</h2>
-              <button onClick={handleClose} aria-label="Fechar" className="p-1 text-ink/60 hover:text-brand">
+              <button
+                onClick={handleClose}
+                aria-label="Fechar"
+                className="flex h-9 w-9 flex-none items-center justify-center rounded-lg text-ink/60 transition hover:bg-surface-alt hover:text-brand"
+              >
                 ✕
               </button>
             </header>
@@ -80,40 +85,44 @@ export function CartDrawer() {
             <div className="flex min-h-0 flex-1">
               {/* coluna de itens — no mobile some durante a etapa de formulário (a coluna de
                   formulário assume a tela toda); no desktop as duas colunas ficam lado a lado */}
-              <div className={`min-h-0 flex-col ${step === 'form' ? 'hidden md:flex md:flex-1' : 'flex flex-1'}`}>
-                <div className="flex-1 overflow-y-auto p-5">
+              <div className={`min-h-0 min-w-0 flex-col ${step === 'form' ? 'hidden md:flex md:flex-1' : 'flex flex-1'}`}>
+                <div className="min-w-0 flex-1 overflow-y-auto overflow-x-hidden p-5">
                   {items.length === 0 ? (
                     <EmptyState onClose={handleClose} />
                   ) : (
                     <ul className="flex flex-col gap-4">
                       {items.map((i) => (
-                        <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex gap-3 text-sm">
+                        <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex min-w-0 gap-3 text-sm">
                           <div className="h-14 w-14 flex-none rounded-lg border border-border-soft bg-surface-alt" />
                           <div className="min-w-0 flex-1">
                             <p className="truncate font-semibold text-ink">{i.name}</p>
-                            <p className="font-mono text-xs text-tertiary">
+                            <p className="truncate font-mono text-xs text-tertiary">
                               {i.code}
                               {i.variantLabel && <span className="text-brand"> · {i.variantLabel}</span>}
                             </p>
-                            <div className="mt-1.5 flex items-center gap-2">
+                            <div className="mt-2 flex items-center gap-2.5">
                               <button
                                 onClick={() => setQty(i.code, i.quantity - 1, i.variantLabel)}
                                 aria-label="Diminuir"
-                                className="flex h-6 w-6 items-center justify-center rounded border border-border text-xs font-bold text-muted-2"
+                                className="flex h-8 w-8 flex-none items-center justify-center rounded-lg border border-border text-sm font-bold text-muted-2 transition hover:border-brand hover:text-brand active:bg-surface-alt"
                               >
                                 −
                               </button>
-                              <span className="w-5 text-center text-xs font-bold">{i.quantity}</span>
+                              <span className="w-5 flex-none text-center text-xs font-bold">{i.quantity}</span>
                               <button
                                 onClick={() => setQty(i.code, i.quantity + 1, i.variantLabel)}
                                 aria-label="Aumentar"
-                                className="flex h-6 w-6 items-center justify-center rounded border border-border text-xs font-bold text-muted-2"
+                                className="flex h-8 w-8 flex-none items-center justify-center rounded-lg border border-border text-sm font-bold text-muted-2 transition hover:border-brand hover:text-brand active:bg-surface-alt"
                               >
                                 +
                               </button>
                             </div>
                           </div>
-                          <button onClick={() => remove(i.code, i.variantLabel)} aria-label={`Remover ${i.name}`} className="flex-none self-start text-tertiary hover:text-brand">
+                          <button
+                            onClick={() => remove(i.code, i.variantLabel)}
+                            aria-label={`Remover ${i.name}`}
+                            className="flex h-8 w-8 flex-none items-center justify-center self-start rounded-lg text-tertiary transition hover:bg-surface-alt hover:text-brand"
+                          >
                             🗑
                           </button>
                         </li>
@@ -143,10 +152,6 @@ export function CartDrawer() {
               {step === 'form' && (
                 <div className="flex w-full flex-1 flex-col bg-surface-card md:w-[440px] md:flex-none" style={{ animation: 'jg-form-in .42s cubic-bezier(.22,.61,.36,1) both' }}>
                   <div className="flex-1 overflow-y-auto p-6">
-                    <button onClick={() => setStep('cart')} className="mb-4 text-sm font-bold text-muted-2 hover:text-brand">
-                      ← Voltar
-                    </button>
-                    <h3 className="font-display text-base font-black uppercase tracking-wide text-ink">Seus dados</h3>
                     <div className="mt-4">
                       <QuoteFormFields value={form} onChange={(patch) => setForm((f) => ({ ...f, ...patch }))} />
                     </div>
@@ -157,15 +162,27 @@ export function CartDrawer() {
                         onChange={(e) => setPrivacyChecked(e.target.checked)}
                         className="mt-0.5"
                       />
-                      Estou de acordo com a política de privacidade da JG2.
+                      <span>
+                        Estou de acordo com a{' '}
+                        <Link href="/contato" className="text-brand underline">
+                          política de privacidade
+                        </Link>{' '}
+                        da JG2.
+                      </span>
                     </label>
                     {error && <p className="mt-3 text-sm font-semibold text-brand">{error}</p>}
                   </div>
-                  <div className="flex-none border-t border-border-soft p-5">
+                  <div className="flex flex-none items-center gap-3 border-t border-border-soft p-5">
+                    <button
+                      onClick={() => setStep('cart')}
+                      className="flex-none whitespace-nowrap rounded-full border border-brand-disabled px-6 py-3 font-bold text-brand transition hover:border-brand"
+                    >
+                      ← Voltar
+                    </button>
                     <button
                       onClick={handleSubmit}
                       disabled={!isQuoteFormValid(form, privacyChecked) || sending}
-                      className="w-full rounded-full bg-brand py-3 font-bold text-white transition hover:bg-brand-dark disabled:bg-brand-disabled"
+                      className="flex-1 whitespace-nowrap rounded-full bg-brand py-3 font-bold text-white transition hover:bg-brand-dark disabled:bg-brand-disabled"
                     >
                       {sending ? 'Enviando…' : 'Solicitar uma cotação →'}
                     </button>

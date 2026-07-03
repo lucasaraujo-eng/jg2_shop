@@ -9,6 +9,7 @@ export type SetorData = {
   id: string;
   name: string;
   lead: string;
+  img: string;
   intro: [string, string];
   comoAtua: [string, string];
   riscos: [string, string, string, string];
@@ -19,6 +20,7 @@ export const setores: SetorData[] = [
     id: 'alimentos',
     name: 'Indústria de Alimentos',
     lead: 'Linhas de envase, transporte e processamento que operam em alta cadência e exigem higiene e segurança simultâneas.',
+    img: '/uploads/setores/alimentos.jpg',
     intro: [
       'A indústria de alimentos opera com linhas contínuas de processamento, envase e embalagem que combinam esteiras, dosadoras, seladoras, autoclaves e sistemas de refrigeração. A produtividade depende de equipamentos funcionando em alta cadência, muitas vezes em três turnos.',
       'É um setor que une dois desafios críticos ao mesmo tempo: garantir a inocuidade do alimento e proteger o operador. Limpezas frequentes (CIP/COP), trocas de formato e desobstruções colocam pessoas em contato direto com partes móveis e energias perigosas várias vezes ao dia.',
@@ -38,6 +40,7 @@ export const setores: SetorData[] = [
     id: 'papel',
     name: 'Papel e Celulose',
     lead: 'Máquinas de grande porte, bobinas pesadas e rolos em rotação que tornam o controle de energia indispensável.',
+    img: '/uploads/setores/papel.jpg',
     intro: [
       'O segmento de papel e celulose opera com máquinas de grande porte — desfibradores, digestores, máquinas de papel, bobinadeiras e rebobinadeiras — que processam material continuamente sob alta tensão mecânica e temperatura.',
       'São plantas com elevada energia acumulada: rolos pesados em rotação, vapor, prensas e acionamentos de centenas de cavalos. Qualquer intervenção em manutenção exige rigor absoluto no controle dessas energias.',
@@ -57,6 +60,7 @@ export const setores: SetorData[] = [
     id: 'metalurgia',
     name: 'Metalurgia e Siderurgia',
     lead: 'Altas temperaturas, metal líquido e equipamentos de força que exigem o mais alto padrão de bloqueio.',
+    img: '/uploads/setores/metalurgia.jpg',
     intro: [
       'Metalurgia e siderurgia estão entre os ambientes industriais mais severos: fornos, laminadores, lingotamento, pontes rolantes e linhas de tratamento térmico operam com metal a centenas de graus e forças mecânicas imensas.',
       'A combinação de calor, energia elétrica de alta potência e cargas suspensas faz desse setor um dos que mais dependem de procedimentos robustos de controle de energia.',
@@ -76,6 +80,7 @@ export const setores: SetorData[] = [
     id: 'textil',
     name: 'Têxtil',
     lead: 'Teares, cardas e cilindros em rotação contínua com inúmeros pontos de arraste e prensagem.',
+    img: '/uploads/setores/textil.jpeg',
     intro: [
       'A indústria têxtil opera com cardas, fiandeiras, teares, tinturarias e calandras — máquinas com muitos cilindros, correias e engrenagens em rotação contínua, frequentemente expostas.',
       'A alta cadência e a necessidade constante de ajuste e troca de fios aproximam o operador das partes móveis dezenas de vezes por turno.',
@@ -95,6 +100,7 @@ export const setores: SetorData[] = [
     id: 'automotiva',
     name: 'Indústria Automotiva',
     lead: 'Linhas robotizadas, prensas e células de solda que combinam automação e intervenção humana constante.',
+    img: '/uploads/setores/automotiva.jpg',
     intro: [
       'A indústria automotiva é referência em automação: prensas de estampagem, robôs de solda e montagem, transportadores aéreos e células automatizadas movem a produção em ritmo elevado.',
       'Apesar da automação, a intervenção humana é constante — ajustes de ferramental, troca de matrizes, desobstrução e manutenção preventiva colocam o trabalhador dentro de células de alta energia.',
@@ -114,6 +120,7 @@ export const setores: SetorData[] = [
     id: 'quimica',
     name: 'Química e Petroquímica',
     lead: 'Processos contínuos com pressão, temperatura e produtos perigosos que exigem isolamento absoluto.',
+    img: '/uploads/setores/quimica.png',
     intro: [
       'Plantas químicas e petroquímicas operam processos contínuos sob pressão e temperatura, com reatores, colunas, bombas, compressores e extensas redes de tubulação conduzindo fluidos perigosos.',
       'É um setor onde a energia perigosa vai muito além da elétrica: pressão, produtos inflamáveis, tóxicos e corrosivos tornam cada intervenção uma operação de alto risco.',
@@ -133,6 +140,7 @@ export const setores: SetorData[] = [
     id: 'mineracao',
     name: 'Mineração',
     lead: 'Britadores, correias transportadoras de longo curso e equipamentos pesados em ambiente severo.',
+    img: '/uploads/setores/mineracao.jpg',
     intro: [
       'A mineração opera com britadores, moinhos, peneiras e quilômetros de correias transportadoras que movimentam minério em volume e velocidade elevados, muitas vezes a céu aberto e sob condições severas.',
       'São equipamentos de força bruta, com grande energia acumulada e pontos de aprisionamento ao longo de toda a planta de beneficiamento.',
@@ -152,6 +160,7 @@ export const setores: SetorData[] = [
     id: 'borracha',
     name: 'Borracha',
     lead: 'Misturadores, calandras e prensas de vulcanização com calor e prensagem combinados.',
+    img: '/uploads/setores/borracha.jpg',
     intro: [
       'A indústria da borracha trabalha com misturadores (banbury), calandras, extrusoras e prensas de vulcanização — equipamentos que combinam calor, pressão e partes móveis de grande força.',
       'A produção de pneus e artefatos exige intervenções frequentes de limpeza, troca de molde e ajuste, sempre próximas a pontos de esmagamento e superfícies quentes.',
@@ -171,6 +180,7 @@ export const setores: SetorData[] = [
     id: 'agronegocio',
     name: 'Agronegócio',
     lead: 'Secadores, elevadores de canecas e silos com risco de arraste, soterramento e atmosferas explosivas.',
+    img: '/uploads/setores/agronegocio.jpg',
     intro: [
       'O agronegócio, em sua etapa industrial, opera unidades de armazenagem e processamento — secadores, elevadores de canecas, roscas transportadoras e silos — que movimentam grãos em grande volume.',
       'Além das partes móveis, o setor lida com risco de atmosferas explosivas por poeira e de soterramento em silos, o que amplia a importância do controle de energia e do acesso seguro.',
@@ -190,6 +200,7 @@ export const setores: SetorData[] = [
     id: 'construcao',
     name: 'Construção Civil',
     lead: 'Centrais de concreto, gruas e equipamentos elétricos em canteiros dinâmicos e mutáveis.',
+    img: '/uploads/setores/construcao.jpg',
     intro: [
       'A construção civil pesada e a indústria de pré-fabricados operam centrais de concreto, gruas, elevadores de obra, betoneiras e equipamentos elétricos em canteiros que mudam de configuração constantemente.',
       'O caráter dinâmico do canteiro e a rotatividade de equipes tornam a padronização de procedimentos de segurança um desafio permanente.',
@@ -209,6 +220,7 @@ export const setores: SetorData[] = [
     id: 'madeireira',
     name: 'Indústria Madeireira',
     lead: 'Serras, plainas e prensas com altíssimo potencial de corte e amputação.',
+    img: '/uploads/setores/madeireira.jpg',
     intro: [
       'A indústria madeireira e moveleira opera serras, plainas, lixadeiras, prensas e linhas de usinagem que cortam e conformam madeira em alta velocidade.',
       'É um setor com um dos maiores índices de lesão em mãos da indústria, dado o contato direto com lâminas e ferramentas de corte.',
@@ -228,6 +240,7 @@ export const setores: SetorData[] = [
     id: 'plastico',
     name: 'Plásticos e Embalagens',
     lead: 'Injetoras, extrusoras e sopradoras com molde de fechamento de força e material fundido.',
+    img: '/uploads/setores/plastico.jpg',
     intro: [
       'O setor de plásticos e embalagens opera injetoras, extrusoras, sopradoras e termoformadoras — máquinas que fundem e conformam polímeros sob pressão e temperatura.',
       'A alta produtividade exige trocas de molde, purgas e desobstruções frequentes, sempre próximas a zonas de fechamento de força e material fundido.',

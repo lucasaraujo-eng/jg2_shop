@@ -2,11 +2,6 @@ import Link from 'next/link';
 import { StatsCounter, type Stat } from '@/components/about/StatsCounter';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
 
-const STRIPE_BG = {
-  backgroundImage:
-    'repeating-linear-gradient(135deg, var(--color-surface-stripe-a) 0 14px, var(--color-surface-stripe-b) 14px 28px)',
-};
-
 const STATS: Stat[] = [
   { prefix: '+', value: 5000, label: 'clientes atendidos em todo o Brasil' },
   { prefix: '+', value: 10000, label: 'máquinas adequadas às normas' },
@@ -56,7 +51,8 @@ export default function SobrePage() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-deeper">
-        <div className="absolute inset-0" style={STRIPE_BG} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/uploads/sobre/banner-equipe.png" alt="" className="absolute inset-0 h-full w-full object-cover object-top opacity-[.42]" />
         <div className="absolute inset-0 bg-gradient-to-b from-ink-deeper/55 to-ink-deeper/80" />
         <div className="relative mx-auto max-w-[1340px] px-7 py-28">
           <p className="text-xs text-white/55">
@@ -99,7 +95,8 @@ export default function SobrePage() {
               sinalização, cabines e salas, escadas, plataformas, meios de acesso e dispositivos mãos seguras.
             </p>
           </div>
-          <div className="h-[420px] rounded-3xl shadow-xl" style={STRIPE_BG} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/uploads/sobre/p-producao.jpg" alt="Produção JG2" className="h-[420px] w-full rounded-3xl object-cover shadow-xl" />
         </div>
       </section>
 
@@ -119,7 +116,8 @@ export default function SobrePage() {
       {/* Especialidade */}
       <section className="mx-auto max-w-[1340px] px-7 py-20">
         <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
-          <div className="order-2 h-[400px] rounded-3xl shadow-xl lg:order-1" style={STRIPE_BG} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/uploads/sobre/p-solda.jpg" alt="Solda JG2" className="order-2 h-[400px] w-full rounded-3xl object-cover shadow-xl lg:order-1" />
           <div className="order-1 lg:order-2">
             <p className="font-mono text-xs uppercase tracking-widest text-brand">Nossa especialidade</p>
             <h2 className="mt-3 font-display text-3xl font-black leading-tight text-ink sm:text-4xl">
@@ -221,7 +219,8 @@ export default function SobrePage() {
               controle em cada etapa e mais confiança para quem depende de soluções robustas e seguras.
             </p>
           </div>
-          <div className="h-[420px] rounded-3xl shadow-xl" style={STRIPE_BG} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/uploads/sobre/p-empilhadeira.jpg" alt="Estrutura JG2" className="h-[420px] w-full rounded-3xl object-cover shadow-xl" />
         </div>
       </section>
 

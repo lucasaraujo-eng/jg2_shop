@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { ProductCard, type CardProduct } from '@/components/ProductCard';
 
-export function ProductCarousel({ products }: { products: CardProduct[] }) {
+export function ProductCarousel({ products, variant = 'compact' }: { products: CardProduct[]; variant?: 'compact' | 'catalog' }) {
   const trackRef = useRef<HTMLDivElement>(null);
 
   function scroll(dir: 1 | -1) {
@@ -17,7 +17,7 @@ export function ProductCarousel({ products }: { products: CardProduct[] }) {
       <div ref={trackRef} className="jg-noscroll flex gap-5 overflow-x-auto pb-1" style={{ scrollSnapType: 'x mandatory' }}>
         {products.map((p) => (
           <div key={p.id} className="w-[268px] flex-none" style={{ scrollSnapAlign: 'start' }}>
-            <ProductCard product={p} />
+            <ProductCard product={p} variant={variant} />
           </div>
         ))}
       </div>

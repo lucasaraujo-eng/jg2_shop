@@ -1,26 +1,21 @@
 const CLIENTS = [
-  'Coca-Cola',
-  'BRF',
-  'Schmersal',
-  'Volkswagen',
-  'Bunge',
-  'ArcelorMittal',
-  'CSN',
-  'Gerdau',
-  'Cenibra',
-  'Ball',
-  'Vale',
-  'Lactalis',
-  'Aperam',
-  'Klabin',
-  'Usiminas',
+  { name: 'Coca-Cola', file: 'coca-cola' },
+  { name: 'BRF', file: 'brf' },
+  { name: 'Schmersal', file: 'schmersal' },
+  { name: 'Volkswagen', file: 'volkswagen' },
+  { name: 'Bunge', file: 'bunge' },
+  { name: 'ArcelorMittal', file: 'arcelormittal' },
+  { name: 'CSN', file: 'csn' },
+  { name: 'Gerdau', file: 'gerdau' },
+  { name: 'Cenibra', file: 'cenibra' },
+  { name: 'Ball', file: 'ball' },
+  { name: 'Vale', file: 'vale' },
+  { name: 'Lactalis', file: 'lactalis' },
+  { name: 'Aperam', file: 'aperam' },
+  { name: 'Klabin', file: 'klabin' },
+  { name: 'Usiminas', file: 'usiminas' },
 ];
 
-/**
- * Sem os arquivos de logo reais (uploads/clientes/*.png) ainda, mostro o
- * nome de cada cliente em vez de <img> quebrada — troca por logo é só
- * substituir o conteúdo de cada pílula pela imagem.
- */
 export function ClientsMarquee() {
   return (
     <section className="border-y border-border-soft bg-white py-10">
@@ -30,14 +25,12 @@ export function ClientsMarquee() {
         </p>
       </div>
       <div className="jg-noscroll overflow-hidden">
-        <div className="flex w-max gap-10" style={{ animation: 'jg-marquee 44s linear infinite' }}>
-          {[...CLIENTS, ...CLIENTS].map((name, i) => (
-            <span
-              key={`${name}-${i}`}
-              className="flex-none rounded-full border border-border-soft px-6 py-2.5 font-display text-sm font-bold text-muted-2"
-            >
-              {name}
-            </span>
+        <div className="flex w-max items-center gap-10" style={{ animation: 'jg-marquee 44s linear infinite' }}>
+          {[...CLIENTS, ...CLIENTS].map((c, i) => (
+            <div key={`${c.name}-${i}`} className="flex h-14 flex-none items-center justify-center px-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`/uploads/clientes/${c.file}.png`} alt={c.name} className="h-14 w-[150px] object-contain" />
+            </div>
           ))}
         </div>
       </div>

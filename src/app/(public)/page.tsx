@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getCategories, getFeaturedProducts } from '@/server/catalog';
+import { getFeaturedProducts } from '@/server/catalog';
 import { ProductCarousel } from '@/components/ProductCarousel';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
 import { FaqAccordion } from '@/components/FaqAccordion';
@@ -9,14 +9,8 @@ import { NewsletterForm } from '@/components/NewsletterForm';
  * Home — as 14 seções do protótipo, na ordem original (ver
  * scratchpad/jg2-prototipo-spec.md §3). Textos, códigos de produto e
  * perguntas da sanfona foram extraídos literalmente do HTML fonte — nada
- * inventado. Fotos/vídeo reais ainda não existem: uso placeholders
- * (listrado diagonal, igual ao próprio protótipo usa em produtos sem foto).
+ * inventado.
  */
-
-const STRIPE_BG = {
-  backgroundImage:
-    'repeating-linear-gradient(135deg, var(--color-surface-stripe-a) 0 14px, var(--color-surface-stripe-b) 14px 28px)',
-};
 
 const LOTO_CATALOG_HREF = '/produtos/cadeados-de-bloqueio';
 const MAOS_CATALOG_HREF = '/produtos/maos-seguras';
@@ -26,37 +20,41 @@ const FRENTES = [
     title: 'Bloqueio e Etiquetagem',
     text: 'O kit certo para cada bloqueio. Cadeados, garras, kits de bloqueio e etiquetas para todos os tipos de energia. Encontre o dispositivo ideal para o seu programa LOTO com a qualidade que sua indústria exige.',
     href: LOTO_CATALOG_HREF,
+    img: '/uploads/banner-lototo.jpg',
   },
   {
     title: 'Adequação Completa LOTOTO',
     text: 'Seu programa LOTO do zero à excelência. Diagnóstico, documentação, treinamento e implantação completa. Adeque sua empresa com um programa sob medida que traz agilidade e segurança para seus colaboradores.',
     href: '/servicos/lototo',
+    img: '/uploads/cards/lototo.png',
   },
   {
     title: 'Adequação Completa NR-12',
     text: 'Máquinas seguras, operação protegida. Adequação completa de máquinas e equipamentos à NR-12. Das apreciações de riscos aos dispositivos de segurança — sua produção protegida do início ao fim.',
     href: '/servicos/nr12',
+    img: '/uploads/cards/nr12.jpg',
   },
   {
     title: 'Adequação Completa Mãos Seguras',
     text: 'Mãos seguras, zero acidentes. Dispositivos e soluções que eliminam o risco de acidentes com as mãos na indústria. Uma camada extra de proteção que salva vidas e evita paradas na produção.',
     href: '/servicos/maos-seguras',
+    img: '/uploads/cards/maos.png',
   },
 ];
 
 const SETORES = [
-  { id: 'alimentos', name: 'Indústria de Alimentos' },
-  { id: 'papel', name: 'Papel e Celulose' },
-  { id: 'metalurgia', name: 'Metalurgia e Siderurgia' },
-  { id: 'textil', name: 'Têxtil' },
-  { id: 'automotiva', name: 'Indústria Automotiva' },
-  { id: 'quimica', name: 'Química e Petroquímica' },
-  { id: 'mineracao', name: 'Mineração' },
-  { id: 'borracha', name: 'Borracha' },
-  { id: 'agronegocio', name: 'Agronegócio' },
-  { id: 'construcao', name: 'Construção Civil' },
-  { id: 'madeireira', name: 'Indústria Madeireira' },
-  { id: 'plastico', name: 'Plásticos e Embalagens' },
+  { id: 'alimentos', name: 'Indústria de Alimentos', img: '/uploads/setores/alimentos.jpg' },
+  { id: 'papel', name: 'Papel e Celulose', img: '/uploads/setores/papel.jpg' },
+  { id: 'metalurgia', name: 'Metalurgia e Siderurgia', img: '/uploads/setores/metalurgia.jpg' },
+  { id: 'textil', name: 'Têxtil', img: '/uploads/setores/textil.jpeg' },
+  { id: 'automotiva', name: 'Indústria Automotiva', img: '/uploads/setores/automotiva.jpg' },
+  { id: 'quimica', name: 'Química e Petroquímica', img: '/uploads/setores/quimica.png' },
+  { id: 'mineracao', name: 'Mineração', img: '/uploads/setores/mineracao.jpg' },
+  { id: 'borracha', name: 'Borracha', img: '/uploads/setores/borracha.jpg' },
+  { id: 'agronegocio', name: 'Agronegócio', img: '/uploads/setores/agronegocio.jpg' },
+  { id: 'construcao', name: 'Construção Civil', img: '/uploads/setores/construcao.jpg' },
+  { id: 'madeireira', name: 'Indústria Madeireira', img: '/uploads/setores/madeireira.jpg' },
+  { id: 'plastico', name: 'Plásticos e Embalagens', img: '/uploads/setores/plastico.jpg' },
 ];
 
 const FAQS = [
@@ -133,8 +131,7 @@ function sortByCodeOrder<T extends { code: string }>(items: T[], order: string[]
 }
 
 export default async function HomePage() {
-  const [categories, featuredLoto, featuredMaos] = await Promise.all([
-    getCategories(),
+  const [featuredLoto, featuredMaos] = await Promise.all([
     getFeaturedProducts(FEATURED_LOTO_CODES),
     getFeaturedProducts(FEATURED_MAOS_CODES),
   ]);
@@ -144,19 +141,25 @@ export default async function HomePage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="relative overflow-hidden bg-ink-deep py-24 text-white">
+      <section className="relative flex min-h-[520px] items-center overflow-hidden bg-ink-deep py-16 text-white">
+        <video autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover">
+          <source src="/assets/hero.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-r from-ink-deep via-ink-deep/95 to-ink-deep/70" />
-        <div className="relative mx-auto max-w-[1340px] px-7">
-          <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Grupo JG2</p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl font-black leading-tight tracking-tight sm:text-5xl">
-            Adequação Completa em Segurança Industrial
-          </h1>
-          <p className="mt-5 max-w-xl text-lg text-white/70">
-            Adequação NR-12, Consultoria e Dispositivos de Bloqueio e Etiquetagem (LOTO), Soluções
-            para Mãos Seguras, reduzindo acidentes e garantindo conformidade normativa nas
-            operações industriais.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold">
+        <div className="relative mx-auto w-full max-w-[1340px] px-7 sm:flex sm:flex-col sm:justify-center sm:self-stretch">
+          <div className="max-w-3xl">
+            <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Grupo JG2</p>
+            <h1 className="mt-4 font-display text-4xl font-black leading-tight tracking-tight sm:text-5xl">
+              Adequação Completa em Segurança Industrial
+            </h1>
+            <p className="mt-5 max-w-xl text-lg text-white/70">
+              Adequação NR-12, Consultoria e Dispositivos de Bloqueio e Etiquetagem (LOTO), Soluções
+              para Mãos Seguras, reduzindo acidentes e garantindo conformidade normativa nas
+              operações industriais.
+            </p>
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold sm:absolute sm:inset-x-7 sm:bottom-6 sm:mt-0 sm:justify-end">
             {[
               { label: 'Bloqueio e Etiquetagem LOTO', href: LOTO_CATALOG_HREF },
               { label: 'Consultoria LOTOTO', href: '/servicos/lototo' },
@@ -174,56 +177,80 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 2. Banner "4 frentes" */}
-      <section className="bg-brand text-white">
-        <div className="jg-card-grid mx-auto grid max-w-[1340px] grid-cols-1 divide-y divide-white/15 px-7 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
-          {FRENTES.map((f) => (
-            <Link key={f.title} href={f.href} className="group flex flex-col justify-between gap-4 px-6 py-10">
-              <div>
-                <h3 className="font-display text-xl font-bold leading-snug">{f.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/85">{f.text}</p>
-              </div>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 transition group-hover:bg-white group-hover:text-brand">
-                ↗
-              </span>
-            </Link>
-          ))}
+      {/* 2. Banner "4 frentes" — cartão vermelho arredondado e contido (não é uma faixa full-bleed) */}
+      <section className="mx-auto mt-8 max-w-[1340px] px-7">
+        <div className="overflow-hidden rounded-[20px] bg-brand text-white">
+          <div className="jg-card-grid grid grid-cols-1 divide-y divide-white/15 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+            {FRENTES.map((f) => (
+              <Link key={f.title} href={f.href} className="group flex flex-col">
+                <div className="flex flex-1 flex-col justify-between gap-4 px-6 py-9">
+                  <div>
+                    <div className="mb-4 border-t border-white/30" />
+                    <h3 className="font-display text-xl font-bold leading-snug">{f.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-white/85">{f.text}</p>
+                  </div>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 transition group-hover:bg-white group-hover:text-brand">
+                    ↗
+                  </span>
+                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={f.img} alt="" className="h-[200px] w-full object-cover" />
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* 3. Trust / marquee de clientes */}
       <ClientsMarquee />
 
-      {/* 4. Filtro inteligente de bloqueio */}
-      <section className="bg-ink-deep py-20 text-white">
-        <div className="mx-auto grid max-w-[1340px] gap-12 px-7 lg:grid-cols-2 lg:items-center">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Filtro inteligente de bloqueio</p>
-            <h2 className="mt-3 font-display text-3xl font-black leading-tight">
-              Não sabe qual bloqueio escolher? A gente encontra para você.
-            </h2>
-            <p className="mt-4 max-w-md text-white/70">
-              Selecione o tipo do seu dispositivo de isolamento — válvula, disjuntor, chave, plugue
-              — e veja na hora apenas os produtos de bloqueio indicados para ele. Simples, visual e
-              direto ao ponto.
-            </p>
-            <Link href={LOTO_CATALOG_HREF} className="mt-7 inline-block rounded-full bg-brand px-6 py-3 font-bold transition hover:bg-brand-light">
-              Encontrar meu bloqueio →
-            </Link>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <p className="font-mono text-xs uppercase tracking-widest text-white/50">Tipo de aplicação</p>
-            <div className="mt-3 flex gap-2">
-              <span className="rounded-full bg-brand px-4 py-2 text-xs font-bold">Mecânico</span>
-              <span className="rounded-full border border-white/20 px-4 py-2 text-xs font-bold text-white/70">Elétrico</span>
+      {/* 4. Filtro inteligente de bloqueio — cartão escuro contido, não uma faixa full-bleed */}
+      <section className="mx-auto max-w-[1340px] px-7 py-14">
+        <div className="relative overflow-hidden rounded-3xl bg-ink-deep p-8 text-white sm:p-12">
+          <div className="pointer-events-none absolute -bottom-24 -left-20 h-[340px] w-[340px] rounded-full bg-[radial-gradient(circle,rgba(181,32,43,.30)_0%,transparent_70%)]" />
+          <div className="relative grid gap-12 lg:grid-cols-2 lg:items-center">
+            <div>
+              <div className="flex items-center gap-3">
+                <span className="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-xl bg-brand">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+                  </svg>
+                </span>
+                <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Filtro inteligente de bloqueio</p>
+              </div>
+              <h2 className="mt-4 font-display text-3xl font-black leading-tight">
+                Não sabe qual bloqueio escolher? A gente encontra para você.
+              </h2>
+              <p className="mt-4 max-w-md text-white/70">
+                Selecione o tipo do seu dispositivo de isolamento — válvula, disjuntor, chave, plugue
+                — e veja na hora apenas os produtos de bloqueio indicados para ele. Simples, visual e
+                direto ao ponto.
+              </p>
+              <Link href={LOTO_CATALOG_HREF} className="mt-7 inline-block rounded-full bg-brand px-6 py-3 font-bold transition hover:bg-brand-light">
+                Encontrar meu bloqueio →
+              </Link>
             </div>
-            <p className="mt-6 font-mono text-xs uppercase tracking-widest text-white/50">Modelo do dispositivo</p>
-            <div className="mt-3 grid grid-cols-2 gap-2">
-              {['Flange', 'Válvula Borboleta', 'Válvula Esfera', 'Válvula Registro'].map((m) => (
-                <div key={m} className="rounded-xl border border-white/10 bg-white/5 px-3 py-4 text-center text-xs font-semibold text-white/80">
-                  {m}
-                </div>
-              ))}
+            <div className="rounded-2xl bg-white p-6 shadow-[0_24px_60px_rgba(0,0,0,.34)]">
+              <p className="font-mono text-xs uppercase tracking-widest text-brand">Tipo de aplicação</p>
+              <div className="mt-3 flex gap-2">
+                <span className="rounded-lg bg-brand px-4 py-2 text-[13.5px] font-bold text-white">Mecânico</span>
+                <span className="rounded-lg border border-border px-4 py-2 text-[13.5px] font-semibold text-muted-2">Elétrico</span>
+              </div>
+              <p className="mt-[18px] font-mono text-xs uppercase tracking-widest text-brand">Modelo do dispositivo</p>
+              <div className="mt-2.5 grid grid-cols-4 gap-2.5">
+                {[
+                  { label: 'Flange', file: 'flange' },
+                  { label: 'Válvula Borboleta', file: 'valv_borboleta' },
+                  { label: 'Válvula Esfera', file: 'valv_esfera' },
+                  { label: 'Válvula Registro', file: 'valv_registro' },
+                ].map((m) => (
+                  <div key={m.label} className="flex flex-col items-center gap-1.5 rounded-lg border-2 border-border-soft p-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={`/assets/filtro/${m.file}.png`} alt="" className="h-[54px] w-full object-contain" />
+                    <span className="text-center text-[10.5px] font-semibold leading-tight text-muted-2">{m.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -238,7 +265,8 @@ export default async function HomePage() {
         headingColor="text-white"
         text="Da identificação dos pontos de energia ao plano de bloqueio e etiquetagem — a JG2 entrega cada etapa da consultoria LOTOTO: levantamento técnico, matriz de bloqueio por equipamento, definição dos dispositivos, padronização dos procedimentos, treinamentos, auditorias e suporte contínuo para a operação."
         textColor="text-white/90"
-        panelClassName="bg-brand"
+        panelClassName="bg-[linear-gradient(135deg,#c8121f_0%,#a3101a_100%)]"
+        imageSrc="/uploads/banner-lototo.jpg"
       />
 
       {/* 6. Carrossel "Produtos mais vendidos" */}
@@ -265,6 +293,7 @@ export default async function HomePage() {
         text="Da apreciação de riscos ao laudo técnico com ART — a JG2 entrega cada etapa da adequação NR-12: inventário, apreciação de riscos, projetos conceituais e detalhados, fabricação personalizada, instalação, laudos técnicos, treinamentos e auditorias."
         textColor="text-muted-2"
         panelClassName="bg-white"
+        imageSrc="/uploads/banner-nr12.jpg"
       />
 
       {/* 8. Carrossel Mãos Seguras mais vendidos */}
@@ -293,6 +322,8 @@ export default async function HomePage() {
         text="Te guiamos da identificação da aplicação ao apoio técnico especializado — a JG2 entrega cada etapa da solução Mãos Seguras: análise da demanda, definição do produto ideal, desenvolvimento da aplicação, suporte técnico e orientação para implementação segura na operação."
         textColor="text-muted-2"
         panelClassName="bg-surface-alt"
+        imageSrc="/uploads/banner-maos.png"
+        imagePosition="object-top"
       />
 
       {/* 10. Áreas de atuação */}
@@ -305,8 +336,9 @@ export default async function HomePage() {
               key={sec.id}
               href={`/setores/${sec.id}`}
               className="group relative flex h-[180px] items-end justify-between overflow-hidden rounded-2xl bg-ink p-4 shadow-sm transition hover:shadow-2xl"
-              style={STRIPE_BG}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={sec.img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/20 to-transparent" />
               <span className="relative text-sm font-bold leading-tight text-white [text-shadow:0_1px_6px_rgba(0,0,0,.4)]">
                 {sec.name}
@@ -331,7 +363,8 @@ export default async function HomePage() {
               <FaqAccordion items={FAQS} />
             </div>
           </div>
-          <div className="hidden h-[380px] rounded-2xl shadow-lg lg:block" style={STRIPE_BG} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/uploads/why-jg2.jpg" alt="" className="hidden h-[380px] w-full rounded-2xl object-cover shadow-lg lg:block" />
         </div>
       </section>
 
@@ -387,24 +420,9 @@ export default async function HomePage() {
 
       {/* 14. Newsletter */}
       <section className="mx-auto max-w-[1340px] px-7 py-16">
-        <div className="rounded-2xl border border-border-soft bg-white p-8 sm:p-10">
+        <div className="grid gap-6 rounded-2xl border border-border-soft bg-surface-card p-8 sm:p-10 lg:grid-cols-[1fr_1.4fr] lg:items-center lg:gap-8">
           <h2 className="font-display text-2xl font-black text-ink">Assine nossa newsletter</h2>
-          <div className="mt-5 max-w-xl">
-            <NewsletterForm />
-          </div>
-        </div>
-      </section>
-
-      {/* Rodapé de categorias — não é uma seção do protótipo, mas dá acesso
-          direto ao catálogo real enquanto o Bloco 3 (sidebar/filtro) não sai. */}
-      <section className="mx-auto max-w-[1340px] px-7 pb-16">
-        <h2 className="font-display text-xl font-black text-ink">Categorias do catálogo</h2>
-        <div className="jg-card-grid mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((c) => (
-            <Link key={c.id} href={`/produtos/${c.slug}`} className="rounded-xl border border-border-soft bg-white px-5 py-4 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand">
-              {c.name}
-            </Link>
-          ))}
+          <NewsletterForm />
         </div>
       </section>
     </>
@@ -420,6 +438,8 @@ function ActionBanner({
   text,
   textColor,
   panelClassName,
+  imageSrc,
+  imagePosition = 'object-center',
 }: {
   title: string;
   kicker?: string;
@@ -429,12 +449,17 @@ function ActionBanner({
   text: string;
   textColor: string;
   panelClassName: string;
+  imageSrc: string;
+  imagePosition?: string;
 }) {
   return (
     <section className="mx-auto max-w-[1340px] px-7 py-6">
       <p className="mb-6 text-center font-display text-xl font-black text-ink">{title}</p>
       <div className={`grid overflow-hidden rounded-2xl shadow-xl lg:grid-cols-[1fr_1.15fr] ${panelClassName}`}>
-        <div className="min-h-[260px]" style={STRIPE_BG} />
+        <div className="relative min-h-[260px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={imageSrc} alt="" className={`absolute inset-0 h-full w-full object-cover ${imagePosition}`} />
+        </div>
         <div className="flex flex-col justify-center p-9 sm:p-11">
           {kicker && <span className={`mb-2 text-sm font-black uppercase tracking-wide ${kickerColor}`}>{kicker}</span>}
           <h3 className={`text-2xl font-black leading-tight sm:text-[27px] ${headingColor}`}>{heading}</h3>

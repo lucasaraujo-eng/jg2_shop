@@ -48,7 +48,7 @@ export default async function BlogIndexPage() {
           </>
         )}
 
-        <div className="mt-16 rounded-2xl border border-border-soft bg-white p-8 sm:p-10">
+        <div className="mt-16 rounded-2xl border border-border-soft bg-surface-card p-8 sm:p-10">
           <h2 className="font-display text-2xl font-black text-ink">Receba novos conteúdos no seu email</h2>
           <div className="mt-5 max-w-xl">
             <NewsletterForm ctaLabel="Assinar →" />

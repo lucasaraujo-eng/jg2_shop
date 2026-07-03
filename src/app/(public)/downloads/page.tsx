@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { SectionNav } from '@/components/downloads/SectionNav';
 
-type Doc = { tag: string; title: string; desc: string; meta: string };
+type Doc = { tag: string; title: string; desc: string; meta: string; url?: string };
 
 const DOCS_CATALOGOS: Doc[] = [
   { tag: 'Catálogo geral', title: 'Catálogo de Produtos JG2 — Linha LOTO', desc: 'Linha completa de cadeados, garras, etiquetas, bloqueios de válvula e elétricos.', meta: 'PDF · 8,4 MB' },
@@ -40,7 +40,13 @@ function DocCard({ doc }: { doc: Doc }) {
         <p className="mt-1.5 flex-1 text-sm leading-snug text-tertiary">{doc.desc}</p>
         <div className="mt-3.5 flex items-center justify-between border-t border-surface-stripe-a pt-3.5">
           <span className="font-mono text-xs text-tertiary">{doc.meta}</span>
-          <span className="text-xs font-bold text-tertiary">Em breve</span>
+          {doc.url ? (
+            <a href={doc.url} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-brand hover:underline">
+              Baixar ↓
+            </a>
+          ) : (
+            <span className="text-xs font-bold text-tertiary">PDF ainda não disponível</span>
+          )}
         </div>
       </div>
     </div>

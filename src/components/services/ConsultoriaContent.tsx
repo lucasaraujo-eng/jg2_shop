@@ -2,18 +2,16 @@ import Link from 'next/link';
 import { FaqAccordion } from '@/components/FaqAccordion';
 import type { ConsultoriaData } from '@/data/consultorias';
 
-const STRIPE_BG = {
-  backgroundImage:
-    'repeating-linear-gradient(135deg, var(--color-surface-stripe-a) 0 14px, var(--color-surface-stripe-b) 14px 28px)',
-};
-
 export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-ink-deeper py-14 text-white">
-        <div className="mx-auto max-w-[1340px] px-7">
-          <p className="text-xs text-white/50">
+      <section className="relative overflow-hidden bg-ink-deeper py-14 text-white">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={data.heroImg} alt="" className="absolute inset-0 h-full w-full object-cover object-right" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-deeper via-ink-deeper/90 to-ink-deeper/10" />
+        <div className="relative mx-auto max-w-[1440px] px-7">
+          <p className="text-xs text-white/60">
             <Link href="/" className="hover:text-white">
               Home
             </Link>{' '}
@@ -21,13 +19,10 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
             <Link href="/servicos" className="hover:text-white">
               Serviços
             </Link>{' '}
-            / <span className="text-white/70">{data.pill}</span>
+            / <span className="text-white/80">{data.pill}</span>
           </p>
-          <span className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide">
-            {data.pill}
-          </span>
-          <h1 className="mt-4 max-w-2xl font-display text-4xl font-black leading-tight sm:text-5xl">{data.heroH1}</h1>
-          <p className="mt-3 max-w-xl text-white/70">{data.subtitle}</p>
+          <h1 className="mt-4 max-w-xl font-display text-4xl font-black leading-tight sm:text-5xl">{data.heroH1}</h1>
+          <p className="mt-3 max-w-md text-white/80">{data.subtitle}</p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link href="/contato" className="rounded-full bg-brand px-6 py-3 font-bold text-white transition hover:bg-brand-light">
               {data.heroBtn}
@@ -53,7 +48,12 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
               ))}
             </div>
           </div>
-          <div className="h-[340px] rounded-2xl" style={STRIPE_BG} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={data.problemImg}
+            alt=""
+            className={`h-[340px] w-full rounded-2xl bg-white ${data.problemFit === 'contain' ? 'object-contain p-6' : 'object-cover'}`}
+          />
         </div>
       </section>
 
@@ -74,8 +74,11 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
 
       {/* Etapas */}
       <section className="mx-auto max-w-[1340px] px-7 py-14">
-        <div className="overflow-hidden rounded-3xl bg-ink-deep p-9 sm:p-12" style={STRIPE_BG}>
-          <div className="max-w-xl rounded-2xl bg-ink-deep/90 p-6 backdrop-blur-sm sm:p-0 sm:backdrop-blur-none sm:bg-transparent">
+        <div className="relative min-h-[400px] overflow-hidden rounded-3xl bg-black p-9 sm:p-12">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/uploads/loto/banner-equipe-bg.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-right" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-black/0" />
+          <div className="relative max-w-xl">
             <h2 className="font-display text-2xl font-black leading-tight text-white sm:text-3xl">{data.stagesTitle}</h2>
             <div className="mt-6 flex flex-wrap gap-2.5">
               {data.stages.map((s) => (
@@ -112,16 +115,26 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
           <p className="font-mono text-xs uppercase tracking-widest text-brand">Entregáveis</p>
           <h2 className="mt-2 font-display text-3xl font-black text-ink">{data.showcaseTitle}</h2>
           <p className="mt-2 max-w-xl text-muted-2">{data.showcaseText}</p>
-          <div className="jg-noscroll mt-8 flex gap-6 overflow-x-auto pb-1">
-            {data.showcase.map((item) => (
-              <div key={item.title} className="w-[340px] flex-none overflow-hidden rounded-2xl border border-border-soft bg-white">
-                <div className="h-[180px] border-b border-border-soft" style={STRIPE_BG} />
-                <div className="p-6">
-                  <h3 className="text-lg font-bold leading-snug text-ink">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-tertiary">{item.desc}</p>
+          <div
+            className="mt-8 overflow-hidden"
+            style={{ WebkitMaskImage: 'linear-gradient(90deg, transparent 0, #000 3%, #000 97%, transparent 100%)', maskImage: 'linear-gradient(90deg, transparent 0, #000 3%, #000 97%, transparent 100%)' }}
+          >
+            <div className="flex w-max gap-6 hover:[animation-play-state:paused]" style={{ animation: 'jg-marquee 48s linear infinite' }}>
+              {[...data.showcase, ...data.showcase].map((item, i) => (
+                <div key={`${item.title}-${i}`} className="flex w-[412px] flex-none flex-col overflow-hidden rounded-2xl border border-border-soft bg-white">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.img}
+                    alt=""
+                    className={`h-[240px] w-full border-b border-border-soft bg-white ${item.fit === 'contain' ? 'object-contain p-6' : 'object-cover'}`}
+                  />
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="text-lg font-bold leading-snug text-ink">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-tertiary">{item.desc}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -155,9 +168,10 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
 
       {/* Software JG2 Smart Loto — só na consultoria LOTO */}
       {data.software && (
-        <section className="mx-auto max-w-[1340px] px-7 py-14">
-          <div className="grid gap-11 overflow-hidden rounded-3xl bg-ink-deep p-9 sm:p-12 lg:grid-cols-2 lg:items-center">
-            <div>
+        <section id="software" className="mx-auto max-w-[1340px] scroll-mt-[140px] px-7 py-14">
+          <div className="relative grid gap-11 overflow-hidden rounded-3xl bg-ink-deep p-9 sm:p-12 lg:grid-cols-2 lg:items-center">
+            <div className="pointer-events-none absolute -bottom-16 -left-16 h-[260px] w-[260px] rounded-full bg-[radial-gradient(circle,rgba(181,32,43,.35),transparent_70%)]" />
+            <div className="relative">
               <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Software de gestão</p>
               <h2 className="mt-2 font-display text-2xl font-black leading-tight text-white sm:text-3xl">{data.software.title}</h2>
               <p className="mt-4 leading-relaxed text-white/80">{data.software.text}</p>
@@ -165,7 +179,10 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
                 {data.software.cta}
               </Link>
             </div>
-            <div className="h-[200px] rounded-2xl bg-white/5" style={STRIPE_BG} />
+            <div className="relative flex min-h-[200px] items-center justify-center rounded-2xl bg-white p-9">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={data.software.img} alt={data.software.title} className="max-h-full w-full object-contain" />
+            </div>
           </div>
         </section>
       )}

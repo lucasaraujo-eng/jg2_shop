@@ -1,17 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import { isRealImageUrl } from '@/lib/utils';
+import { resolveImageUrl } from '@/lib/utils';
 
 const STRIPE_BG = {
   backgroundImage:
     'repeating-linear-gradient(135deg, var(--color-surface-stripe-a) 0 14px, var(--color-surface-stripe-b) 14px 28px)',
 };
 
-export function ProductGallery({ images, name }: { images: { url: string }[]; name: string }) {
-  const realImages = images.map((i) => i.url).filter(isRealImageUrl);
+export function ProductGallery({
+  images,
+  name,
+  overrideImageUrl,
+}: {
+  images: { url: string }[];
+  name: string;
+  /** Foto da cor selecionada (cadeados) — substitui a galeria enquanto ativa. */
+  overrideImageUrl?: string | null;
+}) {
+  const realImages = images.map((i) => resolveImageUrl(i.url)).filter((u): u is string => !!u);
   const [active, setActive] = useState(0);
-  const current = realImages[active];
+  const current = overrideImageUrl ?? realImages[active];
 
   return (
     <div className="lg:sticky lg:top-[96px]">
@@ -29,7 +38,7 @@ export function ProductGallery({ images, name }: { images: { url: string }[]; na
       </div>
 
       {realImages.length > 1 && (
-        <div className="mt-4 flex gap-3">
+        <div className="mt-4 flex flex-wrap gap-3">
           {realImages.map((url, i) => (
             <button
               key={url}

@@ -66,6 +66,10 @@ body {
   background: var(--color-surface);
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
+  /* rede de segurança contra overflow horizontal pontual (ex.: blobs decorativos
+     mal contidos) — só em body, não em html, para não quebrar position:sticky
+     do header (overflow em html cria um novo contexto de scroll do viewport). */
+  overflow-x: hidden;
 }
 
 ::selection {
@@ -165,5 +169,8 @@ body {
   .jg-card-rev.jg-in {
     opacity: 1;
     transform: none;
+  }
+  .jg-whatsapp-pulse {
+    animation: jg-pulse 2.4s infinite;
   }
 }

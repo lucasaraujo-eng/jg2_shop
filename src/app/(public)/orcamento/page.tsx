@@ -4,9 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
-import { QuoteFormFields, isQuoteFormValid, type QuoteFormValue } from '@/components/QuoteFormFields';
+import { PageQuoteFormFields, isPageQuoteFormValid, type PageQuoteFormValue } from '@/components/PageQuoteFormFields';
 
-const EMPTY_FORM: QuoteFormValue = { name: '', email: '', phone: '', cnpj: '', purpose: '', message: '' };
+const EMPTY_FORM: PageQuoteFormValue = { name: '', company: '', email: '', phone: '', city: '', message: '' };
 
 export default function OrcamentoPage() {
   const items = useCart((s) => s.items);
@@ -14,8 +14,7 @@ export default function OrcamentoPage() {
   const setQty = useCart((s) => s.setQty);
   const clear = useCart((s) => s.clear);
 
-  const [form, setForm] = useState<QuoteFormValue>(EMPTY_FORM);
-  const [privacyChecked, setPrivacyChecked] = useState(false);
+  const [form, setForm] = useState<PageQuoteFormValue>(EMPTY_FORM);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [protocol, setProtocol] = useState<string | null>(null);
@@ -93,7 +92,7 @@ export default function OrcamentoPage() {
         <div className="mx-auto flex max-w-[560px] flex-col items-center px-7 py-24 text-center">
           <span className="text-4xl">🛍️</span>
           <p className="mt-4 font-bold text-ink">Seu orçamento está vazio</p>
-          <p className="mt-1 text-sm text-tertiary">Adicione produtos do catálogo para solicitar a cotação.</p>
+          <p className="mt-1 text-sm text-tertiary">Adicione produtos do catálogo para montar sua solicitação.</p>
           <Link href="/produtos" className="mt-6 rounded-full bg-brand px-6 py-3 font-bold text-white transition hover:bg-brand-dark">
             Explorar catálogo →
           </Link>
@@ -110,32 +109,39 @@ export default function OrcamentoPage() {
 
             <ul className="flex flex-col gap-3">
               {items.map((i) => (
-                <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex items-center gap-4 rounded-xl border border-border-soft bg-white p-4">
+                <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex items-start gap-4 rounded-xl border border-border-soft bg-white p-4">
                   <div className="h-16 w-16 flex-none rounded-lg border border-border-soft bg-surface-alt" />
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-semibold text-ink">{i.name}</p>
-                    <p className="font-mono text-xs text-tertiary">{i.code}</p>
-                    {i.variantLabel && <p className="text-xs font-semibold text-brand">{i.variantLabel}</p>}
+                    <p className="truncate font-mono text-xs text-tertiary">
+                      {i.code}
+                      {i.category && ` · ${i.category}`}
+                    </p>
+                    {i.variantLabel && <p className="truncate text-xs font-semibold text-brand">{i.variantLabel}</p>}
+                    <div className="mt-2 flex items-center gap-2">
+                      <button
+                        onClick={() => setQty(i.code, i.quantity - 1, i.variantLabel)}
+                        aria-label="Diminuir"
+                        className="flex h-7 w-7 flex-none items-center justify-center rounded-full border border-border text-sm font-bold text-muted-2"
+                      >
+                        −
+                      </button>
+                      <span className="w-6 flex-none text-center text-sm font-bold">{i.quantity}</span>
+                      <button
+                        onClick={() => setQty(i.code, i.quantity + 1, i.variantLabel)}
+                        aria-label="Aumentar"
+                        className="flex h-7 w-7 flex-none items-center justify-center rounded-full border border-border text-sm font-bold text-muted-2"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setQty(i.code, i.quantity - 1, i.variantLabel)}
-                      aria-label="Diminuir"
-                      className="flex h-7 w-7 items-center justify-center rounded-full border border-border text-sm font-bold text-muted-2"
-                    >
-                      −
-                    </button>
-                    <span className="w-6 text-center text-sm font-bold">{i.quantity}</span>
-                    <button
-                      onClick={() => setQty(i.code, i.quantity + 1, i.variantLabel)}
-                      aria-label="Aumentar"
-                      className="flex h-7 w-7 items-center justify-center rounded-full border border-border text-sm font-bold text-muted-2"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <button onClick={() => remove(i.code, i.variantLabel)} className="flex-none text-sm font-bold text-tertiary hover:text-brand">
-                    Remover
+                  <button
+                    onClick={() => remove(i.code, i.variantLabel)}
+                    aria-label={`Remover ${i.name}`}
+                    className="flex h-8 w-8 flex-none items-center justify-center self-start rounded-lg text-tertiary transition hover:bg-surface-alt hover:text-brand"
+                  >
+                    🗑
                   </button>
                 </li>
               ))}
@@ -147,21 +153,16 @@ export default function OrcamentoPage() {
           </div>
 
           <div className="mt-10 w-full flex-none lg:mt-0 lg:w-[380px]">
-            <div className="sticky top-[100px] rounded-2xl border border-border-soft bg-surface-card p-6">
-              <p className="text-sm font-semibold text-muted-2">
+            <div className="lg:sticky lg:top-[100px] rounded-2xl border border-border-soft bg-surface-card p-6">
+              <h2 className="font-display text-base font-black uppercase tracking-wide text-ink">Seus dados</h2>
+              <p className="mb-4 mt-1 text-xs text-tertiary">
                 {totalQty} itens · {productCount} produtos
               </p>
-              <div className="mt-4">
-                <QuoteFormFields value={form} onChange={(patch) => setForm((f) => ({ ...f, ...patch }))} />
-              </div>
-              <label className="mt-4 flex items-start gap-2.5 text-xs text-muted-2">
-                <input type="checkbox" checked={privacyChecked} onChange={(e) => setPrivacyChecked(e.target.checked)} className="mt-0.5" />
-                Estou de acordo com a política de privacidade da JG2.
-              </label>
+              <PageQuoteFormFields value={form} onChange={(patch) => setForm((f) => ({ ...f, ...patch }))} />
               {error && <p className="mt-3 text-sm font-semibold text-brand">{error}</p>}
               <button
                 onClick={handleSubmit}
-                disabled={!isQuoteFormValid(form, privacyChecked) || sending}
+                disabled={!isPageQuoteFormValid(form) || sending}
                 className="mt-5 w-full rounded-full bg-brand py-3 font-bold text-white transition hover:bg-brand-dark disabled:bg-brand-disabled"
               >
                 {sending ? 'Enviando…' : 'Enviar solicitação de orçamento'}
