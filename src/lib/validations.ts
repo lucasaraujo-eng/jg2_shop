@@ -13,8 +13,11 @@ export const quoteRequestSchema = z.object({
   name: z.string().min(2, 'Informe seu nome'),
   email: z.string().email('E-mail inválido'),
   phone: z.string().min(8, 'Telefone inválido'),
-  cnpj: z.string().min(11, 'CNPJ/CPF inválido'),
-  purpose: z.string().min(2, 'Informe a finalidade'),
+  // Empresa/Cidade só vêm da página /orçamento; CNPJ/Finalidade só vêm do drawer — nunca os dois juntos.
+  company: z.string().optional().nullable(),
+  city: z.string().optional().nullable(),
+  cnpj: z.string().optional().nullable(),
+  purpose: z.string().optional().nullable(),
   message: z.string().optional().nullable(),
   items: z.array(quoteItemSchema).min(1, 'Adicione ao menos um item'),
 });

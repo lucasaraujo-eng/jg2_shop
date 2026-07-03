@@ -2,11 +2,6 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { setores, getSetorById } from '@/data/setores';
 
-const STRIPE_BG = {
-  backgroundImage:
-    'repeating-linear-gradient(135deg, var(--color-surface-stripe-a) 0 14px, var(--color-surface-stripe-b) 14px 28px)',
-};
-
 export function generateStaticParams() {
   return setores.map((s) => ({ id: s.id }));
 }
@@ -26,7 +21,8 @@ export default async function SetorPage({
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-deep">
-        <div className="absolute inset-0 opacity-30" style={STRIPE_BG} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={sector.img} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/85" />
         <div className="relative mx-auto max-w-[900px] px-7 py-16">
           <p className="text-xs text-white/60">
@@ -50,7 +46,8 @@ export default async function SetorPage({
       </section>
 
       <article className="mx-auto max-w-[820px] px-7 py-12">
-        <div className="mb-10 h-[380px] rounded-2xl shadow-lg" style={STRIPE_BG} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={sector.img} alt={sector.name} className="mb-10 h-[380px] w-full rounded-2xl object-cover shadow-lg" />
 
         <h2 className="font-display text-2xl font-black text-ink">O setor</h2>
         <div className="mt-4 mb-11 flex flex-col gap-5">
@@ -88,7 +85,8 @@ export default async function SetorPage({
         </p>
 
         <div className="mb-5.5 overflow-hidden rounded-2xl border border-border-soft">
-          <div className="h-[200px]" style={STRIPE_BG} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/uploads/banner-lototo.jpg" alt="" className="h-[200px] w-full object-cover" />
           <div className="p-7">
             <span className="mb-3 inline-block rounded-full bg-surface-badge px-3 py-1.5 text-xs font-bold text-brand">
               Bloqueio e Etiquetagem (LOTO)
@@ -105,7 +103,8 @@ export default async function SetorPage({
         </div>
 
         <div className="mb-5.5 overflow-hidden rounded-2xl border border-border-soft">
-          <div className="h-[200px]" style={STRIPE_BG} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/uploads/banner-maos.png" alt="" className="h-[200px] w-full object-cover" />
           <div className="p-7">
             <span className="mb-3 inline-block rounded-full px-3 py-1.5 text-xs font-bold text-maos" style={{ background: '#fdf0d8' }}>
               Mãos Seguras
@@ -122,7 +121,8 @@ export default async function SetorPage({
         </div>
 
         <div className="mb-12 overflow-hidden rounded-2xl border border-border-soft">
-          <div className="h-[200px]" style={STRIPE_BG} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/uploads/banner-nr12.jpg" alt="" className="h-[200px] w-full object-cover" />
           <div className="p-7">
             <span className="mb-3 inline-block rounded-full px-3 py-1.5 text-xs font-bold text-nr12" style={{ background: '#e9f3ec' }}>
               Adequação à NR-12
@@ -158,8 +158,9 @@ export default async function SetorPage({
                 key={r.id}
                 href={`/setores/${r.id}`}
                 className="group relative flex h-[200px] items-end overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-xl"
-                style={STRIPE_BG}
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={r.img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
                 <span className="relative p-4 text-base font-bold text-white [text-shadow:0_1px_6px_rgba(0,0,0,.4)]">{r.name}</span>
               </Link>

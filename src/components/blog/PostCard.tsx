@@ -33,11 +33,14 @@ export function PostCard({ post, featured = false }: { post: PostSummary; featur
     >
       <div className={featured ? 'h-56 flex-none lg:h-auto lg:w-1/2' : 'h-40'} style={STRIPE_BG} />
       <div className="flex flex-1 flex-col p-6">
-        {post.tag && (
-          <span className="self-start font-mono text-[11px] uppercase tracking-wide text-brand">
-            {featured ? `Destaque · ${post.tag}` : post.tag}
-          </span>
-        )}
+        {post.tag &&
+          (featured ? (
+            <span className="self-start rounded-full bg-surface-badge px-3 py-1.5 text-xs font-bold text-brand">
+              Destaque · {post.tag}
+            </span>
+          ) : (
+            <span className="self-start font-mono text-[11px] uppercase tracking-wide text-brand">{post.tag}</span>
+          ))}
         <h3 className={`mt-2 font-display font-bold text-ink ${featured ? 'text-2xl' : 'text-lg'} leading-snug`}>{post.title}</h3>
         {post.excerpt && <p className="mt-2.5 flex-1 text-sm text-muted-2">{post.excerpt}</p>}
         <p className="mt-4 font-mono text-xs text-tertiary">

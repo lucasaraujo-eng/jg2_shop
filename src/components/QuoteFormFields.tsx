@@ -20,7 +20,7 @@ export const PURPOSE_OPTIONS = [
 const inputClass =
   'rounded-lg border border-border bg-surface-card px-4 py-3 text-sm outline-none transition focus:border-brand focus:bg-white focus:shadow-[0_0_0_3px_rgba(181,32,43,.1)]';
 
-/** Campos compartilhados entre o drawer de orçamento e a página /orcamento. */
+/** Campos do drawer de orçamento (etapa 2). A página /orcamento tem seu próprio conjunto de campos — ver PageQuoteFormFields. */
 export function QuoteFormFields({
   value,
   onChange,
@@ -32,11 +32,18 @@ export function QuoteFormFields({
     <div className="flex flex-col gap-4">
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-bold text-ink">Nome*</span>
-        <input required value={value.name} onChange={(e) => onChange({ name: e.target.value })} className={inputClass} />
+        <input required value={value.name} onChange={(e) => onChange({ name: e.target.value })} placeholder="Seu nome" className={inputClass} />
       </label>
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-bold text-ink">Email*</span>
-        <input required type="email" value={value.email} onChange={(e) => onChange({ email: e.target.value })} className={inputClass} />
+        <input
+          required
+          type="email"
+          value={value.email}
+          onChange={(e) => onChange({ email: e.target.value })}
+          placeholder="seu@email.com.br"
+          className={inputClass}
+        />
       </label>
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-bold text-ink">Telefone*</span>

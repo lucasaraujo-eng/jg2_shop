@@ -21,8 +21,10 @@ export async function submitQuote(input: QuoteRequestInput): Promise<ActionResul
         name: data.name,
         email: data.email,
         phone: data.phone,
-        cnpj: data.cnpj,
-        purpose: data.purpose,
+        company: data.company ?? null,
+        city: data.city ?? null,
+        cnpj: data.cnpj ?? null,
+        purpose: data.purpose ?? null,
         message: data.message ?? null,
         items: {
           create: data.items.map((i) => ({
@@ -42,6 +44,8 @@ export async function submitQuote(input: QuoteRequestInput): Promise<ActionResul
       name: quote.name,
       email: quote.email,
       phone: quote.phone,
+      company: quote.company,
+      city: quote.city,
       cnpj: quote.cnpj,
       purpose: quote.purpose,
       message: quote.message,

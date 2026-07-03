@@ -3,14 +3,20 @@ import type { getCategories } from '@/server/catalog';
 
 type Categories = Awaited<ReturnType<typeof getCategories>>;
 
-/** Sidebar sticky de categorias — sem interatividade, então nem precisa ser client. */
+/**
+ * Sidebar sticky de categorias — sem interatividade, então nem precisa ser client.
+ * Só lista Todos + categorias LOTO, igual ao protótipo (a função `categories()`
+ * da fonte exclui explicitamente Mãos Seguras — ela é uma ramificação à parte,
+ * acessada só pelo dropdown do menu e pelos banners da Home).
+ */
 export function CategorySidebar({ categories, activeSlug }: { categories: Categories; activeSlug: string | null }) {
+  const loto = categories.filter((c) => c.type === 'LOTO');
   return (
     <nav aria-label="Categorias" className="hidden w-[240px] flex-none lg:block">
       <div className="sticky top-[100px] flex flex-col gap-1">
         <p className="mb-1 px-3 font-mono text-[11px] uppercase tracking-wider text-tertiary">Categorias</p>
         <SidebarLink href="/produtos" label="Todos" active={activeSlug === null} />
-        {categories.map((c) => (
+        {loto.map((c) => (
           <SidebarLink key={c.id} href={`/produtos/${c.slug}`} label={c.name} active={c.slug === activeSlug} />
         ))}
       </div>

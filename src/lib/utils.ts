@@ -1,10 +1,15 @@
 /**
- * O seed carrega caminhos do protótipo (ex.: "uploads/cover-X.png") que não
- * existem como arquivo real — só URLs absolutas (R2, futuramente) contam
- * como imagem de verdade. O resto cai no placeholder de texto.
+ * Normaliza a URL de imagem vinda do banco para um src utilizável.
+ * O seed carrega caminhos do protótipo sem barra inicial (ex.: "uploads/cover-X.png",
+ * "assets/x.png") que hoje já existem como arquivo real em public/ — normaliza para
+ * "/uploads/..."/"/assets/...". URLs absolutas (http(s), ex.: R2 futuramente) passam
+ * direto. Qualquer outra coisa (ou vazio) retorna null e cai no placeholder de texto.
  */
-export function isRealImageUrl(url?: string | null): url is string {
-  return !!url && /^https?:\/\//.test(url);
+export function resolveImageUrl(url?: string | null): string | null {
+  if (!url) return null;
+  if (/^https?:\/\//.test(url)) return url;
+  if (/^\/?(assets|uploads)\//.test(url)) return url.startsWith('/') ? url : `/${url}`;
+  return null;
 }
 
 /** Tempo de leitura estimado a partir do texto real do post (~200 palavras/min). */

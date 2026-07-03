@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 const TABS = [
   { id: 'prod-sec-downloads', label: 'DataSheet' },
   { id: 'prod-sec-caracteristicas', label: 'Descrição' },
-  { id: 'prod-sec-especificacoes', label: 'Especificações técnicas' },
+  { id: 'prod-sec-especificacoes', label: 'Especificações' },
 ];
 
 /** Sidebar sticky com scroll-spy — destaca a aba da seção visível. O

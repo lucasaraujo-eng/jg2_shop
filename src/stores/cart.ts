@@ -9,6 +9,7 @@ export type CartItem = {
   name: string;
   image?: string | null;
   variantLabel?: string | null;
+  category?: string | null;
   quantity: number;
 };
 

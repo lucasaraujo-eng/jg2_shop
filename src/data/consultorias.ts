@@ -6,18 +6,21 @@
  */
 
 export type ConsultoriaStep = { n: string; title: string; body: string };
-export type ConsultoriaShowcaseItem = { title: string; desc: string };
+export type ConsultoriaShowcaseItem = { title: string; desc: string; img: string; fit: 'cover' | 'contain' };
 export type ConsultoriaDiff = { title: string; body: string };
 export type ConsultoriaFaq = { q: string; a: string };
 
 export type ConsultoriaData = {
   slug: 'lototo' | 'nr12' | 'maos-seguras';
   pill: string;
+  heroImg: string;
   heroH1: string;
   heroBtn: string;
   subtitle: string;
   problemTitle: string;
   problemParas: string[];
+  problemImg: string;
+  problemFit: 'cover' | 'contain';
   gainsTitle: string;
   gains: string[];
   stagesTitle: string;
@@ -31,7 +34,7 @@ export type ConsultoriaData = {
   norms: string[];
   diffTitle: string;
   diffs: ConsultoriaDiff[];
-  software?: { title: string; text: string; cta: string };
+  software?: { title: string; text: string; cta: string; img: string };
   ctaTitle: string;
   ctaText: string;
   faqs: ConsultoriaFaq[];
@@ -41,11 +44,14 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
   lototo: {
     slug: 'lototo',
     pill: 'Consultoria LOTOTO',
+    heroImg: '/uploads/loto/banner.png',
     heroH1: 'JG2® Programa LOTOTO completo para quem não aceita improviso em segurança',
     heroBtn: 'Conhecer consultoria LOTOTO →',
     subtitle:
       'Com a JG2, você conduz a adequação LOTOTO do início ao fim — com levantamento técnico, matrizes de bloqueio, definição e fornecimento de dispositivos, treinamento, auditorias, gestão de mudanças e software para gestão contínua.',
     problemTitle: 'Por que muitos programas LOTO falham mesmo depois da implantação',
+    problemImg: '/uploads/loto/fluxo-implantacao.png',
+    problemFit: 'contain',
     problemParas: [
       'Muitas empresas iniciam o programa, mas param no meio do caminho ou implantam apenas partes isoladas da solução. O resultado costuma ser o mesmo: matrizes incompletas, dispositivos mal definidos, equipe sem treinamento suficiente, falhas na verificação de energia zero e perda de consistência com o tempo.',
       'Com a JG2, sua empresa evita esse cenário porque estrutura o controle de energias perigosas como um sistema completo, e não como uma ação pontual.',
@@ -82,12 +88,12 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
     showcaseTitle: 'O que sua empresa recebe na prática',
     showcaseText: 'Documentos técnicos, dispositivos e gestão — entregáveis reais que sustentam o programa no campo.',
     showcase: [
-      { title: 'Levantamento técnico em campo', desc: 'Mapeamento completo das fontes de energia perigosa, pontos de isolamento e condições reais de cada equipamento da planta.' },
-      { title: 'Matrizes de bloqueio personalizadas', desc: 'Instrução visual de bloqueio de energia perigosa por equipamento — sequência, pontos, dispositivos e verificação de energia zero.' },
-      { title: 'Lista detalhada de dispositivos', desc: 'Relação técnica com modelos corretos e quantitativos ideais por turno, construída a partir dos pontos de isolamento mapeados.' },
-      { title: 'Dispositivos de bloqueio JG2®', desc: 'Cadeados, garras, bloqueios de válvula, etiquetas e caixas de bloqueio fabricados pela JG2 — alinhados ao projeto.' },
-      { title: 'Treinamento em Bloqueio, Etiquetagem e Teste (LOTOTO)', desc: 'Capacitação ampla das equipes sobre o programa de controle de energias perigosas, adequado às regras e procedimentos já existentes na empresa.' },
-      { title: 'Auditoria periódica do programa', desc: 'Verificação em campo da aplicação dos bloqueios, conformidade dos procedimentos e gestão de mudanças para manter o programa vivo e confiável.' },
+      { title: 'Levantamento técnico em campo', desc: 'Mapeamento completo das fontes de energia perigosa, pontos de isolamento e condições reais de cada equipamento da planta.', img: '/uploads/loto/levantamento.png', fit: 'cover' },
+      { title: 'Matrizes de bloqueio personalizadas', desc: 'Instrução visual de bloqueio de energia perigosa por equipamento — sequência, pontos, dispositivos e verificação de energia zero.', img: '/uploads/loto/matriz.png', fit: 'cover' },
+      { title: 'Lista detalhada de dispositivos', desc: 'Relação técnica com modelos corretos e quantitativos ideais por turno, construída a partir dos pontos de isolamento mapeados.', img: '/uploads/loto/lista-dispositivos.png', fit: 'cover' },
+      { title: 'Dispositivos de bloqueio JG2®', desc: 'Cadeados, garras, bloqueios de válvula, etiquetas e caixas de bloqueio fabricados pela JG2 — alinhados ao projeto.', img: '/uploads/loto/produtos-loto.png', fit: 'contain' },
+      { title: 'Treinamento em Bloqueio, Etiquetagem e Teste (LOTOTO)', desc: 'Capacitação ampla das equipes sobre o programa de controle de energias perigosas, adequado às regras e procedimentos já existentes na empresa.', img: '/uploads/loto/treinamento.jpg', fit: 'cover' },
+      { title: 'Auditoria periódica do programa', desc: 'Verificação em campo da aplicação dos bloqueios, conformidade dos procedimentos e gestão de mudanças para manter o programa vivo e confiável.', img: '/uploads/loto/auditoria-loto.png', fit: 'cover' },
     ],
     normsTitle: 'Base técnica para um programa LOTO robusto',
     norms: ['NR-10', 'NR-12', 'NR-33', 'OSHA 29 CFR 1910.147', 'ANSI/ASSP Z244.1'],
@@ -102,6 +108,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
       title: 'Gestão contínua com o JG2 Smart Loto®',
       text: 'A implantação é só o começo. Com o software você gera novas matrizes, audita bloqueios em tempo real, acompanha indicadores por dashboards, emite relatórios, planeja atividades e gerencia o estoque LOTO — transformando o programa em um sistema vivo de gestão, com rastreabilidade e governança.',
       cta: 'Conhecer o Smart Loto®',
+      img: '/uploads/loto/smart-loto-logo.jpg',
     },
     ctaTitle: 'Estruture um programa LOTOTO que funcione de verdade',
     ctaText: 'Se sua empresa precisa avançar com mais segurança, mais clareza técnica e menos improviso, a JG2 apoia sua operação do início ao fim.',
@@ -116,10 +123,13 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
   nr12: {
     slug: 'nr12',
     pill: 'Consultoria NR-12',
+    heroImg: '/uploads/nr12/banner.jpg',
     heroH1: 'Adequação NR-12 completa para sua operação avançar sem retrabalho',
     heroBtn: 'Conhecer consultoria NR-12 →',
     subtitle: 'Do inventário ao laudo de conformidade: análise, projeto, fabricação, instalação, documentação e capacitação em um só parceiro.',
     problemTitle: 'Quando a adequação NR-12 é feita por partes desconexas, o custo aparece depois',
+    problemImg: '/uploads/nr12/fabricacao.jpg',
+    problemFit: 'cover',
     problemParas: [
       'Muitas empresas contratam uma etapa com um fornecedor, outra com outro, e enfrentam o mesmo problema: documentação que não conversa com a execução, proteções mal definidas, necessidade de refazer estudos, atraso no cronograma e investimento maior do que o previsto.',
       'Com a JG2, sua empresa conta com uma equipe que executa todas as etapas da adequação NR-12, com visão completa da máquina, da operação e do resultado final.',
@@ -158,14 +168,14 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
     showcaseTitle: 'Como a JG2 conduz sua adequação NR-12',
     showcaseText: 'Cada etapa é planejada para gerar avanço real, não retrabalho futuro — da análise do parque fabril ao acompanhamento contínuo.',
     showcase: [
-      { title: 'Inventário de máquinas', desc: 'Levantamento detalhado do parque fabril em planilha e documento técnico — um retrato confiável do que precisa ser avaliado, adequado e priorizado.' },
-      { title: 'Apreciação de riscos', desc: 'Conduzida com base na NR-12, ISO 12100, ISO 13849 e NBR 14153: identifica perigos, estima riscos e indica as medidas de redução adequadas à sua operação.' },
-      { title: 'Projetos conceituais e detalhados', desc: 'Você visualiza a solução antes de investir e aprova o que faz sentido. Depois avançamos para os projetos mecânicos, elétricos, pneumáticos e hidráulicos.' },
-      { title: 'Fabricação e instalação das proteções', desc: 'Fabricamos e instalamos as proteções com materiais compatíveis — aço inox ou galvanizado com pintura eletrostática. A proteção certa para o risco certo.' },
-      { title: 'Laudo de conformidade NR-12', desc: 'Laudo final sustentado por nova apreciação de riscos e validação técnica da condição final da máquina — respaldo técnico e segurança diante de auditorias.' },
-      { title: 'Elaboração de manuais', desc: 'Novos manuais de utilização conforme exigência normativa, com orientações para uso, operação, intervenção e cuidados com o equipamento adequado.' },
-      { title: 'Treinamento e capacitação de equipes', desc: 'Treinamentos práticos e direcionados à sua operação: seu time entende o que mudou, por quê, e como preservar o desempenho seguro da máquina.' },
-      { title: 'Auditorias periódicas e gestão de mudanças', desc: 'Revisamos adequações implantadas, identificamos novos gaps e mantemos a adequação alinhada à realidade da planta à medida que a operação evolui.' },
+      { title: 'Inventário de máquinas', desc: 'Levantamento detalhado do parque fabril em planilha e documento técnico — um retrato confiável do que precisa ser avaliado, adequado e priorizado.', img: '/uploads/nr12/inventario.png', fit: 'contain' },
+      { title: 'Apreciação de riscos', desc: 'Conduzida com base na NR-12, ISO 12100, ISO 13849 e NBR 14153: identifica perigos, estima riscos e indica as medidas de redução adequadas à sua operação.', img: '/uploads/nr12/apreciacao.png', fit: 'contain' },
+      { title: 'Projetos conceituais e detalhados', desc: 'Você visualiza a solução antes de investir e aprova o que faz sentido. Depois avançamos para os projetos mecânicos, elétricos, pneumáticos e hidráulicos.', img: '/uploads/nr12/projeto.png', fit: 'contain' },
+      { title: 'Fabricação e instalação das proteções', desc: 'Fabricamos e instalamos as proteções com materiais compatíveis — aço inox ou galvanizado com pintura eletrostática. A proteção certa para o risco certo.', img: '/uploads/nr12/fabricacao.jpg', fit: 'cover' },
+      { title: 'Laudo de conformidade NR-12', desc: 'Laudo final sustentado por nova apreciação de riscos e validação técnica da condição final da máquina — respaldo técnico e segurança diante de auditorias.', img: '/uploads/nr12/laudo.png', fit: 'contain' },
+      { title: 'Elaboração de manuais', desc: 'Novos manuais de utilização conforme exigência normativa, com orientações para uso, operação, intervenção e cuidados com o equipamento adequado.', img: '/uploads/nr12/adequacao.png', fit: 'contain' },
+      { title: 'Treinamento e capacitação de equipes', desc: 'Treinamentos práticos e direcionados à sua operação: seu time entende o que mudou, por quê, e como preservar o desempenho seguro da máquina.', img: '/uploads/nr12/treinamento.png', fit: 'cover' },
+      { title: 'Auditorias periódicas e gestão de mudanças', desc: 'Revisamos adequações implantadas, identificamos novos gaps e mantemos a adequação alinhada à realidade da planta à medida que a operação evolui.', img: '/uploads/nr12/auditoria.png', fit: 'cover' },
     ],
     normsTitle: 'Normas que embasam a adequação',
     norms: ['NR-12', 'ABNT NBR ISO 12100', 'ABNT NBR ISO 13849', 'NBR 14153'],
@@ -189,10 +199,13 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
   'maos-seguras': {
     slug: 'maos-seguras',
     pill: 'Consultoria Mãos Seguras',
+    heroImg: '/uploads/maoscons/banner.png',
     heroH1: 'JG2® — Mãos Seguras para quem precisa reduzir risco sem depender de improviso operacional',
     heroBtn: 'Conhecer consultoria Mãos Seguras →',
     subtitle: 'Engenharia aplicada à atividade real: atendimento, levantamento, projeto, fabricação e acompanhamento contínuo.',
     problemTitle: 'Por que tantas operações continuam expostas a acidentes com as mãos',
+    problemImg: '/uploads/maoscons/atendimento.jpg',
+    problemFit: 'cover',
     problemParas: [
       'Em muitas plantas o risco é conhecido, mas a solução não é tratada da forma certa. A empresa continua dependendo de hábito, atenção individual ou ferramenta inadequada para tarefas que deixam as mãos próximas da zona de perigo — o que aparece em forma de cortes, esmagamentos, perfurações e mutilações.',
       'Com a JG2, sua empresa trata isso da forma correta: com engenharia aplicada à operação, não com improviso.',
@@ -227,12 +240,12 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
     showcaseTitle: 'Como a JG2 conduz a consultoria em Mãos Seguras',
     showcaseText: 'Da análise da atividade em campo ao acompanhamento contínuo — cada etapa desenvolve uma solução aderente à sua operação real.',
     showcase: [
-      { title: 'Atendimento especializado', desc: 'Entendemos seu cenário com critério técnico: tipo de atividade, risco envolvido, limitações operacionais e objetivo da solução. Você começa com atendimento técnico, não com tentativa e erro.' },
-      { title: 'Levantamento de atividades', desc: 'Observamos como a tarefa acontece na prática, identificamos o ponto exato de exposição e entendemos os movimentos, alcances e rotinas que precisam ser tratados.' },
-      { title: 'Projetos conceituais e detalhados', desc: 'Você visualiza a proposta e valida a aplicação antes de fabricar. Depois da validação conceitual, avançamos para o detalhamento técnico — reduzindo o risco de retrabalho.' },
-      { title: 'Fabricação de dispositivos personalizados', desc: 'Desenvolvemos dispositivos sob medida para a atividade, fabricados em aço galvanizado com pintura eletrostática ou aço inox, conforme a aplicação e o ambiente.' },
-      { title: 'Fornecimento de dispositivos', desc: 'Realizamos o fornecimento com alinhamento entre o que foi analisado, projetado e o que será utilizado — mais velocidade, coerência técnica e menos ruído entre desenvolvimento e aplicação.' },
-      { title: 'Auditorias e gestão de mudanças', desc: 'A operação muda e o risco também. Auditorias periódicas verificam se a solução continua adequada e se há necessidade de revisão, reforço ou atualização.' },
+      { title: 'Atendimento especializado', desc: 'Entendemos seu cenário com critério técnico: tipo de atividade, risco envolvido, limitações operacionais e objetivo da solução. Você começa com atendimento técnico, não com tentativa e erro.', img: '/uploads/maoscons/atendimento.jpg', fit: 'cover' },
+      { title: 'Levantamento de atividades', desc: 'Observamos como a tarefa acontece na prática, identificamos o ponto exato de exposição e entendemos os movimentos, alcances e rotinas que precisam ser tratados.', img: '/uploads/maoscons/levantamento.png', fit: 'cover' },
+      { title: 'Projetos conceituais e detalhados', desc: 'Você visualiza a proposta e valida a aplicação antes de fabricar. Depois da validação conceitual, avançamos para o detalhamento técnico — reduzindo o risco de retrabalho.', img: '/uploads/maoscons/projeto.png', fit: 'contain' },
+      { title: 'Fabricação de dispositivos personalizados', desc: 'Desenvolvemos dispositivos sob medida para a atividade, fabricados em aço galvanizado com pintura eletrostática ou aço inox, conforme a aplicação e o ambiente.', img: '/uploads/maoscons/fabricacao.png', fit: 'contain' },
+      { title: 'Fornecimento de dispositivos', desc: 'Realizamos o fornecimento com alinhamento entre o que foi analisado, projetado e o que será utilizado — mais velocidade, coerência técnica e menos ruído entre desenvolvimento e aplicação.', img: '/uploads/maoscons/catalogo.png', fit: 'cover' },
+      { title: 'Auditorias e gestão de mudanças', desc: 'A operação muda e o risco também. Auditorias periódicas verificam se a solução continua adequada e se há necessidade de revisão, reforço ou atualização.', img: '/uploads/maoscons/auditoria.png', fit: 'contain' },
     ],
     normsTitle: 'Materiais de fabricação',
     norms: ['Aço galvanizado com pintura eletrostática', 'Aço inox'],

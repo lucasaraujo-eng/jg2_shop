@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
 import { QuoteFormFields, isQuoteFormValid, type QuoteFormValue } from '@/components/QuoteFormFields';
@@ -151,10 +152,6 @@ export function CartDrawer() {
               {step === 'form' && (
                 <div className="flex w-full flex-1 flex-col bg-surface-card md:w-[440px] md:flex-none" style={{ animation: 'jg-form-in .42s cubic-bezier(.22,.61,.36,1) both' }}>
                   <div className="flex-1 overflow-y-auto p-6">
-                    <button onClick={() => setStep('cart')} className="mb-4 text-sm font-bold text-muted-2 hover:text-brand">
-                      ← Voltar
-                    </button>
-                    <h3 className="font-display text-base font-black uppercase tracking-wide text-ink">Seus dados</h3>
                     <div className="mt-4">
                       <QuoteFormFields value={form} onChange={(patch) => setForm((f) => ({ ...f, ...patch }))} />
                     </div>
@@ -165,15 +162,27 @@ export function CartDrawer() {
                         onChange={(e) => setPrivacyChecked(e.target.checked)}
                         className="mt-0.5"
                       />
-                      Estou de acordo com a política de privacidade da JG2.
+                      <span>
+                        Estou de acordo com a{' '}
+                        <Link href="/contato" className="text-brand underline">
+                          política de privacidade
+                        </Link>{' '}
+                        da JG2.
+                      </span>
                     </label>
                     {error && <p className="mt-3 text-sm font-semibold text-brand">{error}</p>}
                   </div>
-                  <div className="flex-none border-t border-border-soft p-5">
+                  <div className="flex flex-none items-center gap-3 border-t border-border-soft p-5">
+                    <button
+                      onClick={() => setStep('cart')}
+                      className="flex-none whitespace-nowrap rounded-full border border-brand-disabled px-6 py-3 font-bold text-brand transition hover:border-brand"
+                    >
+                      ← Voltar
+                    </button>
                     <button
                       onClick={handleSubmit}
                       disabled={!isQuoteFormValid(form, privacyChecked) || sending}
-                      className="w-full rounded-full bg-brand py-3 font-bold text-white transition hover:bg-brand-dark disabled:bg-brand-disabled"
+                      className="flex-1 whitespace-nowrap rounded-full bg-brand py-3 font-bold text-white transition hover:bg-brand-dark disabled:bg-brand-disabled"
                     >
                       {sending ? 'Enviando…' : 'Solicitar uma cotação →'}
                     </button>

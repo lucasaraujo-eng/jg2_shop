@@ -67,9 +67,9 @@ export default async function BlogPostPage({
           </p>
         </div>
 
-        <div className="flex items-center gap-3.5 border-y border-border-soft py-6">
+        <div className="flex flex-wrap items-center gap-3.5 border-y border-border-soft py-6">
           <div className="h-13 w-13 flex-none rounded-full" style={STRIPE_BG} />
-          <div className="min-w-0 flex-1">
+          <div className="min-w-[160px] flex-1">
             <p className="font-bold text-ink">Equipe Técnica JG2</p>
             <p className="text-sm text-tertiary">Especialistas em Lockout/Tagout e NR-12</p>
           </div>

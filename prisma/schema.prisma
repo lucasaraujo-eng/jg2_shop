@@ -129,8 +129,14 @@ model QuoteRequest {
   name      String
   email     String
   phone     String
-  cnpj      String
-  purpose   String
+  /// Preenchido só na página /orçamento (protótipo: form.empresa)
+  company   String?
+  /// Preenchido só na página /orçamento (protótipo: form.cidade)
+  city      String?
+  /// Preenchido só no drawer de orçamento (protótipo: form.cnpj)
+  cnpj      String?
+  /// Preenchido só no drawer de orçamento (protótipo: form.finalidade)
+  purpose   String?
   message   String?     @db.Text
   status    QuoteStatus @default(NEW)
   items     QuoteItem[]

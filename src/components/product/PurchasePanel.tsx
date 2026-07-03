@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useCart } from '@/stores/cart';
-import { isRealImageUrl } from '@/lib/utils';
+import { resolveImageUrl } from '@/lib/utils';
 
 type SecretType = 'DIFERENTES' | 'IGUAIS' | 'CHAVE_MESTRA';
 
@@ -40,6 +40,9 @@ export function PurchasePanel({
   image,
   isCadeado,
   variants,
+  category,
+  color,
+  onColorChange,
 }: {
   productId: string;
   code: string;
@@ -47,10 +50,14 @@ export function PurchasePanel({
   image: string | null;
   isCadeado: boolean;
   variants: Variant[];
+  category: string;
+  /** Cor selecionada — controlada pelo componente pai para poder trocar a foto exibida na galeria junto. */
+  color: string | null;
+  onColorChange: (color: string) => void;
 }) {
   const add = useCart((s) => s.add);
   const openCart = useCart((s) => s.open);
-  const cover = isRealImageUrl(image) ? image : null;
+  const cover = resolveImageUrl(image);
 
   const colors = useMemo(() => {
     const names = variants.map((v) => v.color).filter((c): c is string => !!c);
@@ -61,7 +68,6 @@ export function PurchasePanel({
     return [...new Set(types)];
   }, [variants]);
 
-  const [color, setColor] = useState<string | null>(colors[0] ?? null);
   const [secretType, setSecretType] = useState<SecretType | null>(secretTypes[0] ?? null);
   const [masterKeyQty, setMasterKeyQty] = useState(1);
   const [qty, setQty] = useState(1);
@@ -72,7 +78,7 @@ export function PurchasePanel({
 
   function handleAdd() {
     const variantLabel = isCadeado && color && secretType ? `${color} · ${SECRET_LABELS[secretType]}` : null;
-    add({ productId, code: displaySku, name, image: cover, variantLabel }, qty);
+    add({ productId, code: displaySku, name, image: cover, variantLabel, category }, qty);
 
     if (isCadeado && secretType === 'CHAVE_MESTRA' && masterKeyQty > 0) {
       add(
@@ -82,6 +88,7 @@ export function PurchasePanel({
           name: `Chaves mestra adicionais — ${name}`,
           image: cover,
           variantLabel: 'Item adicional · valor unitário sob consulta',
+          category,
         },
         masterKeyQty,
       );
@@ -100,7 +107,7 @@ export function PurchasePanel({
             {colors.map((c) => (
               <button
                 key={c}
-                onClick={() => setColor(c)}
+                onClick={() => onColorChange(c)}
                 className={`flex items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-semibold transition ${
                   color === c ? 'border-brand bg-surface-badge text-brand' : 'border-border text-muted-2 hover:border-brand'
                 }`}

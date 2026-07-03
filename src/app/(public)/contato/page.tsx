@@ -7,6 +7,10 @@ import { submitContact } from '@/server/actions/contact';
 const inputClass =
   'rounded-[11px] border border-border bg-surface-card px-4 py-3.5 text-[15px] outline-none transition focus:border-brand focus:bg-white focus:shadow-[0_0_0_3px_rgba(181,32,43,.1)]';
 
+const STRIPE_BG = {
+  backgroundImage: 'repeating-linear-gradient(135deg, rgba(255,255,255,.05) 0 14px, rgba(255,255,255,.02) 14px 28px)',
+};
+
 export default function ContatoPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [sending, setSending] = useState(false);
@@ -82,6 +86,10 @@ export default function ContatoPage() {
                 <p className="text-[13.5px] text-white/60">Rua José Gallo, 258 · Vista Alegre · Vinhedo–SP</p>
               </div>
             </div>
+          </div>
+
+          <div className="mt-4 flex h-40 items-end rounded-2xl bg-white/5 p-3.5 font-mono text-[11px] text-white/40" style={STRIPE_BG}>
+            [ mapa: localização JG2 ]
           </div>
 
           <div className="mt-4 flex items-center gap-2.5 text-[13.5px] text-white/70">

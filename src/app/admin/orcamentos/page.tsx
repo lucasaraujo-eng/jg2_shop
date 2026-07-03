@@ -13,12 +13,18 @@ export default async function AdminQuotesPage() {
           <div key={q.id} className="rounded-xl border border-border-soft bg-white p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="font-bold text-ink">{q.name}</p>
+                <p className="font-bold text-ink">
+                  {q.name}
+                  {q.company && <span className="font-normal text-muted-2"> · {q.company}</span>}
+                </p>
                 <p className="text-sm text-muted-2">
-                  {q.email} · {q.phone} · CNPJ {q.cnpj}
+                  {q.email} · {q.phone}
+                  {q.cnpj && <> · CNPJ {q.cnpj}</>}
+                  {q.city && <> · {q.city}</>}
                 </p>
                 <p className="mt-1 text-xs text-tertiary">
-                  {q.purpose} · {new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(q.createdAt)}
+                  {q.purpose && <>{q.purpose} · </>}
+                  {new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(q.createdAt)}
                 </p>
               </div>
               <QuoteStatusSelect id={q.id} status={q.status} />

@@ -2,17 +2,22 @@
 
 import { useState } from 'react';
 import { ProductCard, type CardProduct } from '@/components/ProductCard';
+import { CategoryGroupSection } from '@/components/catalog/CategoryGroupSection';
 import { filterProductsByTag } from '@/server/actions/catalog';
 import type { getFilterTaxonomy } from '@/server/catalog';
+import type { ProductGroup } from '@/lib/catalogGrouping';
 
 type Taxonomy = Awaited<ReturnType<typeof getFilterTaxonomy>>;
 
 export function CatalogClient({
   initialProducts,
   taxonomy,
+  groups,
 }: {
   initialProducts: CardProduct[];
   taxonomy: Taxonomy | null;
+  /** Quando presente, exibe carrosséis agrupados (por categoria em "Todos", por subcategoria em Mãos Seguras) em vez da grade — igual ao protótipo, só some durante busca/filtro. */
+  groups?: ProductGroup[] | null;
 }) {
   const [query, setQuery] = useState('');
   const [applicationKey, setApplicationKey] = useState<string | null>(null);
@@ -67,6 +72,7 @@ export function CatalogClient({
     : baseProducts;
 
   const filterActive = filteredProducts !== null;
+  const showGrouped = !!groups && groups.length > 0 && !filterActive && !q;
 
   return (
     <div className="flex-1">
@@ -115,11 +121,13 @@ export function CatalogClient({
                   <button
                     key={m.key}
                     onClick={() => selectModel(m.key, m.configs.length > 0)}
-                    className={`rounded-xl border p-3 text-center text-xs font-semibold transition ${
-                      modelKey === m.key ? 'border-brand bg-surface-badge text-brand' : 'border-border text-muted-2 hover:border-brand'
+                    className={`flex flex-col items-center gap-1.5 rounded-xl border-2 p-2 text-center text-xs font-semibold transition ${
+                      modelKey === m.key ? 'border-brand text-brand' : 'border-border-soft text-muted-2 hover:border-brand'
                     }`}
                   >
-                    {m.label}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={`/assets/filtro/${m.key}.png`} alt="" className="h-[58px] w-full object-contain" />
+                    <span className="leading-tight">{m.label}</span>
                   </button>
                 ))}
               </div>
@@ -160,21 +168,31 @@ export function CatalogClient({
         </div>
       )}
 
-      <div className="mb-6 flex items-baseline justify-between">
-        <p className="text-sm font-bold text-ink">{visibleProducts.length} produtos</p>
-        <p className="text-sm text-tertiary">Preços e prazos sob consulta</p>
-      </div>
-
-      {visibleProducts.length === 0 ? (
-        <p className="rounded-xl border border-border-soft bg-white px-6 py-10 text-center text-sm text-tertiary">
-          Nenhum produto encontrado.
-        </p>
-      ) : (
-        <div className="jg-card-grid grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {visibleProducts.map((p) => (
-            <ProductCard key={p.id} product={p} />
+      {showGrouped ? (
+        <div className="flex flex-col gap-[52px]">
+          {groups!.map((g) => (
+            <CategoryGroupSection key={g.name} group={g} />
           ))}
         </div>
+      ) : (
+        <>
+          <div className="mb-6 flex items-baseline justify-between">
+            <p className="text-sm font-bold text-ink">{visibleProducts.length} produtos</p>
+            <p className="text-sm text-tertiary">Preços e prazos sob consulta</p>
+          </div>
+
+          {visibleProducts.length === 0 ? (
+            <p className="rounded-xl border border-border-soft bg-white px-6 py-10 text-center text-sm text-tertiary">
+              Nenhum produto encontrado.
+            </p>
+          ) : (
+            <div className="jg-card-grid grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {visibleProducts.map((p) => (
+                <ProductCard key={p.id} product={p} variant="catalog" />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

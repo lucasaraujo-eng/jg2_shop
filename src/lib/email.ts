@@ -12,8 +12,10 @@ type QuotePayload = {
   name: string;
   email: string;
   phone: string;
-  cnpj: string;
-  purpose: string;
+  company?: string | null;
+  city?: string | null;
+  cnpj?: string | null;
+  purpose?: string | null;
   message?: string | null;
   items: QuoteItem[];
 };
@@ -85,8 +87,10 @@ export async function sendQuoteEmails(q: QuotePayload): Promise<void> {
       <p><strong>Cliente:</strong> ${escapeHtml(q.name)}<br/>
          <strong>E-mail:</strong> ${escapeHtml(q.email)}<br/>
          <strong>Telefone:</strong> ${escapeHtml(q.phone)}<br/>
-         <strong>CNPJ:</strong> ${escapeHtml(q.cnpj)}<br/>
-         <strong>Finalidade:</strong> ${escapeHtml(q.purpose)}</p>
+         ${q.company ? `<strong>Empresa:</strong> ${escapeHtml(q.company)}<br/>` : ''}
+         ${q.city ? `<strong>Cidade/UF:</strong> ${escapeHtml(q.city)}<br/>` : ''}
+         ${q.cnpj ? `<strong>CNPJ:</strong> ${escapeHtml(q.cnpj)}<br/>` : ''}
+         ${q.purpose ? `<strong>Finalidade:</strong> ${escapeHtml(q.purpose)}<br/>` : ''}</p>
       ${q.message ? `<p><strong>Mensagem:</strong><br/>${escapeHtml(q.message)}</p>` : ''}
       <h3>Itens</h3>
       ${itemsTable(q.items)}

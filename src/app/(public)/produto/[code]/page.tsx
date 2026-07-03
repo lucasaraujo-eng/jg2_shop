@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getProductByCode, getRelatedProducts } from '@/server/catalog';
-import { ProductGallery } from '@/components/product/ProductGallery';
-import { PurchasePanel } from '@/components/product/PurchasePanel';
+import { productSupportTitle } from '@/lib/catalogText';
+import { ProductMediaAndPurchase } from '@/components/product/ProductMediaAndPurchase';
 import { ProductTabs } from '@/components/product/ProductTabs';
 import { ProductCarousel } from '@/components/ProductCarousel';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
@@ -17,7 +17,6 @@ export default async function ProductPage({
   if (!product) notFound();
 
   const related = await getRelatedProducts(product.categoryId, product.id);
-  const cover = product.images[0]?.url ?? null;
 
   return (
     <div>
@@ -33,39 +32,16 @@ export default async function ProductPage({
       </div>
 
       <div className="mx-auto max-w-[1340px] px-7 py-8">
-        <div className="grid gap-12 lg:grid-cols-2">
-          <ProductGallery images={product.images} name={product.name} />
-
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="rounded-full bg-surface-badge px-3 py-1 text-xs font-bold text-brand">{product.category.name}</span>
-              <span className="rounded-full bg-surface-alt px-3 py-1 text-xs font-bold text-tertiary">JG2®</span>
-            </div>
-            <h1 className="mt-3 font-display text-3xl font-black leading-tight text-ink">{product.name}</h1>
-
-            <dl className="mt-6 grid grid-cols-3 gap-y-2 border-y border-border-soft py-4 text-sm">
-              <dt className="text-tertiary">Marca</dt>
-              <dd className="col-span-2 font-semibold text-ink">JG2®</dd>
-              <dt className="text-tertiary">SKU</dt>
-              <dd className="col-span-2 font-mono text-ink">{product.code}</dd>
-              {product.ncm && (
-                <>
-                  <dt className="text-tertiary">NCM</dt>
-                  <dd className="col-span-2 font-mono text-ink">{product.ncm}</dd>
-                </>
-              )}
-            </dl>
-
-            <PurchasePanel
-              productId={product.id}
-              code={product.code}
-              name={product.name}
-              image={cover}
-              isCadeado={product.isCadeado}
-              variants={product.variants}
-            />
-          </div>
-        </div>
+        <ProductMediaAndPurchase
+          productId={product.id}
+          code={product.code}
+          name={product.name}
+          ncm={product.ncm}
+          categoryName={product.category.name}
+          images={product.images}
+          isCadeado={product.isCadeado}
+          variants={product.variants}
+        />
 
         <div className="mt-16 gap-10 lg:flex">
           <ProductTabs />
@@ -109,23 +85,33 @@ export default async function ProductPage({
               </section>
             )}
 
-            {product.specs.length > 0 && (
-              <section id="prod-sec-especificacoes" className="mt-14 scroll-mt-[100px]">
-                <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">
-                  Especificações técnicas
-                </h2>
-                <table className="mt-5 w-full text-sm">
-                  <tbody>
-                    {product.specs.map((s) => (
-                      <tr key={s.id} className="border-b border-border-soft">
-                        <td className="w-[130px] py-2.5 pr-3 font-semibold text-muted-2 sm:w-[200px] sm:pr-4">{s.label}</td>
-                        <td className="py-2.5">{s.value}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </section>
-            )}
+            <section id="prod-sec-especificacoes" className="mt-14 scroll-mt-[100px]">
+              <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">
+                Especificações técnicas
+              </h2>
+              <table className="mt-5 w-full max-w-[620px] text-sm">
+                <tbody>
+                  <tr className="border-b border-border-soft">
+                    <td className="w-[130px] py-2.5 pr-3 font-semibold text-muted-2 sm:w-[200px] sm:pr-4">Marca</td>
+                    <td className="py-2.5">JG2®</td>
+                  </tr>
+                  <tr className="border-b border-border-soft">
+                    <td className="w-[130px] py-2.5 pr-3 font-semibold text-muted-2 sm:w-[200px] sm:pr-4">SKU</td>
+                    <td className="py-2.5">{product.code}</td>
+                  </tr>
+                  <tr className="border-b border-border-soft">
+                    <td className="w-[130px] py-2.5 pr-3 font-semibold text-muted-2 sm:w-[200px] sm:pr-4">Categoria</td>
+                    <td className="py-2.5">{product.category.name}</td>
+                  </tr>
+                  {product.specs.map((s) => (
+                    <tr key={s.id} className="border-b border-border-soft">
+                      <td className="w-[130px] py-2.5 pr-3 font-semibold text-muted-2 sm:w-[200px] sm:pr-4">{s.label}</td>
+                      <td className="py-2.5">{s.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
           </div>
         </div>
 
@@ -144,7 +130,7 @@ export default async function ProductPage({
       {product.supportText && (
         <section className="mx-auto max-w-[880px] px-7 py-16">
           <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">
-            A importância deste produto para a segurança na indústria
+            {productSupportTitle(product.name)}
           </h2>
           <div className="mt-5 whitespace-pre-line leading-relaxed text-muted">{product.supportText}</div>
         </section>

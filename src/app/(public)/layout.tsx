@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { CartDrawer } from '@/components/CartDrawer';
 import { ScrollReveal } from '@/components/ScrollReveal';
+import { WhatsAppFloat } from '@/components/WhatsAppFloat';
 import { getCategories } from '@/server/catalog';
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -13,13 +14,13 @@ export default async function PublicLayout({ children }: { children: React.React
       <main className="min-h-screen flex-1">{children}</main>
       <CartDrawer />
       <ScrollReveal />
+      <WhatsAppFloat />
 
       <footer className="bg-surface-footer">
         <div className="mx-auto grid max-w-[1340px] grid-cols-2 gap-10 px-7 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
-            <p className="font-display text-xl font-black text-ink">
-              JG2<span className="text-brand">®</span>
-            </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/assets/jg2-logo.png" alt="JG2" className="h-10 w-auto" />
             <p className="mt-4 max-w-xs text-sm text-muted-2">
               Nosso time de especialistas está pronto para apresentar as soluções LOTO da JG2.
             </p>
@@ -36,9 +37,21 @@ export default async function PublicLayout({ children }: { children: React.React
                   Home
                 </Link>
               </li>
-              <li>Serviços</li>
-              <li>Software</li>
-              <li>Sobre nós</li>
+              <li>
+                <Link href="/servicos" className="hover:text-brand">
+                  Serviços
+                </Link>
+              </li>
+              <li>
+                <Link href="/servicos/lototo#software" className="hover:text-brand">
+                  Software
+                </Link>
+              </li>
+              <li>
+                <Link href="/sobre" className="hover:text-brand">
+                  Sobre nós
+                </Link>
+              </li>
               <li>
                 <Link href="/orcamento" className="hover:text-brand">
                   Orçamento

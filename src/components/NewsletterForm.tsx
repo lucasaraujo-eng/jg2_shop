@@ -22,8 +22,8 @@ export function NewsletterForm({ ctaLabel = 'Assinar agora →' }: { ctaLabel?: 
       }}
       className="flex flex-col gap-3 sm:flex-row"
     >
-      <input required placeholder="Nome*" className="flex-1 rounded-full border border-border px-5 py-3 text-sm outline-none focus:border-brand" />
-      <input required type="email" placeholder="Email*" className="flex-1 rounded-full border border-border px-5 py-3 text-sm outline-none focus:border-brand" />
+      <input required placeholder="Nome *" className="flex-1 rounded-full border border-border px-5 py-3 text-sm outline-none focus:border-brand" />
+      <input required type="email" placeholder="Email *" className="flex-1 rounded-full border border-border px-5 py-3 text-sm outline-none focus:border-brand" />
       <button type="submit" className="flex-none rounded-full bg-brand px-6 py-3 text-sm font-bold text-white transition hover:bg-brand-dark">
         {ctaLabel}
       </button>
