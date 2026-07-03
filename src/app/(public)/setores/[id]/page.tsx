@@ -46,8 +46,10 @@ export default async function SetorPage({
       </section>
 
       <article className="mx-auto max-w-[820px] px-7 py-12">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={sector.img} alt={sector.name} className="mb-10 h-[380px] w-full rounded-2xl object-cover shadow-lg" />
+        <div className="group mb-10 h-[380px] w-full overflow-hidden rounded-2xl shadow-lg">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={sector.img} alt={sector.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        </div>
 
         <h2 className="font-display text-2xl font-black text-ink">O setor</h2>
         <div className="mt-4 mb-11 flex flex-col gap-5">
@@ -84,9 +86,9 @@ export default async function SetorPage({
           energia à proteção das mãos e à conformidade das máquinas.
         </p>
 
-        <div className="mb-5.5 overflow-hidden rounded-2xl border border-border-soft">
+        <div className="group mb-5.5 overflow-hidden rounded-2xl border border-border-soft">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/uploads/banner-lototo.jpg" alt="" className="h-[200px] w-full object-cover" />
+          <img src="/uploads/banner-lototo.jpg" alt="" className="h-[200px] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
           <div className="p-7">
             <span className="mb-3 inline-block rounded-full bg-surface-badge px-3 py-1.5 text-xs font-bold text-brand">
               Bloqueio e Etiquetagem (LOTO)
@@ -102,9 +104,9 @@ export default async function SetorPage({
           </div>
         </div>
 
-        <div className="mb-5.5 overflow-hidden rounded-2xl border border-border-soft">
+        <div className="group mb-5.5 overflow-hidden rounded-2xl border border-border-soft">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/uploads/banner-maos.png" alt="" className="h-[200px] w-full object-cover" />
+          <img src="/uploads/banner-maos.png" alt="" className="h-[200px] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
           <div className="p-7">
             <span className="mb-3 inline-block rounded-full px-3 py-1.5 text-xs font-bold text-maos" style={{ background: '#fdf0d8' }}>
               Mãos Seguras
@@ -120,9 +122,9 @@ export default async function SetorPage({
           </div>
         </div>
 
-        <div className="mb-12 overflow-hidden rounded-2xl border border-border-soft">
+        <div className="group mb-12 overflow-hidden rounded-2xl border border-border-soft">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/uploads/banner-nr12.jpg" alt="" className="h-[200px] w-full object-cover" />
+          <img src="/uploads/banner-nr12.jpg" alt="" className="h-[200px] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
           <div className="p-7">
             <span className="mb-3 inline-block rounded-full px-3 py-1.5 text-xs font-bold text-nr12" style={{ background: '#e9f3ec' }}>
               Adequação à NR-12

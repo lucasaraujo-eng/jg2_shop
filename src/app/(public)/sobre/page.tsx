@@ -95,8 +95,10 @@ export default function SobrePage() {
               sinalização, cabines e salas, escadas, plataformas, meios de acesso e dispositivos mãos seguras.
             </p>
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/uploads/sobre/p-producao.jpg" alt="Produção JG2" className="h-[420px] w-full rounded-3xl object-cover shadow-xl" />
+          <div className="group h-[420px] w-full overflow-hidden rounded-3xl shadow-xl">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/uploads/sobre/p-producao.jpg" alt="Produção JG2" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+          </div>
         </div>
       </section>
 
@@ -116,8 +118,10 @@ export default function SobrePage() {
       {/* Especialidade */}
       <section className="mx-auto max-w-[1340px] px-7 py-20">
         <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/uploads/sobre/p-solda.jpg" alt="Solda JG2" className="order-2 h-[400px] w-full rounded-3xl object-cover shadow-xl lg:order-1" />
+          <div className="group order-2 h-[400px] w-full overflow-hidden rounded-3xl shadow-xl lg:order-1">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/uploads/sobre/p-solda.jpg" alt="Solda JG2" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+          </div>
           <div className="order-1 lg:order-2">
             <p className="font-mono text-xs uppercase tracking-widest text-brand">Nossa especialidade</p>
             <h2 className="mt-3 font-display text-3xl font-black leading-tight text-ink sm:text-4xl">
@@ -219,8 +223,10 @@ export default function SobrePage() {
               controle em cada etapa e mais confiança para quem depende de soluções robustas e seguras.
             </p>
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/uploads/sobre/p-empilhadeira.jpg" alt="Estrutura JG2" className="h-[420px] w-full rounded-3xl object-cover shadow-xl" />
+          <div className="group h-[420px] w-full overflow-hidden rounded-3xl shadow-xl">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/uploads/sobre/p-empilhadeira.jpg" alt="Estrutura JG2" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+          </div>
         </div>
       </section>
 

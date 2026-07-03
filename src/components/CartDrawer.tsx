@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
 import { QuoteFormFields, isQuoteFormValid, type QuoteFormValue } from '@/components/QuoteFormFields';
+import { resolveImageUrl } from '@/lib/utils';
 
 const EMPTY_FORM: QuoteFormValue = { name: '', email: '', phone: '', cnpj: '', purpose: '', message: '' };
 
@@ -91,9 +92,16 @@ export function CartDrawer() {
                     <EmptyState onClose={handleClose} />
                   ) : (
                     <ul className="flex flex-col gap-4">
-                      {items.map((i) => (
+                      {items.map((i) => {
+                        const image = resolveImageUrl(i.image);
+                        return (
                         <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex min-w-0 gap-3 text-sm">
-                          <div className="h-14 w-14 flex-none rounded-lg border border-border-soft bg-surface-alt" />
+                          <div className="flex h-14 w-14 flex-none items-center justify-center overflow-hidden rounded-lg border border-border-soft bg-surface-alt">
+                            {image && (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={image} alt="" className="h-full w-full object-contain" />
+                            )}
+                          </div>
                           <div className="min-w-0 flex-1">
                             <p className="truncate font-semibold text-ink">{i.name}</p>
                             <p className="truncate font-mono text-xs text-tertiary">
@@ -126,7 +134,8 @@ export function CartDrawer() {
                             🗑
                           </button>
                         </li>
-                      ))}
+                        );
+                      })}
                     </ul>
                   )}
                 </div>

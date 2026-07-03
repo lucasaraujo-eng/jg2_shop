@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
 import { PageQuoteFormFields, isPageQuoteFormValid, type PageQuoteFormValue } from '@/components/PageQuoteFormFields';
+import { resolveImageUrl } from '@/lib/utils';
 
 const EMPTY_FORM: PageQuoteFormValue = { name: '', company: '', email: '', phone: '', city: '', message: '' };
 
@@ -108,9 +109,16 @@ export default function OrcamentoPage() {
             </div>
 
             <ul className="flex flex-col gap-3">
-              {items.map((i) => (
+              {items.map((i) => {
+                const image = resolveImageUrl(i.image);
+                return (
                 <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex items-start gap-4 rounded-xl border border-border-soft bg-white p-4">
-                  <div className="h-16 w-16 flex-none rounded-lg border border-border-soft bg-surface-alt" />
+                  <div className="flex h-16 w-16 flex-none items-center justify-center overflow-hidden rounded-lg border border-border-soft bg-surface-alt">
+                    {image && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={image} alt="" className="h-full w-full object-contain" />
+                    )}
+                  </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-semibold text-ink">{i.name}</p>
                     <p className="truncate font-mono text-xs text-tertiary">
@@ -144,7 +152,8 @@ export default function OrcamentoPage() {
                     🗑
                   </button>
                 </li>
-              ))}
+                );
+              })}
             </ul>
 
             <Link href="/produtos" className="mt-6 inline-block text-sm font-bold text-brand hover:underline">

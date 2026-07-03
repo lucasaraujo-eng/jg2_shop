@@ -48,12 +48,14 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
               ))}
             </div>
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={data.problemImg}
-            alt=""
-            className={`h-[340px] w-full rounded-2xl bg-white ${data.problemFit === 'contain' ? 'object-contain p-6' : 'object-cover'}`}
-          />
+          <div className="group h-[340px] w-full overflow-hidden rounded-2xl bg-white">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={data.problemImg}
+              alt=""
+              className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${data.problemFit === 'contain' ? 'object-contain p-6' : 'object-cover'} ${data.problemPosition === 'top' ? 'object-top' : ''}`}
+            />
+          </div>
         </div>
       </section>
 
@@ -121,12 +123,12 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
           >
             <div className="flex w-max gap-6 hover:[animation-play-state:paused]" style={{ animation: 'jg-marquee 48s linear infinite' }}>
               {[...data.showcase, ...data.showcase].map((item, i) => (
-                <div key={`${item.title}-${i}`} className="flex w-[412px] flex-none flex-col overflow-hidden rounded-2xl border border-border-soft bg-white">
+                <div key={`${item.title}-${i}`} className="group flex w-[412px] flex-none flex-col overflow-hidden rounded-2xl border border-border-soft bg-white">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.img}
                     alt=""
-                    className={`h-[240px] w-full border-b border-border-soft bg-white ${item.fit === 'contain' ? 'object-contain p-6' : 'object-cover'}`}
+                    className={`h-[240px] w-full border-b border-border-soft bg-white transition-transform duration-500 group-hover:scale-105 ${item.fit === 'contain' ? 'object-contain p-6' : 'object-cover'} ${item.position === 'top' ? 'object-top' : ''}`}
                   />
                   <div className="flex flex-1 flex-col p-6">
                     <h3 className="text-lg font-bold leading-snug text-ink">{item.title}</h3>
