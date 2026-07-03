@@ -77,6 +77,16 @@ body {
   color: #fff;
 }
 
+/* Esconde a barra de rolagem nativa dos carrosséis horizontais (ex.: ProductCarousel,
+   ClientsMarquee) — a navegação fica só pelas setas/arraste, sem o scrollbar do navegador. */
+.jg-noscroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.jg-noscroll::-webkit-scrollbar {
+  display: none;
+}
+
 /* ===================== Animações do protótipo ===================== */
 @keyframes jg-up {
   from {

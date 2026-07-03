@@ -1,27 +1,34 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { ProductCard, type CardProduct } from '@/components/ProductCard';
 
-const STEP = 288;
-const AUTOPLAY_INTERVAL = 3500;
-
-export function ProductCarousel({
-  products,
-  variant = 'compact',
+/**
+ * Carrossel horizontal genérico — setas + barra de progresso, mesma
+ * interação do ProductCarousel, mas recebendo qualquer conteúdo como filhos
+ * (ex.: tiles de setor) em vez de só CardProduct.
+ *
+ * `autoPlay` faz uma rolagem contínua e lenta (não aos saltos), indo e
+ * voltando entre as pontas — pausa ao passar o mouse ou tocar.
+ */
+export function ScrollCarousel({
+  children,
   autoPlay = false,
+  speed = 35,
 }: {
-  products: CardProduct[];
-  variant?: 'compact' | 'catalog';
-  /** Avança sozinho a cada alguns segundos; pausa ao passar o mouse ou tocar. */
+  children: React.ReactNode;
   autoPlay?: boolean;
+  /** Pixels por segundo da rolagem automática. */
+  speed?: number;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
+  const dirRef = useRef<1 | -1>(1);
   const [progress, setProgress] = useState(0);
 
   function scroll(dir: 1 | -1) {
-    trackRef.current?.scrollBy({ left: dir * STEP, behavior: 'smooth' });
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth * 0.85, behavior: 'smooth' });
   }
 
   function handleScroll() {
@@ -35,22 +42,35 @@ export function ProductCarousel({
     if (!autoPlay) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const id = setInterval(() => {
+    let raf: number;
+    let last: number | null = null;
+
+    function tick(now: number) {
       const el = trackRef.current;
-      if (!el || pausedRef.current || document.hidden) return;
-      const max = el.scrollWidth - el.clientWidth;
-      if (max <= 0) return;
-      if (el.scrollLeft >= max - 4) {
-        el.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        el.scrollBy({ left: STEP, behavior: 'smooth' });
+      if (last === null) last = now;
+      const dt = now - last;
+      last = now;
+
+      if (el && !pausedRef.current && !document.hidden) {
+        const max = el.scrollWidth - el.clientWidth;
+        if (max > 0) {
+          let next = el.scrollLeft + dirRef.current * speed * (dt / 1000);
+          if (next >= max) {
+            next = max;
+            dirRef.current = -1;
+          } else if (next <= 0) {
+            next = 0;
+            dirRef.current = 1;
+          }
+          el.scrollLeft = next;
+        }
       }
-    }, AUTOPLAY_INTERVAL);
+      raf = requestAnimationFrame(tick);
+    }
 
-    return () => clearInterval(id);
-  }, [autoPlay]);
-
-  if (products.length === 0) return null;
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [autoPlay, speed]);
 
   return (
     <div
@@ -67,14 +87,9 @@ export function ProductCarousel({
       <div
         ref={trackRef}
         onScroll={handleScroll}
-        className="jg-noscroll flex gap-5 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        style={{ scrollSnapType: 'x mandatory' }}
+        className="jg-noscroll flex gap-4 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {products.map((p) => (
-          <div key={p.id} className="w-[268px] flex-none" style={{ scrollSnapAlign: 'start' }}>
-            <ProductCard product={p} variant={variant} />
-          </div>
-        ))}
+        {children}
       </div>
       <div className="mt-5 flex items-center gap-4">
         <div className="flex flex-none gap-3">
