@@ -40,6 +40,10 @@ yarn-error.log*
 # protótipo de referência — não faz parte do app, não versionar (ver AGENTS.md)
 /prototipo-export-nextjs/
 
+# fotos-fonte dos produtos — já migradas para o R2 (ver scripts/upload-product-covers.ts),
+# não versionar (pasta grande, conteúdo duplicado do que já está no bucket)
+/public/Produtos/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

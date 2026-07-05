@@ -146,7 +146,7 @@ export default async function HomePage() {
         <video autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover">
           <source src="/assets/hero.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-deep via-ink-deep/95 to-ink-deep/70" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-deep/80 via-ink-deep/45 to-ink-deep/10" />
         <div className="relative mx-auto w-full max-w-[1340px] px-7 sm:flex sm:flex-col sm:justify-center sm:self-stretch">
           <div className="max-w-3xl">
             <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Grupo JG2</p>
