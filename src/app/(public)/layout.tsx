@@ -96,7 +96,7 @@ export default async function PublicLayout({ children }: { children: React.React
             <ul className="mt-4 flex flex-col gap-2 text-sm text-muted-2">
               <li>+55 19 3500 8210</li>
               <li>+55 19 99407 3970</li>
-              <li>Rua José Gallo, 258 — Vista Alegre, Vinhedo–SP</li>
+              <li>R. das Palmeiras, 95 - Distrito Industrial, Timóteo - MG, 35181-672</li>
             </ul>
           </div>
         </div>
