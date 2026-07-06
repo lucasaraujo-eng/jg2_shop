@@ -83,7 +83,7 @@ export default function ContatoPage() {
               <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-white/15 text-lg">📍</span>
               <div>
                 <p className="text-sm font-bold text-white">Endereço</p>
-                <p className="text-[13.5px] text-white/60">Rua José Gallo, 258 · Vista Alegre · Vinhedo–SP</p>
+                <p className="text-[13.5px] text-white/60">R. das Palmeiras, 95 - Distrito Industrial, Timóteo - MG, 35181-672</p>
               </div>
             </div>
           </div>

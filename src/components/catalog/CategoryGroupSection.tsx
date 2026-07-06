@@ -1,8 +1,8 @@
-import { ProductCarousel } from '@/components/ProductCarousel';
+import { ProductCard } from '@/components/ProductCard';
 import type { ProductGroup } from '@/lib/catalogGrouping';
 import { slugify } from '@/lib/utils';
 
-/** Uma seção de grupo (categoria/subcategoria) no catálogo agrupado — heading, descrição e carrossel ou estado vazio. */
+/** Uma seção de grupo (categoria/subcategoria) no catálogo agrupado — heading, descrição e grade com todos os produtos, ou estado vazio. */
 export function CategoryGroupSection({ group }: { group: ProductGroup }) {
   return (
     <div id={slugify(group.name)} className="scroll-mt-[140px]">
@@ -14,7 +14,11 @@ export function CategoryGroupSection({ group }: { group: ProductGroup }) {
             Produtos desta categoria em breve.
           </div>
         ) : (
-          <ProductCarousel products={group.products} variant="catalog" />
+          <div className="jg-card-grid grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {group.products.map((p) => (
+              <ProductCard key={p.id} product={p} variant="catalog" />
+            ))}
+          </div>
         )}
       </div>
     </div>

@@ -3,26 +3,52 @@ import { SectionNav } from '@/components/downloads/SectionNav';
 
 type Doc = { tag: string; title: string; desc: string; meta: string; url?: string };
 
+const R2 = 'https://pub-c1e6b187e70f4fa69bdd79429ed7c8c2.r2.dev/catalogos';
+
 const DOCS_CATALOGOS: Doc[] = [
-  { tag: 'Catálogo geral', title: 'Catálogo de Produtos JG2 — Linha LOTO', desc: 'Linha completa de cadeados, garras, etiquetas, bloqueios de válvula e elétricos.', meta: 'PDF · 8,4 MB' },
-  { tag: 'Catálogo', title: 'Dispositivos de Bloqueio de Válvulas', desc: 'Soluções para válvulas esfera, gaveta e borboleta em diversos diâmetros.', meta: 'PDF · 3,1 MB' },
-  { tag: 'Portfólio', title: 'Cadeados e Garras de Bloqueio', desc: 'Modelos, materiais, opções de chaveamento e identificação por cores.', meta: 'PDF · 2,7 MB' },
+  {
+    tag: 'Catálogo geral',
+    title: 'Segurança Industrial — Catálogo JG2®',
+    desc: 'Portfólio completo de soluções em segurança industrial do Grupo JG2.',
+    meta: 'PDF · 15 MB',
+    url: `${R2}/seguranca-industrial.pdf`,
+  },
+  {
+    tag: 'Catálogo',
+    title: 'Dispositivos de Bloqueio e Etiquetagem (LOTOTO)',
+    desc: 'Linha completa de cadeados, garras, etiquetas e bloqueios de válvula e elétricos.',
+    meta: 'PDF · 59 MB',
+    url: `${R2}/lototo-bloqueio-etiquetagem.pdf`,
+  },
+  {
+    tag: 'Catálogo',
+    title: 'Dispositivos Mãos Seguras',
+    desc: 'Proteções e dispositivos para prevenção de acidentes com as mãos.',
+    meta: 'PDF · 12 MB',
+    url: `${R2}/maos-seguras.pdf`,
+  },
+  {
+    tag: 'Catálogo',
+    title: 'Gradil de Segurança',
+    desc: 'Grades e barreiras modulares para delimitação e proteção de áreas de risco.',
+    meta: 'PDF · 31 MB',
+    url: `${R2}/gradis-seguranca.pdf`,
+  },
 ];
 
 const DOCS_NORMAS: Doc[] = [
-  { tag: 'NR-12', title: 'Guia de Adequação à NR-12', desc: 'Boas práticas, exigências e checklist para conformidade com a NR-12.', meta: 'PDF · 3,8 MB' },
-  { tag: 'NR-10', title: 'Resumo Prático da NR-10', desc: 'Pontos de atenção em segurança em instalações e serviços com eletricidade.', meta: 'PDF · 2,2 MB' },
-];
-
-const DOCS_ARTIGOS: Doc[] = [
-  { tag: 'Manual', title: 'Manual de Implantação do LOTOTO', desc: 'Passo a passo para estruturar e padronizar seu programa de bloqueio.', meta: 'PDF · 4,9 MB' },
-  { tag: 'Ficha técnica', title: 'Fichas Técnicas — Etiquetas e Placas', desc: 'Especificações, dimensões e materiais das etiquetas de sinalização.', meta: 'PDF · 1,6 MB' },
+  {
+    tag: 'NR-12',
+    title: 'Adequação à NR-12',
+    desc: 'Guia de soluções JG2 para adequação de máquinas e equipamentos à NR-12.',
+    meta: 'PDF · 14 MB',
+    url: `${R2}/nr12-adequacao.pdf`,
+  },
 ];
 
 const SECTIONS = [
   { id: 'cat-sec-catalogos', label: 'Catálogos e Portfólios JG2®', docs: DOCS_CATALOGOS },
   { id: 'cat-sec-normas', label: 'Normas Regulamentadoras', docs: DOCS_NORMAS },
-  { id: 'cat-sec-artigos', label: 'Artigos e Manuais', docs: DOCS_ARTIGOS },
 ];
 
 function DocCard({ doc }: { doc: Doc }) {
