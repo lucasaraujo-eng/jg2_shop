@@ -16,12 +16,12 @@ export default async function PublicLayout({ children }: { children: React.React
       <ScrollReveal />
       <WhatsAppFloat />
 
-      <footer className="bg-surface-footer">
+      <footer className="bg-ink-deep">
         <div className="mx-auto grid max-w-[1340px] grid-cols-2 gap-10 px-7 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/jg2-logo.png" alt="JG2" className="h-16 w-auto" />
-            <p className="mt-4 max-w-xs text-sm text-muted-2">
+            <img src="/assets/jg2-logo-white.png" alt="JG2" className="h-16 w-auto" />
+            <p className="mt-4 max-w-xs text-sm text-white/70">
               Nosso time de especialistas está pronto para apresentar as soluções da JG2®.
             </p>
             <Link href="/contato" className="mt-4 inline-block text-sm font-bold text-brand hover:underline">
@@ -30,8 +30,8 @@ export default async function PublicLayout({ children }: { children: React.React
           </div>
 
           <div>
-            <p className="font-display text-sm font-black uppercase tracking-wide text-ink">Menu rápido</p>
-            <ul className="mt-4 flex flex-col gap-2 text-sm text-muted-2">
+            <p className="font-display text-sm font-black uppercase tracking-wide text-white">Menu rápido</p>
+            <ul className="mt-4 flex flex-col gap-2 text-sm text-white/70">
               <li>
                 <Link href="/" className="hover:text-brand">
                   Home
@@ -61,8 +61,8 @@ export default async function PublicLayout({ children }: { children: React.React
           </div>
 
           <div>
-            <p className="font-display text-sm font-black uppercase tracking-wide text-ink">Produtos</p>
-            <ul className="mt-4 flex flex-col gap-2 text-sm text-muted-2">
+            <p className="font-display text-sm font-black uppercase tracking-wide text-white">Produtos</p>
+            <ul className="mt-4 flex flex-col gap-2 text-sm text-white/70">
               <li>
                 <Link href="/produtos/cadeados-de-bloqueio" className="hover:text-brand">
                   Cadeados de Bloqueio
@@ -92,8 +92,8 @@ export default async function PublicLayout({ children }: { children: React.React
           </div>
 
           <div>
-            <p className="font-display text-sm font-black uppercase tracking-wide text-ink">Contato</p>
-            <ul className="mt-4 flex flex-col gap-2 text-sm text-muted-2">
+            <p className="font-display text-sm font-black uppercase tracking-wide text-white">Contato</p>
+            <ul className="mt-4 flex flex-col gap-2 text-sm text-white/70">
               <li>+55 31 9 9669-0692</li>
               <li>comercial@jg2ps.com.br</li>
               <li>R. das Palmeiras, 95 - Distrito Industrial, Timóteo - MG, 35181-672</li>
@@ -101,7 +101,7 @@ export default async function PublicLayout({ children }: { children: React.React
           </div>
         </div>
 
-        <div className="border-t border-border-soft py-6 text-center text-xs text-tertiary">
+        <div className="border-t border-white/10 py-6 text-center text-xs text-white/50">
           © {new Date().getFullYear()} JG2® Produtos de Segurança. Todos os direitos reservados.
         </div>
       </footer>
