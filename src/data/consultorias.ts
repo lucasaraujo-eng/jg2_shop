@@ -56,7 +56,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
     problemFit: 'contain',
     problemParas: [
       'Muitas empresas iniciam o programa, mas param no meio do caminho ou implantam apenas partes isoladas da solução. O resultado costuma ser o mesmo: matrizes incompletas, dispositivos mal definidos, equipe sem treinamento suficiente, falhas na verificação de energia zero e perda de consistência com o tempo.',
-      'Com a JG2, sua empresa evita esse cenário porque estrutura o controle de energias perigosas como um sistema completo, e não como uma ação pontual.',
+      'Com a JG2®, sua empresa evita esse cenário porque estrutura o controle de energias perigosas como um sistema completo, e não como uma ação pontual.',
     ],
     gainsTitle: 'O que sua empresa ganha com a adequação LOTOTO da JG2',
     gains: [
@@ -93,7 +93,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
       { title: 'Levantamento técnico em campo', desc: 'Mapeamento completo das fontes de energia perigosa, pontos de isolamento e condições reais de cada equipamento da planta.', img: '/uploads/loto/levantamento.png', fit: 'cover' },
       { title: 'Matrizes de bloqueio personalizadas', desc: 'Instrução visual de bloqueio de energia perigosa por equipamento — sequência, pontos, dispositivos e verificação de energia zero.', img: '/uploads/loto/matriz.png', fit: 'cover' },
       { title: 'Lista detalhada de dispositivos', desc: 'Relação técnica com modelos corretos e quantitativos ideais por turno, construída a partir dos pontos de isolamento mapeados.', img: '/uploads/loto/lista-dispositivos.png', fit: 'cover' },
-      { title: 'Dispositivos de bloqueio JG2®', desc: 'Cadeados, garras, bloqueios de válvula, etiquetas e caixas de bloqueio fabricados pela JG2 — alinhados ao projeto.', img: '/uploads/loto/produtos-loto.png', fit: 'contain' },
+      { title: 'Dispositivos de bloqueio JG2®', desc: 'Cadeados, garras, bloqueios de válvula, etiquetas e caixas de bloqueio fabricados pela JG2® — alinhados ao projeto.', img: '/uploads/loto/produtos-loto.png', fit: 'contain' },
       { title: 'Treinamento em Bloqueio, Etiquetagem e Teste (LOTOTO)', desc: 'Capacitação ampla das equipes sobre o programa de controle de energias perigosas, adequado às regras e procedimentos já existentes na empresa.', img: '/uploads/loto/treinamento.jpg', fit: 'cover' },
       { title: 'Auditoria periódica do programa', desc: 'Verificação em campo da aplicação dos bloqueios, conformidade dos procedimentos e gestão de mudanças para manter o programa vivo e confiável.', img: '/uploads/loto/auditoria-loto.png', fit: 'cover' },
     ],
@@ -134,7 +134,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
     problemFit: 'cover',
     problemParas: [
       'Muitas empresas contratam uma etapa com um fornecedor, outra com outro, e enfrentam o mesmo problema: documentação que não conversa com a execução, proteções mal definidas, necessidade de refazer estudos, atraso no cronograma e investimento maior do que o previsto.',
-      'Com a JG2, sua empresa conta com uma equipe que executa todas as etapas da adequação NR-12, com visão completa da máquina, da operação e do resultado final.',
+      'Com a JG2®, sua empresa conta com uma equipe que executa todas as etapas da adequação NR-12, com visão completa da máquina, da operação e do resultado final.',
     ],
     gainsTitle: 'O que sua empresa ganha com a JG2',
     gains: [
@@ -211,7 +211,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
     problemPosition: 'top',
     problemParas: [
       'Em muitas plantas o risco é conhecido, mas a solução não é tratada da forma certa. A empresa continua dependendo de hábito, atenção individual ou ferramenta inadequada para tarefas que deixam as mãos próximas da zona de perigo — o que aparece em forma de cortes, esmagamentos, perfurações e mutilações.',
-      'Com a JG2, sua empresa trata isso da forma correta: com engenharia aplicada à operação, não com improviso.',
+      'Com a JG2®, sua empresa trata isso da forma correta: com engenharia aplicada à operação, não com improviso.',
     ],
     gainsTitle: 'O que sua empresa ganha com a consultoria em Mãos Seguras',
     gains: [

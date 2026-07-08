@@ -207,7 +207,7 @@ export function Header({ categories }: { categories: Categories }) {
               <DropdownNav label="Serviços" active={isServicosActive} open={openMenu === 'servicos'} onToggle={() => setOpenMenu((m) => (m === 'servicos' ? null : 'servicos'))}>
                 <div className="p-2">
                   {SERVICOS_LINKS.map((l) => (
-                    <Link key={l.href} href={l.href} className="block rounded-lg px-3 py-2.5 text-sm font-semibold normal-case text-muted-3 hover:bg-surface-alt">
+                    <Link key={l.href} href={l.href} className="block rounded-lg px-3 py-2.5 text-sm font-semibold normal-case text-muted-3 transition hover:bg-surface-alt hover:text-brand">
                       {l.label}
                     </Link>
                   ))}
@@ -224,7 +224,7 @@ export function Header({ categories }: { categories: Categories }) {
               <DropdownNav label="Conteúdos" active={isConteudosActive} open={openMenu === 'conteudos'} onToggle={() => setOpenMenu((m) => (m === 'conteudos' ? null : 'conteudos'))}>
                 <div className="p-2">
                   {CONTEUDOS_LINKS.map((l) => (
-                    <Link key={l.href} href={l.href} className="block rounded-lg px-3 py-2.5 text-sm font-semibold normal-case text-muted-3 hover:bg-surface-alt">
+                    <Link key={l.href} href={l.href} className="block rounded-lg px-3 py-2.5 text-sm font-semibold normal-case text-muted-3 transition hover:bg-surface-alt hover:text-brand">
                       {l.label}
                     </Link>
                   ))}
@@ -289,13 +289,13 @@ function ProdutosDropdown({ active, open, onToggle, lotoItems, maosSeguras }: { 
           <div className="w-[280px] flex-none rounded-2xl border border-border-soft bg-white p-1.5 shadow-[0_12px_32px_rgba(20,18,16,.10)]">
             {hoverCat === 'loto'
               ? lotoItems.map((item) => (
-                  <Link key={item.slug} href={`/produtos/${item.slug}`} className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm normal-case text-muted-3 hover:bg-surface-alt">
+                  <Link key={item.slug} href={`/produtos/${item.slug}`} className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm normal-case text-muted-3 transition hover:bg-surface-alt hover:text-brand">
                     <span className="h-1.5 w-1.5 flex-none rounded-full bg-brand" />
                     {item.label}
                   </Link>
                 ))
               : maosSeguras?.subcategories.map((sub) => (
-                  <Link key={sub.id} href={`${maosHref}#${slugify(sub.name)}`} className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm normal-case text-muted-3 hover:bg-surface-alt">
+                  <Link key={sub.id} href={`${maosHref}#${slugify(sub.name)}`} className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm normal-case text-muted-3 transition hover:bg-surface-alt hover:text-brand">
                     <span className="h-1.5 w-1.5 flex-none rounded-full bg-brand" />
                     {sub.name}
                   </Link>
@@ -340,18 +340,18 @@ function MobileMenu({ categories, onClose }: { categories: Categories; onClose: 
           </Link>
 
           <p className="mt-3 px-3 font-mono text-[11px] uppercase tracking-wider text-brand">Produtos</p>
-          <Link href="/produtos" onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 hover:bg-surface-alt">
+          <Link href="/produtos" onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
             Bloqueio e Etiquetagem – LOTO
           </Link>
           {maosSegurasSlug && (
-            <Link href={`/produtos/${maosSegurasSlug}`} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 hover:bg-surface-alt">
+            <Link href={`/produtos/${maosSegurasSlug}`} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
               Mãos Seguras
             </Link>
           )}
 
           <p className="mt-3 px-3 font-mono text-[11px] uppercase tracking-wider text-brand">Serviços</p>
           {SERVICOS_LINKS.map((l) => (
-            <Link key={l.href} href={l.href} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 hover:bg-surface-alt">
+            <Link key={l.href} href={l.href} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
               {l.label}
             </Link>
           ))}
@@ -365,7 +365,7 @@ function MobileMenu({ categories, onClose }: { categories: Categories; onClose: 
 
           <p className="mt-3 px-3 font-mono text-[11px] uppercase tracking-wider text-brand">Conteúdos</p>
           {CONTEUDOS_LINKS.map((l) => (
-            <Link key={l.href} href={l.href} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 hover:bg-surface-alt">
+            <Link key={l.href} href={l.href} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
               {l.label}
             </Link>
           ))}

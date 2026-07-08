@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { getFeaturedProducts } from '@/server/catalog';
+import { getFeaturedProducts, getFilterTaxonomy } from '@/server/catalog';
 import { ProductCarousel } from '@/components/ProductCarousel';
 import { ScrollCarousel } from '@/components/ScrollCarousel';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
 import { FaqAccordion } from '@/components/FaqAccordion';
 import { NewsletterForm } from '@/components/NewsletterForm';
+import { DeviceFilterCard } from '@/components/home/DeviceFilterCard';
 
 /**
  * Home — as 14 seções do protótipo, na ordem original (ver
@@ -61,7 +62,7 @@ const SETORES = [
 const FAQS = [
   {
     q: 'O que torna a JG2 referência em segurança, conformidade e adequação industrial?',
-    a: 'A JG2 combina consultoria especializada, adequação técnica e fabricação própria para entregar soluções completas em segurança industrial. Nossa força está em atuar de forma integrada na implantação e adequação de Programas de Bloqueio, Etiquetagem e Teste (LOTOTO), no fornecimento de produtos de bloqueio com marca própria, na adequação completa à NR-12 e no desenvolvimento de soluções como dispositivos Mãos Seguras, cabines e salas industriais personalizadas e placas de sinalização. Assim, ajudamos a indústria a reduzir riscos, elevar a conformidade e fortalecer a segurança da operação com soluções aplicáveis à realidade da planta.',
+    a: 'A JG2® combina consultoria especializada, adequação técnica e fabricação própria para entregar soluções completas em segurança industrial. Nossa força está em atuar de forma integrada na implantação e adequação de Programas de Bloqueio, Etiquetagem e Teste (LOTOTO), no fornecimento de produtos de bloqueio com marca própria, na adequação completa à NR-12 e no desenvolvimento de soluções como dispositivos Mãos Seguras, cabines e salas industriais personalizadas e placas de sinalização. Assim, ajudamos a indústria a reduzir riscos, elevar a conformidade e fortalecer a segurança da operação com soluções aplicáveis à realidade da planta.',
   },
   {
     q: 'Como a JG2 entrega a adequação completa do programa LOTOTO?',
@@ -113,7 +114,7 @@ const FAQS = [
   },
   {
     q: 'Por que a JG2 é o parceiro técnico ideal para a sua indústria?',
-    a: 'Porque a JG2 entrega mais do que produtos ou serviços isolados. Nossa força está na atuação integrada entre consultoria técnica, adequação normativa, fabricação própria e suporte contínuo, sempre com foco em soluções aplicáveis à realidade da operação. Isso permite que a indústria conte com um parceiro capaz de diagnosticar, projetar, fabricar, implantar e sustentar melhorias em segurança industrial com visão técnica, consistência e compromisso de longo prazo.',
+    a: 'Porque a JG2® entrega mais do que produtos ou serviços isolados. Nossa força está na atuação integrada entre consultoria técnica, adequação normativa, fabricação própria e suporte contínuo, sempre com foco em soluções aplicáveis à realidade da operação. Isso permite que a indústria conte com um parceiro capaz de diagnosticar, projetar, fabricar, implantar e sustentar melhorias em segurança industrial com visão técnica, consistência e compromisso de longo prazo.',
   },
 ];
 
@@ -132,9 +133,10 @@ function sortByCodeOrder<T extends { code: string }>(items: T[], order: string[]
 }
 
 export default async function HomePage() {
-  const [featuredLoto, featuredMaos] = await Promise.all([
+  const [featuredLoto, featuredMaos, taxonomy] = await Promise.all([
     getFeaturedProducts(FEATURED_LOTO_CODES),
     getFeaturedProducts(FEATURED_MAOS_CODES),
+    getFilterTaxonomy(),
   ]);
   const loto = sortByCodeOrder(featuredLoto, FEATURED_LOTO_CODES);
   const maos = sortByCodeOrder(featuredMaos, FEATURED_MAOS_CODES);
@@ -178,30 +180,37 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 2. Banner "4 frentes" — cartão vermelho arredondado e contido (não é uma faixa full-bleed) */}
+      {/* 2. Banner "4 frentes" — carrossel de cartões (3 visíveis por vez, o 4º some e aparece rolando) */}
       <section className="mx-auto mt-8 max-w-[1340px] px-7">
-        <div className="overflow-hidden rounded-[20px] bg-brand text-white">
-          <div className="jg-card-grid grid grid-cols-1 divide-y divide-white/15 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
-            {FRENTES.map((f) => (
-              <Link key={f.title} href={f.href} className="group flex flex-col">
-                <div className="flex flex-1 flex-col justify-between gap-4 px-6 py-9">
-                  <div>
-                    <div className="mb-4 border-t border-white/30" />
-                    <h3 className="font-display text-xl font-bold leading-snug">{f.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-white/85">{f.text}</p>
-                  </div>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 transition group-hover:bg-white group-hover:text-brand">
-                    ↗
-                  </span>
+        <ScrollCarousel
+          autoPlay
+          loopToStart
+          gapClassName="gap-0"
+          trackClassName="divide-x divide-white/15 rounded-[20px] text-white"
+        >
+          {FRENTES.map((f, i) => (
+            <Link
+              key={f.title}
+              href={f.href}
+              className={`group flex w-full flex-none flex-col sm:w-1/2 lg:w-1/3 ${i % 2 === 0 ? 'bg-brand-dark' : 'bg-brand'}`}
+            >
+              <div className="flex flex-1 flex-col justify-between gap-4 px-8 py-10">
+                <div>
+                  <div className="mb-4 border-t border-white/30" />
+                  <h3 className="font-display text-2xl font-bold leading-snug">{f.title}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-white/85">{f.text}</p>
                 </div>
-                <div className="h-[200px] w-full overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={f.img} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 transition group-hover:bg-white group-hover:text-brand">
+                  ↗
+                </span>
+              </div>
+              <div className="h-[260px] w-full overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={f.img} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              </div>
+            </Link>
+          ))}
+        </ScrollCarousel>
       </section>
 
       {/* 3. Trust / marquee de clientes */}
@@ -233,28 +242,7 @@ export default async function HomePage() {
                 Encontrar meu bloqueio →
               </Link>
             </div>
-            <div className="rounded-2xl bg-white p-6 shadow-[0_24px_60px_rgba(0,0,0,.34)]">
-              <p className="font-mono text-xs uppercase tracking-widest text-brand">Tipo de aplicação</p>
-              <div className="mt-3 flex gap-2">
-                <span className="rounded-lg bg-brand px-4 py-2 text-[13.5px] font-bold text-white">Mecânico</span>
-                <span className="rounded-lg border border-border px-4 py-2 text-[13.5px] font-semibold text-muted-2">Elétrico</span>
-              </div>
-              <p className="mt-[18px] font-mono text-xs uppercase tracking-widest text-brand">Modelo do dispositivo</p>
-              <div className="mt-2.5 grid grid-cols-4 gap-2.5">
-                {[
-                  { label: 'Flange', file: 'flange' },
-                  { label: 'Válvula Borboleta', file: 'valv_borboleta' },
-                  { label: 'Válvula Esfera', file: 'valv_esfera' },
-                  { label: 'Válvula Registro', file: 'valv_registro' },
-                ].map((m) => (
-                  <div key={m.label} className="flex flex-col items-center gap-1.5 rounded-lg border-2 border-border-soft p-2">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={`/assets/filtro/${m.file}.png`} alt="" className="h-[54px] w-full object-contain" />
-                    <span className="text-center text-[10.5px] font-semibold leading-tight text-muted-2">{m.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <DeviceFilterCard taxonomy={taxonomy} />
           </div>
         </div>
       </section>
@@ -401,7 +389,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 13. Depoimentos */}
+      {/* 13. Depoimentos — TODO: citações fictícias (placeholder), ainda não temos depoimentos reais de clientes. Trocar por relatos reais antes de publicar. */}
       <section className="bg-ink-deeper py-18">
         <div className="mx-auto max-w-[1340px] px-7">
           <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Com a palavra, o cliente</p>
@@ -410,7 +398,7 @@ export default async function HomePage() {
             {[
               {
                 quote:
-                  'Somos clientes da JG2 pela qualidade. Nunca tivemos nenhuma reclamação dos nossos clientes — não há porque buscar outra marca.',
+                  'Somos clientes da JG2® pela qualidade. Nunca tivemos nenhuma reclamação dos nossos clientes — não há porque buscar outra marca.',
                 name: 'Carla Feil',
                 company: 'Protemar',
               },

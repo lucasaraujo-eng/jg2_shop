@@ -1,7 +1,9 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { getCategories, getAllProducts, getFilterTaxonomy } from '@/server/catalog';
 import { CategorySidebar } from '@/components/catalog/CategorySidebar';
 import { CatalogClient } from '@/components/catalog/CatalogClient';
+import { CatalogResultsLoading } from '@/components/Skeleton';
 import { buildCategoryGroups, toCardProducts } from '@/lib/catalogGrouping';
 
 /** "Todos" — mesma casca das páginas de categoria, com o filtro de dispositivos e os carrosséis agrupados por categoria (igual ao protótipo: banner e barra de filtro fixos, independente de a listagem incluir Mãos Seguras também). */
@@ -33,7 +35,9 @@ export default async function AllProductsPage() {
 
       <div className="mx-auto max-w-[1340px] gap-10 px-7 py-12 lg:flex">
         <CategorySidebar categories={categories} activeSlug={null} />
-        <CatalogClient initialProducts={cardProducts} taxonomy={taxonomy} groups={groups} />
+        <Suspense fallback={<CatalogResultsLoading />}>
+          <CatalogClient initialProducts={cardProducts} taxonomy={taxonomy} groups={groups} />
+        </Suspense>
       </div>
     </div>
   );

@@ -59,7 +59,7 @@ export default function ContatoPage() {
 
           <div className="mt-6 flex flex-col gap-3.5">
             <a
-              href="https://wa.me/5519994073970"
+              href="https://wa.me/5531996690692"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3.5 rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
@@ -67,7 +67,7 @@ export default function ContatoPage() {
               <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-success text-lg">📞</span>
               <div>
                 <p className="text-sm font-bold text-white">Telefone &amp; WhatsApp</p>
-                <p className="text-[13.5px] text-white/60">+55 19 3500 8210 · +55 19 99407 3970</p>
+                <p className="text-[13.5px] text-white/60">+55 31 9 9669-0692</p>
               </div>
             </a>
 

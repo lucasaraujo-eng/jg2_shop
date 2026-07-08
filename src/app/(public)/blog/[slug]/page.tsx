@@ -70,7 +70,7 @@ export default async function BlogPostPage({
         <div className="flex flex-wrap items-center gap-3.5 border-y border-border-soft py-6">
           <div className="h-13 w-13 flex-none rounded-full" style={STRIPE_BG} />
           <div className="min-w-[160px] flex-1">
-            <p className="font-bold text-ink">Equipe Técnica JG2</p>
+            <p className="font-bold text-ink">Equipe Técnica JG2®</p>
             <p className="text-sm text-tertiary">Especialistas em Lockout/Tagout e NR-12</p>
           </div>
           <Link href="/contato" className="flex-none rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand-dark">

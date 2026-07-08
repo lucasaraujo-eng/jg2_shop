@@ -85,7 +85,7 @@ export default function SobrePage() {
               Um parceiro estratégico da indústria, do projeto ao pós-venda
             </h2>
             <p className="mt-4 leading-relaxed text-muted-2">
-              O Grupo JG2 nasceu com o propósito de tornar o ambiente industrial mais seguro, mais eficiente e mais
+              O Grupo JG2® nasceu com o propósito de tornar o ambiente industrial mais seguro, mais eficiente e mais
               preparado para os desafios da operação moderna — unindo experiência técnica, capacidade fabril,
               conhecimento normativo e atendimento próximo ao cliente.
             </p>
@@ -97,7 +97,7 @@ export default function SobrePage() {
           </div>
           <div className="group h-[420px] w-full overflow-hidden rounded-3xl shadow-xl">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/uploads/sobre/p-producao.jpg" alt="Produção JG2" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+            <img src="/uploads/sobre/p-producao.jpg" alt="Produção JG2®" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
           </div>
         </div>
       </section>
@@ -120,7 +120,7 @@ export default function SobrePage() {
         <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
           <div className="group order-2 h-[400px] w-full overflow-hidden rounded-3xl shadow-xl lg:order-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/uploads/sobre/p-solda.jpg" alt="Solda JG2" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+            <img src="/uploads/sobre/p-solda.jpg" alt="Solda JG2®" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
           </div>
           <div className="order-1 lg:order-2">
             <p className="font-mono text-xs uppercase tracking-widest text-brand">Nossa especialidade</p>
@@ -215,8 +215,8 @@ export default function SobrePage() {
               Parque fabril de 8.000 m² para atender com qualidade e escala
             </h2>
             <p className="mt-4 leading-relaxed text-muted-2">
-              Estamos no Distrito Industrial de Timóteo, na Rua das Palmeiras, nº 95, com estrutura preparada para
-              desenvolver e fabricar soluções industriais com alto padrão de qualidade.
+              Estamos em R. das Palmeiras, 95 - Distrito Industrial, Timóteo - MG, 35181-672, com estrutura preparada
+              para desenvolver e fabricar soluções industriais com alto padrão de qualidade.
             </p>
             <p className="mt-4 leading-relaxed text-muted-2">
               Unimos engenharia, fabricação, personalização, agilidade de entrega e acompanhamento técnico — mais
@@ -225,7 +225,7 @@ export default function SobrePage() {
           </div>
           <div className="group h-[420px] w-full overflow-hidden rounded-3xl shadow-xl">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/uploads/sobre/p-empilhadeira.jpg" alt="Estrutura JG2" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+            <img src="/uploads/sobre/p-empilhadeira.jpg" alt="Estrutura JG2®" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
           </div>
         </div>
       </section>
@@ -275,7 +275,7 @@ export default function SobrePage() {
             </h2>
             <p className="mt-3 max-w-xl leading-relaxed text-white/80">
               Se a sua empresa busca uma parceira sólida para adequar operações às normas e implantar soluções com
-              respaldo e eficiência, o Grupo JG2 está pronto para atender.
+              respaldo e eficiência, o Grupo JG2® está pronto para atender.
             </p>
           </div>
           <div className="relative flex flex-wrap gap-3">

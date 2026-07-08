@@ -90,7 +90,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
               ))}
             </div>
             <Link href="/contato" className="mt-7 inline-flex items-center gap-3 font-bold text-white transition hover:gap-4">
-              <span className="text-xl">→</span> Falar com a JG2
+              <span className="text-xl">→</span> Falar com a JG2®
             </Link>
           </div>
         </div>
