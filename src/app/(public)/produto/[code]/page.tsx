@@ -47,7 +47,7 @@ export default async function ProductPage({
           <ProductTabs />
 
           <div className="min-w-0 flex-1">
-            <section id="prod-sec-downloads" className="scroll-mt-[100px]">
+            <section id="prod-sec-downloads" className="scroll-mt-[160px]">
               <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">DataSheet</h2>
               {product.datasheetUrl ? (
                 <a
@@ -70,7 +70,7 @@ export default async function ProductPage({
             </section>
 
             {product.description.length > 0 && (
-              <section id="prod-sec-caracteristicas" className="mt-14 scroll-mt-[100px]">
+              <section id="prod-sec-caracteristicas" className="mt-14 scroll-mt-[160px]">
                 <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">
                   Descrição do Produto
                 </h2>
@@ -85,7 +85,7 @@ export default async function ProductPage({
               </section>
             )}
 
-            <section id="prod-sec-especificacoes" className="mt-14 scroll-mt-[100px]">
+            <section id="prod-sec-especificacoes" className="mt-14 scroll-mt-[160px]">
               <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">
                 Especificações técnicas
               </h2>

@@ -162,7 +162,7 @@ export default function OrcamentoPage() {
           </div>
 
           <div className="mt-10 w-full flex-none lg:mt-0 lg:w-[380px]">
-            <div className="lg:sticky lg:top-[100px] rounded-2xl border border-border-soft bg-surface-card p-6">
+            <div className="lg:sticky lg:top-[160px] rounded-2xl border border-border-soft bg-surface-card p-6">
               <h2 className="font-display text-base font-black uppercase tracking-wide text-ink">Seus dados</h2>
               <p className="mb-4 mt-1 text-xs text-tertiary">
                 {totalQty} itens · {productCount} produtos

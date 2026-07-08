@@ -170,7 +170,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
 
       {/* Software JG2 Smart Loto — só na consultoria LOTO */}
       {data.software && (
-        <section id="software" className="mx-auto max-w-[1340px] scroll-mt-[140px] px-7 py-14">
+        <section id="software" className="mx-auto max-w-[1340px] scroll-mt-[160px] px-7 py-14">
           <div className="relative grid gap-11 overflow-hidden rounded-3xl bg-ink-deep p-9 sm:p-12 lg:grid-cols-2 lg:items-center">
             <div className="pointer-events-none absolute -bottom-16 -left-16 h-[260px] w-[260px] rounded-full bg-[radial-gradient(circle,rgba(181,32,43,.35),transparent_70%)]" />
             <div className="relative">

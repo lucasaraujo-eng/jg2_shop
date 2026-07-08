@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/stores/cart';
 import { resolveImageUrl } from '@/lib/utils';
@@ -23,24 +24,21 @@ export function ProductCard({ product, variant = 'compact' }: { product: CardPro
   const image = resolveImageUrl(product.images[0]?.url);
   const nextImage = resolveImageUrl(product.images[1]?.url);
   const href = `/produto/${encodeURIComponent(product.code)}`;
+  const [hovered, setHovered] = useState(false);
+  const shown = hovered && nextImage ? nextImage : image;
 
   if (variant === 'catalog') {
     return (
       <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border-soft bg-white transition hover:-translate-y-1 hover:shadow-xl">
-        <Link href={href} className="relative flex h-[190px] items-center justify-center overflow-hidden bg-white p-3">
-          {image ? (
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image} alt={product.name} className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110" />
-              {nextImage && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={nextImage}
-                  alt=""
-                  className="absolute inset-0 m-auto max-h-full max-w-full object-contain p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                />
-              )}
-            </>
+        <Link
+          href={href}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          className="flex h-[190px] items-center justify-center overflow-hidden bg-white p-3"
+        >
+          {shown ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={shown} alt={product.name} className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110" />
           ) : (
             <span className="text-center font-mono text-[11px] text-code">[ foto: {product.name} ]</span>
           )}
@@ -72,20 +70,15 @@ export function ProductCard({ product, variant = 'compact' }: { product: CardPro
 
   return (
     <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border-soft bg-white transition hover:-translate-y-1 hover:shadow-xl">
-      <Link href={href} className="relative flex h-[180px] items-center justify-center overflow-hidden bg-white p-3">
-        {image ? (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={image} alt={product.name} className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110" />
-            {nextImage && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={nextImage}
-                alt=""
-                className="absolute inset-0 m-auto max-h-full max-w-full object-contain p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-              />
-            )}
-          </>
+      <Link
+        href={href}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className="flex h-[180px] items-center justify-center overflow-hidden bg-white p-3"
+      >
+        {shown ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={shown} alt={product.name} className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110" />
         ) : (
           <span className="text-center font-mono text-[11px] text-code">[ foto: {product.name} ]</span>
         )}
