@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Figtree, Archivo, Space_Mono } from 'next/font/google';
+import { Figtree, Plus_Jakarta_Sans, Space_Mono } from 'next/font/google';
 import './globals.css';
 
 const figtree = Figtree({
@@ -8,10 +8,10 @@ const figtree = Figtree({
   weight: ['400', '500', '600', '700', '800', '900'],
 });
 
-const archivo = Archivo({
+const archivo = Plus_Jakarta_Sans({
   variable: '--font-archivo',
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 const spaceMono = Space_Mono({
