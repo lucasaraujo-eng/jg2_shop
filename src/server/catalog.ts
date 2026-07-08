@@ -20,7 +20,7 @@ export async function getProductsByCategory(categorySlug: string) {
   return prisma.product.findMany({
     where: { active: true, category: { slug: categorySlug } },
     orderBy: { order: 'asc' },
-    include: { images: { orderBy: { order: 'asc' }, take: 1 }, subcategory: true, category: { select: { name: true } } },
+    include: { images: { orderBy: { order: 'asc' }, take: 2 }, subcategory: true, category: { select: { name: true } } },
   });
 }
 
@@ -29,7 +29,7 @@ export async function getAllProducts() {
   return prisma.product.findMany({
     where: { active: true },
     orderBy: { order: 'asc' },
-    include: { images: { orderBy: { order: 'asc' }, take: 1 }, category: { select: { name: true } } },
+    include: { images: { orderBy: { order: 'asc' }, take: 2 }, category: { select: { name: true } } },
   });
 }
 
@@ -53,7 +53,7 @@ export async function getRelatedProducts(categoryId: string, excludeProductId: s
     where: { active: true, categoryId, id: { not: excludeProductId } },
     orderBy: { order: 'asc' },
     take: 10,
-    include: { images: { orderBy: { order: 'asc' }, take: 1 } },
+    include: { images: { orderBy: { order: 'asc' }, take: 2 } },
   });
 }
 
@@ -62,7 +62,7 @@ export async function getProductsByFilterTag(tagKey: string) {
   return prisma.product.findMany({
     where: { active: true, filterTags: { some: { tagKey } } },
     orderBy: { order: 'asc' },
-    include: { images: { orderBy: { order: 'asc' }, take: 1 }, category: { select: { name: true } } },
+    include: { images: { orderBy: { order: 'asc' }, take: 2 }, category: { select: { name: true } } },
   });
 }
 
@@ -82,6 +82,6 @@ export async function getFilterTaxonomy() {
 export async function getFeaturedProducts(codes: string[]) {
   return prisma.product.findMany({
     where: { code: { in: codes }, active: true },
-    include: { images: { orderBy: { order: 'asc' }, take: 1 } },
+    include: { images: { orderBy: { order: 'asc' }, take: 2 } },
   });
 }

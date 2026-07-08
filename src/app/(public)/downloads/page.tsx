@@ -104,7 +104,7 @@ export default function DownloadsPage() {
 
         <div className="flex min-w-0 flex-1 flex-col gap-16">
           {SECTIONS.map((s) => (
-            <div key={s.id} id={s.id} className="scroll-mt-[150px]">
+            <div key={s.id} id={s.id} className="scroll-mt-[160px]">
               <div className="mb-6 flex items-center gap-3.5">
                 <span className="h-[30px] w-[5px] flex-none rounded-sm bg-brand" />
                 <h2 className="font-display text-2xl font-black leading-tight text-ink sm:text-3xl">{s.label}</h2>

@@ -389,7 +389,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 13. Depoimentos — TODO: citações fictícias (placeholder), ainda não temos depoimentos reais de clientes. Trocar por relatos reais antes de publicar. */}
+      {/* 13. Depoimentos — desativado até termos depoimentos reais de clientes (citações abaixo são fictícias/placeholder). */}
+      {false && (
       <section className="bg-ink-deeper py-18">
         <div className="mx-auto max-w-[1340px] px-7">
           <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Com a palavra, o cliente</p>
@@ -418,6 +419,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* 14. Newsletter */}
       <section className="mx-auto max-w-[1340px] px-7 py-16">
