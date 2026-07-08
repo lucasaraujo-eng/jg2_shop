@@ -20,9 +20,9 @@ export default async function PublicLayout({ children }: { children: React.React
         <div className="mx-auto grid max-w-[1340px] grid-cols-2 gap-10 px-7 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/jg2-logo.png" alt="JG2" className="h-10 w-auto" />
+            <img src="/assets/jg2-logo.png" alt="JG2" className="h-16 w-auto" />
             <p className="mt-4 max-w-xs text-sm text-muted-2">
-              Nosso time de especialistas está pronto para apresentar as soluções LOTO da JG2.
+              Nosso time de especialistas está pronto para apresentar as soluções da JG2®.
             </p>
             <Link href="/contato" className="mt-4 inline-block text-sm font-bold text-brand hover:underline">
               Fale com nosso time →
@@ -94,15 +94,15 @@ export default async function PublicLayout({ children }: { children: React.React
           <div>
             <p className="font-display text-sm font-black uppercase tracking-wide text-ink">Contato</p>
             <ul className="mt-4 flex flex-col gap-2 text-sm text-muted-2">
-              <li>+55 19 3500 8210</li>
-              <li>+55 19 99407 3970</li>
+              <li>+55 31 9 9669-0692</li>
+              <li>comercial@jg2ps.com.br</li>
               <li>R. das Palmeiras, 95 - Distrito Industrial, Timóteo - MG, 35181-672</li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-border-soft py-6 text-center text-xs text-tertiary">
-          © {new Date().getFullYear()} JG2 Produtos de Segurança. Todos os direitos reservados.
+          © {new Date().getFullYear()} JG2® Produtos de Segurança. Todos os direitos reservados.
         </div>
       </footer>
     </>

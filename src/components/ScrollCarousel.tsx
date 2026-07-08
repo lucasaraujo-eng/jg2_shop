@@ -2,23 +2,36 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+const LOOP_INTERVAL = 3500;
+
 /**
  * Carrossel horizontal genérico — setas + barra de progresso, mesma
  * interação do ProductCarousel, mas recebendo qualquer conteúdo como filhos
  * (ex.: tiles de setor) em vez de só CardProduct.
  *
  * `autoPlay` faz uma rolagem contínua e lenta (não aos saltos), indo e
- * voltando entre as pontas — pausa ao passar o mouse ou tocar.
+ * voltando entre as pontas — pausa ao passar o mouse ou tocar. Com
+ * `loopToStart`, em vez de inverter o sentido ao chegar no fim, salta de
+ * volta pro início aos saltos (igual ao ProductCarousel).
  */
 export function ScrollCarousel({
   children,
   autoPlay = false,
   speed = 35,
+  loopToStart = false,
+  gapClassName = 'gap-4',
+  trackClassName = '',
 }: {
   children: React.ReactNode;
   autoPlay?: boolean;
-  /** Pixels por segundo da rolagem automática. */
+  /** Pixels por segundo da rolagem automática (ignorado quando loopToStart). */
   speed?: number;
+  /** Ao chegar no fim, salta de volta pro início em vez de inverter o sentido. */
+  loopToStart?: boolean;
+  /** Espaçamento entre os itens do trilho (ex.: "gap-0" para itens colados, só separados por borda). */
+  gapClassName?: string;
+  /** Classes extras no trilho rolável (ex.: fundo/arredondamento de um painel que envolve os itens). */
+  trackClassName?: string;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
@@ -41,6 +54,18 @@ export function ScrollCarousel({
   useEffect(() => {
     if (!autoPlay) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    if (loopToStart) {
+      const id = setInterval(() => {
+        const el = trackRef.current;
+        if (!el || pausedRef.current || document.hidden) return;
+        const max = el.scrollWidth - el.clientWidth;
+        if (max <= 0) return;
+        if (el.scrollLeft >= max - 4) el.scrollTo({ left: 0, behavior: 'smooth' });
+        else el.scrollBy({ left: el.clientWidth * 0.85, behavior: 'smooth' });
+      }, LOOP_INTERVAL);
+      return () => clearInterval(id);
+    }
 
     let raf: number;
     let last: number | null = null;
@@ -70,7 +95,7 @@ export function ScrollCarousel({
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [autoPlay, speed]);
+  }, [autoPlay, speed, loopToStart]);
 
   return (
     <div
@@ -87,7 +112,7 @@ export function ScrollCarousel({
       <div
         ref={trackRef}
         onScroll={handleScroll}
-        className="jg-noscroll flex gap-4 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className={`jg-noscroll flex ${gapClassName} overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${trackClassName}`}
       >
         {children}
       </div>

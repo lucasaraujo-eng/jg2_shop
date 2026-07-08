@@ -101,7 +101,7 @@ export async function sendQuoteEmails(q: QuotePayload): Promise<void> {
       <h2 style="color:#b5202b;">Recebemos seu pedido de orçamento</h2>
       <p>Olá, ${escapeHtml(q.name)}! Obrigado pelo interesse. Nossa equipe vai analisar os itens abaixo e retornar com valores e prazos.</p>
       ${itemsTable(q.items)}
-      <p style="margin-top:24px;color:#888;font-size:13px;">JG2 Produtos de Segurança</p>
+      <p style="margin-top:24px;color:#888;font-size:13px;">JG2® Produtos de Segurança</p>
     </div>`;
 
   await resend.emails.send({
@@ -115,7 +115,7 @@ export async function sendQuoteEmails(q: QuotePayload): Promise<void> {
   await resend.emails.send({
     from,
     to: q.email,
-    subject: 'Recebemos seu pedido de orçamento — JG2',
+    subject: 'Recebemos seu pedido de orçamento — JG2®',
     html: clientHtml,
   });
 }

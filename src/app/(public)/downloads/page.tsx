@@ -9,7 +9,7 @@ const DOCS_CATALOGOS: Doc[] = [
   {
     tag: 'Catálogo geral',
     title: 'Segurança Industrial — Catálogo JG2®',
-    desc: 'Portfólio completo de soluções em segurança industrial do Grupo JG2.',
+    desc: 'Portfólio completo de soluções em segurança industrial do Grupo JG2®.',
     meta: 'PDF · 15 MB',
     url: `${R2}/seguranca-industrial.pdf`,
   },
@@ -40,7 +40,7 @@ const DOCS_NORMAS: Doc[] = [
   {
     tag: 'NR-12',
     title: 'Adequação à NR-12',
-    desc: 'Guia de soluções JG2 para adequação de máquinas e equipamentos à NR-12.',
+    desc: 'Guia de soluções JG2® para adequação de máquinas e equipamentos à NR-12.',
     meta: 'PDF · 14 MB',
     url: `${R2}/nr12-adequacao.pdf`,
   },

@@ -95,7 +95,7 @@ export default async function SetorPage({
             </span>
             <p className="mb-4 leading-relaxed text-muted-3">
               Em {sector.name}, cada manutenção, limpeza ou desobstrução exige que a máquina esteja comprovadamente
-              isolada de todas as suas fontes de energia. Os dispositivos e a consultoria LOTO da JG2 padronizam o
+              isolada de todas as suas fontes de energia. Os dispositivos e a consultoria LOTO da JG2® padronizam o
               bloqueio por equipamento, eliminando a partida acidental durante a intervenção.
             </p>
             <Link href="/contato" className="inline-block rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand-dark">
@@ -131,7 +131,7 @@ export default async function SetorPage({
             </span>
             <p className="mb-4 leading-relaxed text-muted-3">
               A NR-12 exige que as máquinas de {sector.name} tenham proteções, dispositivos de segurança e
-              documentação adequados. A JG2 conduz a apreciação de riscos, o projeto e a fabricação das proteções e o
+              documentação adequados. A JG2® conduz a apreciação de riscos, o projeto e a fabricação das proteções e o
               laudo técnico com ART — colocando o parque fabril em conformidade e reduzindo passivos.
             </p>
             <Link href="/contato" className="inline-block rounded-full bg-nr12 px-5 py-2.5 text-sm font-bold text-white transition hover:opacity-90">

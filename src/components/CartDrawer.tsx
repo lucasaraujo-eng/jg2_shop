@@ -176,7 +176,7 @@ export function CartDrawer() {
                         <Link href="/contato" className="text-brand underline">
                           política de privacidade
                         </Link>{' '}
-                        da JG2.
+                        da JG2®.
                       </span>
                     </label>
                     {error && <p className="mt-3 text-sm font-semibold text-brand">{error}</p>}

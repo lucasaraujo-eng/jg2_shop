@@ -80,7 +80,7 @@ export default function AdminLoginPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-xs text-tertiary">Acesso restrito à equipe JG2.</p>
+        <p className="mt-6 text-center text-xs text-tertiary">Acesso restrito à equipe JG2®.</p>
       </div>
     </div>
   );

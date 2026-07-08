@@ -153,6 +153,20 @@ function CatalogHeroSkeleton() {
   );
 }
 
+/** Área de resultados do catálogo (barra de busca + grade) — fallback do Suspense em torno do CatalogClient (useSearchParams) e reutilizada dentro do CatalogLoading abaixo. */
+export function CatalogResultsLoading() {
+  return (
+    <div className="flex-1">
+      <Skeleton className="h-[52px] w-full max-w-sm rounded-full" />
+      <div className="jg-card-grid mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <ProductCardSkeleton key={i} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /** Catálogo (grade + barra de busca + sidebar) — usado em /produtos/[categoria] (a listagem "Todos" é estática). */
 export function CatalogLoading() {
   return (
@@ -165,14 +179,7 @@ export function CatalogLoading() {
             <Skeleton key={i} className="h-9 w-full" />
           ))}
         </div>
-        <div className="flex-1">
-          <Skeleton className="h-[52px] w-full max-w-sm rounded-full" />
-          <div className="jg-card-grid mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <ProductCardSkeleton key={i} />
-            ))}
-          </div>
-        </div>
+        <CatalogResultsLoading />
       </div>
     </div>
   );

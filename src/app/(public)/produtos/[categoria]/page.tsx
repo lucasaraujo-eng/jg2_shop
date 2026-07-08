@@ -1,8 +1,10 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getCategories, getCategoryBySlug, getProductsByCategory, getFilterTaxonomy } from '@/server/catalog';
 import { CategorySidebar } from '@/components/catalog/CategorySidebar';
 import { CatalogClient } from '@/components/catalog/CatalogClient';
+import { CatalogResultsLoading } from '@/components/Skeleton';
 import { buildSubcategoryGroups, toCardProducts } from '@/lib/catalogGrouping';
 import { categorySupportTitle } from '@/lib/catalogText';
 
@@ -49,7 +51,9 @@ export default async function CategoryPage({
 
       <div className="mx-auto max-w-[1340px] gap-10 px-7 py-12 lg:flex">
         <CategorySidebar categories={categories} activeSlug={category.slug} />
-        <CatalogClient initialProducts={cardProducts} taxonomy={taxonomy} groups={groups} />
+        <Suspense fallback={<CatalogResultsLoading />}>
+          <CatalogClient initialProducts={cardProducts} taxonomy={taxonomy} groups={groups} />
+        </Suspense>
       </div>
 
       {category.supportText && (
