@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { setores, getSetorById } from '@/data/setores';
+import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 
 export function generateStaticParams() {
   return setores.map((s) => ({ id: s.id }));
@@ -98,9 +99,9 @@ export default async function SetorPage({
               isolada de todas as suas fontes de energia. Os dispositivos e a consultoria LOTO da JG2® padronizam o
               bloqueio por equipamento, eliminando a partida acidental durante a intervenção.
             </p>
-            <Link href="/contato" className="inline-block rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand-dark">
+            <ProposalRequestButton objective="Adequação LOTOTO" className="inline-block rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand-dark">
               Falar sobre LOTO →
-            </Link>
+            </ProposalRequestButton>
           </div>
         </div>
 
@@ -116,9 +117,9 @@ export default async function SetorPage({
               afastam o operador da zona de perigo durante alimentação, ajuste e limpeza — reduzindo cortes,
               esmagamentos e amputações sem comprometer a produtividade.
             </p>
-            <Link href="/contato" className="inline-block rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand">
+            <ProposalRequestButton objective="Adequação Mãos Seguras" className="inline-block rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand">
               Falar sobre Mãos Seguras →
-            </Link>
+            </ProposalRequestButton>
           </div>
         </div>
 
@@ -134,9 +135,9 @@ export default async function SetorPage({
               documentação adequados. A JG2® conduz a apreciação de riscos, o projeto e a fabricação das proteções e o
               laudo técnico com ART — colocando o parque fabril em conformidade e reduzindo passivos.
             </p>
-            <Link href="/contato" className="inline-block rounded-full bg-nr12 px-5 py-2.5 text-sm font-bold text-white transition hover:opacity-90">
+            <ProposalRequestButton objective="Adequação NR-12" className="inline-block rounded-full bg-nr12 px-5 py-2.5 text-sm font-bold text-white transition hover:opacity-90">
               Falar sobre NR-12 →
-            </Link>
+            </ProposalRequestButton>
           </div>
         </div>
 
@@ -145,9 +146,9 @@ export default async function SetorPage({
           <p className="mb-6 leading-relaxed text-white/75">
             Fale com a equipe técnica da JG2 e receba um diagnóstico das três frentes para a sua planta.
           </p>
-          <Link href="/contato" className="inline-block rounded-full bg-brand px-7 py-3.5 font-bold text-white transition hover:bg-brand-light">
+          <ProposalRequestButton objective="Outro assunto" className="inline-block rounded-full bg-brand px-7 py-3.5 font-bold text-white transition hover:bg-brand-light">
             Solicitar avaliação técnica →
-          </Link>
+          </ProposalRequestButton>
         </div>
       </article>
 

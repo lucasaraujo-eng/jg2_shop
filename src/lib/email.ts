@@ -25,6 +25,7 @@ type ContactPayload = {
   email: string;
   phone?: string | null;
   subject?: string | null;
+  cnpj?: string | null;
   message: string;
 };
 
@@ -143,7 +144,8 @@ export async function sendContactEmail(c: ContactPayload): Promise<void> {
       <p><strong>Nome:</strong> ${escapeHtml(c.name)}<br/>
          <strong>E-mail:</strong> ${escapeHtml(c.email)}<br/>
          ${c.phone ? `<strong>Telefone:</strong> ${escapeHtml(c.phone)}<br/>` : ''}
-         ${c.subject ? `<strong>Assunto:</strong> ${escapeHtml(c.subject)}<br/>` : ''}</p>
+         ${c.subject ? `<strong>Assunto:</strong> ${escapeHtml(c.subject)}<br/>` : ''}
+         ${c.cnpj ? `<strong>CNPJ/CPF:</strong> ${escapeHtml(c.cnpj)}<br/>` : ''}</p>
       <p><strong>Mensagem:</strong><br/>${escapeHtml(c.message)}</p>
     </div>`;
 

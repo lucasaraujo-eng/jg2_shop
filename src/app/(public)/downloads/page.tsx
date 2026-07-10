@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { SectionNav } from '@/components/downloads/SectionNav';
+import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 
 type Doc = { tag: string; title: string; desc: string; meta: string; url?: string };
 
@@ -124,9 +125,9 @@ export default function DownloadsPage() {
                 Fale com nossa equipe técnica — enviamos fichas e desenhos específicos para o seu projeto.
               </p>
             </div>
-            <Link href="/contato" className="rounded-full bg-brand px-6 py-3 font-bold text-white transition hover:bg-brand-dark">
+            <ProposalRequestButton objective="Outro assunto" className="rounded-full bg-brand px-6 py-3 font-bold text-white transition hover:bg-brand-dark">
               Falar com especialista →
-            </Link>
+            </ProposalRequestButton>
           </div>
         </div>
       </div>

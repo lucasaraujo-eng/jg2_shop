@@ -3,6 +3,7 @@ import { Header } from '@/components/Header';
 import { CartDrawer } from '@/components/CartDrawer';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { WhatsAppFloat } from '@/components/WhatsAppFloat';
+import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 import { getCategories } from '@/server/catalog';
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -25,9 +26,9 @@ export default async function PublicLayout({ children }: { children: React.React
             <p className="mt-4 max-w-xs text-sm text-white/70">
               Nosso time de especialistas está pronto para apresentar as soluções da JG2®.
             </p>
-            <Link href="/contato" className="mt-4 inline-block text-sm font-bold text-brand hover:underline">
+            <ProposalRequestButton objective="Outro assunto" className="mt-4 inline-block text-sm font-bold text-brand hover:underline">
               Fale com nosso time →
-            </Link>
+            </ProposalRequestButton>
           </div>
 
           <div>
