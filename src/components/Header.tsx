@@ -8,6 +8,7 @@ import { useCart } from '@/stores/cart';
 import { searchSite, type SearchResult } from '@/server/actions/search';
 import type { getCategories } from '@/server/catalog';
 import { slugify, resolveImageUrl } from '@/lib/utils';
+import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 
 type Categories = Awaited<ReturnType<typeof getCategories>>;
 
@@ -171,10 +172,13 @@ export function Header({ categories }: { categories: Categories }) {
 
             <div className="col-start-3 flex items-center gap-4 justify-self-end">
               <CartButton />
-              <Link href="/contato" className="hidden items-center gap-2 rounded-full border-[1.5px] border-brand px-5 py-2.5 text-sm font-bold text-brand transition hover:bg-brand hover:text-white md:flex">
+              <ProposalRequestButton
+                objective="Outro assunto"
+                className="hidden items-center gap-2 rounded-full border-[1.5px] border-brand px-5 py-2.5 text-sm font-bold text-brand transition hover:bg-brand hover:text-white md:flex"
+              >
                 <span className="h-2.5 w-2.5 flex-none rounded-full bg-success shadow-[0_0_0_3px_rgba(70,196,106,.25)]" />
                 Fale Conosco
-              </Link>
+              </ProposalRequestButton>
               <button onClick={() => setMobileOpen(true)} aria-label="Menu" className="flex h-11 w-11 items-center justify-center rounded-xl border border-border md:hidden">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1b1b1f" strokeWidth={2} strokeLinecap="round">
                   <path d="M3 6h18M3 12h18M3 18h18" />
@@ -372,9 +376,13 @@ function MobileMenu({ categories, onClose }: { categories: Categories; onClose: 
         </nav>
 
         <div className="mt-8 flex flex-col gap-3 border-t border-border-soft pt-6">
-          <Link href="/contato" onClick={onClose} className="flex items-center justify-center gap-2 rounded-full border-[1.5px] border-brand py-3 text-sm font-bold text-brand">
+          <ProposalRequestButton
+            objective="Outro assunto"
+            onClick={onClose}
+            className="flex items-center justify-center gap-2 rounded-full border-[1.5px] border-brand py-3 text-sm font-bold text-brand"
+          >
             <span className="h-2.5 w-2.5 rounded-full bg-success" /> Fale Conosco
-          </Link>
+          </ProposalRequestButton>
           <button
             onClick={() => {
               onClose();

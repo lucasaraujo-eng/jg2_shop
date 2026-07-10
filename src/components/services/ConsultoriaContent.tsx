@@ -1,9 +1,17 @@
 import Link from 'next/link';
 import { FaqAccordion } from '@/components/FaqAccordion';
 import { ScrollCarousel } from '@/components/ScrollCarousel';
+import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 import type { ConsultoriaData } from '@/data/consultorias';
 
+const OBJECTIVE_BY_SLUG: Record<ConsultoriaData['slug'], string> = {
+  lototo: 'Adequação LOTOTO',
+  nr12: 'Adequação NR-12',
+  'maos-seguras': 'Adequação Mãos Seguras',
+};
+
 export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
+  const objective = OBJECTIVE_BY_SLUG[data.slug];
   return (
     <div>
       {/* Hero */}
@@ -25,12 +33,12 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
           <h1 className="mt-4 max-w-xl font-display text-4xl font-black leading-tight sm:text-5xl">{data.heroH1}</h1>
           <p className="mt-3 max-w-md text-white/80">{data.subtitle}</p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <Link href="/contato" className="rounded-full bg-brand px-6 py-3 font-bold text-white transition hover:bg-brand-light">
+            <ProposalRequestButton objective={objective} className="rounded-full bg-brand px-6 py-3 font-bold text-white transition hover:bg-brand-light">
               {data.heroBtn}
-            </Link>
-            <Link href="/contato" className="rounded-full border border-white/40 px-6 py-3 font-bold text-white transition hover:bg-white/10">
+            </ProposalRequestButton>
+            <ProposalRequestButton objective={objective} className="rounded-full border border-white/40 px-6 py-3 font-bold text-white transition hover:bg-white/10">
               Falar com especialista
-            </Link>
+            </ProposalRequestButton>
           </div>
         </div>
       </section>
@@ -90,9 +98,9 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
                 </span>
               ))}
             </div>
-            <Link href="/contato" className="mt-7 inline-flex items-center gap-3 font-bold text-white transition hover:gap-4">
+            <ProposalRequestButton objective={objective} className="mt-7 inline-flex items-center gap-3 font-bold text-white transition hover:gap-4">
               <span className="text-xl">→</span> Falar com a JG2®
-            </Link>
+            </ProposalRequestButton>
           </div>
         </div>
       </section>
@@ -178,9 +186,9 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
               <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Software de gestão</p>
               <h2 className="mt-2 font-display text-2xl font-black leading-tight text-white sm:text-3xl">{data.software.title}</h2>
               <p className="mt-4 leading-relaxed text-white/80">{data.software.text}</p>
-              <Link href="/contato" className="mt-6 inline-block rounded-full bg-brand px-6 py-3 font-bold text-white transition hover:bg-brand-light">
+              <ProposalRequestButton objective={objective} className="mt-6 inline-block rounded-full bg-brand px-6 py-3 font-bold text-white transition hover:bg-brand-light">
                 {data.software.cta}
-              </Link>
+              </ProposalRequestButton>
             </div>
             <div className="relative flex min-h-[200px] items-center justify-center rounded-2xl bg-white p-9">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -206,9 +214,9 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
           <h2 className="relative mx-auto max-w-2xl font-display text-2xl font-black text-white sm:text-3xl">{data.ctaTitle}</h2>
           <p className="relative mx-auto mt-3 max-w-xl text-white/85">{data.ctaText}</p>
           <div className="relative mt-7 flex flex-wrap justify-center gap-3">
-            <Link href="/contato" className="rounded-full bg-white px-7 py-3.5 font-extrabold text-brand transition hover:bg-ink-deep hover:text-white">
+            <ProposalRequestButton objective={objective} className="rounded-full bg-white px-7 py-3.5 font-extrabold text-brand transition hover:bg-ink-deep hover:text-white">
               Solicitar avaliação técnica →
-            </Link>
+            </ProposalRequestButton>
             <Link href="/produtos" className="rounded-full bg-ink-deep px-7 py-3.5 font-bold text-white transition hover:bg-black">
               Ver catálogo
             </Link>

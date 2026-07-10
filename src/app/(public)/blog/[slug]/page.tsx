@@ -4,6 +4,7 @@ import { getPostBySlug, getRelatedPosts } from '@/server/blog';
 import { PostCard } from '@/components/blog/PostCard';
 import { sanitizePostHtml } from '@/lib/sanitize';
 import { readingTime } from '@/lib/utils';
+import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 
 const STRIPE_BG = {
   backgroundImage:
@@ -73,9 +74,9 @@ export default async function BlogPostPage({
             <p className="font-bold text-ink">Equipe Técnica JG2®</p>
             <p className="text-sm text-tertiary">Especialistas em Lockout/Tagout e NR-12</p>
           </div>
-          <Link href="/contato" className="flex-none rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand-dark">
+          <ProposalRequestButton objective="Outro assunto" className="flex-none rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand-dark">
             Falar com especialista →
-          </Link>
+          </ProposalRequestButton>
         </div>
       </div>
 

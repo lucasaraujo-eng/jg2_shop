@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 
 const STRIPE_BG = {
   backgroundImage:
@@ -118,9 +119,9 @@ export default function ServicosPage() {
           <p className="relative mx-auto mt-3 max-w-lg text-white/70">
             Fale com nossos especialistas e receba um diagnóstico inicial sem compromisso.
           </p>
-          <Link href="/contato" className="relative mt-7 inline-block rounded-full bg-brand px-8 py-3.5 font-bold text-white transition hover:bg-brand-light">
+          <ProposalRequestButton objective="Outro assunto" className="relative mt-7 inline-block rounded-full bg-brand px-8 py-3.5 font-bold text-white transition hover:bg-brand-light">
             Solicitar atendimento →
-          </Link>
+          </ProposalRequestButton>
         </div>
       </section>
     </div>

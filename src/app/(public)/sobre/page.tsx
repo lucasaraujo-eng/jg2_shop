@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { StatsCounter, type Stat } from '@/components/about/StatsCounter';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
+import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 
 const STATS: Stat[] = [
   { prefix: '+', value: 5000, label: 'clientes atendidos em todo o Brasil' },
@@ -279,9 +280,9 @@ export default function SobrePage() {
             </p>
           </div>
           <div className="relative flex flex-wrap gap-3">
-            <Link href="/contato" className="rounded-full bg-brand px-7 py-3.5 font-bold text-white transition hover:bg-brand-light">
+            <ProposalRequestButton objective="Outro assunto" className="rounded-full bg-brand px-7 py-3.5 font-bold text-white transition hover:bg-brand-light">
               Falar com a equipe →
-            </Link>
+            </ProposalRequestButton>
             <Link href="/produtos" className="rounded-full border border-white/30 bg-white/10 px-7 py-3.5 font-bold text-white transition hover:bg-white/20">
               Ver catálogo
             </Link>

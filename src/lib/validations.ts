@@ -29,6 +29,7 @@ export const contactMessageSchema = z.object({
   email: z.string().email('E-mail inválido'),
   phone: z.string().optional().nullable(),
   subject: z.string().optional().nullable(),
+  cnpj: z.string().optional().nullable(),
   message: z.string().min(5, 'Escreva sua mensagem'),
 });
 export type ContactMessageInput = z.infer<typeof contactMessageSchema>;

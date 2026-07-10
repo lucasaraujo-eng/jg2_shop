@@ -6,6 +6,7 @@ import { ClientsMarquee } from '@/components/ClientsMarquee';
 import { FaqAccordion } from '@/components/FaqAccordion';
 import { NewsletterForm } from '@/components/NewsletterForm';
 import { DeviceFilterCard } from '@/components/home/DeviceFilterCard';
+import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 
 /**
  * Home — as 14 seções do protótipo, na ordem original (ver
@@ -260,6 +261,7 @@ export default async function HomePage() {
         imageSrc="/uploads/banner-lototo.jpg"
         ctaClassName="bg-white text-brand hover:bg-ink-deep hover:text-white"
         showAccent
+        objective="Adequação LOTOTO"
       />
 
       {/* 6. Carrossel "Produtos mais vendidos" */}
@@ -290,6 +292,7 @@ export default async function HomePage() {
         panelClassName="bg-white"
         imageSrc="/uploads/banner-nr12.jpg"
         ctaClassName="bg-brand text-white hover:bg-brand-dark"
+        objective="Adequação NR-12"
       />
 
       {/* 8. Carrossel Mãos Seguras mais vendidos */}
@@ -323,6 +326,7 @@ export default async function HomePage() {
         imageSrc="/uploads/banner-maos.png"
         imagePosition="object-top"
         ctaClassName="bg-brand text-white hover:bg-brand-dark"
+        objective="Adequação Mãos Seguras"
       />
 
       {/* 10. Áreas de atuação */}
@@ -450,6 +454,7 @@ function ActionBanner({
   imagePosition = 'object-center',
   ctaClassName,
   showAccent = false,
+  objective,
 }: {
   title: string;
   kicker?: string;
@@ -463,6 +468,7 @@ function ActionBanner({
   imagePosition?: string;
   ctaClassName: string;
   showAccent?: boolean;
+  objective: string;
 }) {
   return (
     <section className="mx-auto max-w-[1340px] px-7 py-6">
@@ -486,12 +492,12 @@ function ActionBanner({
           {kicker && <span className={`relative mb-2 text-lg font-black uppercase tracking-wide ${kickerColor}`}>{kicker}</span>}
           <h3 className={`relative text-2xl font-black leading-tight sm:text-[27px] ${headingColor}`}>{heading}</h3>
           <p className={`relative mt-4 text-sm leading-relaxed sm:text-[14.5px] ${textColor}`}>{text}</p>
-          <Link
-            href="/contato"
+          <ProposalRequestButton
+            objective={objective}
             className={`relative mt-7 inline-flex items-center gap-2.5 self-end rounded-full px-6 py-3 text-sm font-bold transition hover:gap-3.5 ${ctaClassName}`}
           >
             Solicitar Proposta <span className="text-lg">→</span>
-          </Link>
+          </ProposalRequestButton>
         </div>
       </div>
     </section>
