@@ -1,9 +1,12 @@
 'use client';
 
+export type DocType = 'cnpj' | 'cpf';
+
 export type QuoteFormValue = {
   name: string;
   email: string;
   phone: string;
+  docType: DocType;
   cnpj: string;
   purpose: string;
   message: string;
@@ -55,16 +58,26 @@ export function QuoteFormFields({
           className={inputClass}
         />
       </label>
-      <label className="flex flex-col gap-1.5 text-sm">
-        <span className="font-bold text-ink">CNPJ*</span>
+      <div className="flex flex-col gap-1.5 text-sm">
+        <span className="font-bold text-ink">Documento*</span>
+        <div className="flex gap-4">
+          <label className="flex items-center gap-1.5 text-sm text-ink">
+            <input type="radio" name="docType" checked={value.docType === 'cnpj'} onChange={() => onChange({ docType: 'cnpj', cnpj: '' })} />
+            CNPJ
+          </label>
+          <label className="flex items-center gap-1.5 text-sm text-ink">
+            <input type="radio" name="docType" checked={value.docType === 'cpf'} onChange={() => onChange({ docType: 'cpf', cnpj: '' })} />
+            CPF
+          </label>
+        </div>
         <input
           required
           value={value.cnpj}
           onChange={(e) => onChange({ cnpj: e.target.value })}
-          placeholder="00.000.000/0000-00"
+          placeholder={value.docType === 'cpf' ? '000.000.000-00' : '00.000.000/0000-00'}
           className={inputClass}
         />
-      </label>
+      </div>
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-bold text-ink">Finalidade da Compra*</span>
         <select required value={value.purpose} onChange={(e) => onChange({ purpose: e.target.value })} className={inputClass}>
@@ -95,7 +108,7 @@ export function isQuoteFormValid(value: QuoteFormValue, privacyChecked: boolean)
     value.name.trim().length >= 2 &&
     /\S+@\S+\.\S+/.test(value.email) &&
     value.phone.trim().length >= 8 &&
-    value.cnpj.trim().length >= 11 &&
+    value.cnpj.trim().length >= (value.docType === 'cpf' ? 11 : 14) &&
     value.purpose.trim().length > 0 &&
     privacyChecked
   );

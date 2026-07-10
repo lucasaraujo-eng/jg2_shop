@@ -151,7 +151,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-ink-deep/80 via-ink-deep/45 to-ink-deep/10" />
         <div className="relative mx-auto w-full max-w-[1340px] px-7 sm:flex sm:flex-col sm:justify-center sm:self-stretch">
           <div className="max-w-3xl">
-            <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Grupo JG2</p>
+            <p className="font-mono text-base uppercase tracking-widest text-brand-soft">Grupo JG2</p>
             <h1 className="mt-4 font-display text-4xl font-black leading-tight tracking-tight sm:text-5xl">
               Adequação Completa em Segurança Industrial
             </h1>
@@ -162,7 +162,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold sm:absolute sm:inset-x-7 sm:bottom-6 sm:mt-0 sm:justify-end">
+          <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold sm:absolute sm:inset-x-7 sm:bottom-0 sm:mt-0 sm:justify-end">
             {[
               { label: 'Bloqueio e Etiquetagem LOTO', href: LOTO_CATALOG_HREF },
               { label: 'Consultoria LOTOTO', href: '/servicos/lototo' },
@@ -383,8 +383,13 @@ export default async function HomePage() {
               Explorar catálogo →
             </Link>
           </div>
-          <div className="relative flex h-[230px] items-center justify-center rounded-2xl border border-white/15 bg-white/5 font-mono text-xs text-white/70">
-            [ mockup: catálogo em smartphone ]
+          <div className="relative flex h-[230px] items-center justify-center overflow-hidden rounded-2xl bg-white">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/uploads/banner-catalogo-online.png"
+              alt="Catálogos JG2®"
+              className="h-full w-full object-cover"
+            />
           </div>
         </div>
       </section>
@@ -478,7 +483,7 @@ function ActionBanner({
           {showAccent && (
             <div className="pointer-events-none absolute -right-14 -top-14 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,.12)_0%,transparent_70%)]" />
           )}
-          {kicker && <span className={`relative mb-2 text-sm font-black uppercase tracking-wide ${kickerColor}`}>{kicker}</span>}
+          {kicker && <span className={`relative mb-2 text-lg font-black uppercase tracking-wide ${kickerColor}`}>{kicker}</span>}
           <h3 className={`relative text-2xl font-black leading-tight sm:text-[27px] ${headingColor}`}>{heading}</h3>
           <p className={`relative mt-4 text-sm leading-relaxed sm:text-[14.5px] ${textColor}`}>{text}</p>
           <Link

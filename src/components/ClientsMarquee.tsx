@@ -18,7 +18,7 @@ const CLIENTS = [
 
 export function ClientsMarquee() {
   return (
-    <section className="border-y border-border-soft bg-white py-10">
+    <section className="bg-white py-10">
       <div className="mx-auto max-w-[1340px] px-7">
         <p className="mb-7 text-center font-display text-lg font-bold text-ink">
           Empresas Sérias Confiam na Experiência da JG2® Para Adequar Máquinas e Procedimentos

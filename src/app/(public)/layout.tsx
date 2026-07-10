@@ -7,6 +7,7 @@ import { getCategories } from '@/server/catalog';
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
   const categories = await getCategories();
+  const maosSeguras = categories.find((c) => c.type === 'MAOS_SEGURAS');
 
   return (
     <>
@@ -61,7 +62,7 @@ export default async function PublicLayout({ children }: { children: React.React
           </div>
 
           <div>
-            <p className="font-display text-sm font-black uppercase tracking-wide text-white">Produtos</p>
+            <p className="font-display text-sm font-black uppercase tracking-wide text-white">Bloqueio e Etiquetagem</p>
             <ul className="mt-4 flex flex-col gap-2 text-sm text-white/70">
               <li>
                 <Link href="/produtos/cadeados-de-bloqueio" className="hover:text-brand">
@@ -88,6 +89,13 @@ export default async function PublicLayout({ children }: { children: React.React
                   Bloqueios Elétricos
                 </Link>
               </li>
+              {maosSeguras && (
+                <li>
+                  <Link href={`/produtos/${maosSeguras.slug}`} className="hover:text-brand">
+                    Mãos Seguras
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -102,7 +110,7 @@ export default async function PublicLayout({ children }: { children: React.React
         </div>
 
         <div className="border-t border-white/10 py-6 text-center text-xs text-white/50">
-          © {new Date().getFullYear()} JG2® Produtos de Segurança. Todos os direitos reservados.
+          © {new Date().getFullYear()} JG2 Produtos de Segurança®. Todos os direitos reservados.
         </div>
       </footer>
     </>

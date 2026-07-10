@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
 import { QuoteFormFields, isQuoteFormValid, type QuoteFormValue } from '@/components/QuoteFormFields';
+import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
 import { resolveImageUrl } from '@/lib/utils';
 
-const EMPTY_FORM: QuoteFormValue = { name: '', email: '', phone: '', cnpj: '', purpose: '', message: '' };
+const EMPTY_FORM: QuoteFormValue = { name: '', email: '', phone: '', docType: 'cnpj', cnpj: '', purpose: '', message: '' };
 
 type Step = 'cart' | 'form' | 'sent';
 
@@ -24,6 +24,7 @@ export function CartDrawer() {
   const [privacyChecked, setPrivacyChecked] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   function handleClose() {
     close();
@@ -61,6 +62,7 @@ export function CartDrawer() {
   const panelWidth = step === 'form' ? 'max-w-[880px]' : 'max-w-[420px]';
 
   return (
+    <>
     <div className="fixed inset-0 z-[70]" role="dialog" aria-modal="true" aria-label="Seu orçamento">
       <button className="absolute inset-0 bg-ink/40" style={{ animation: 'jg-fade .25s ease both' }} onClick={handleClose} aria-label="Fechar" />
 
@@ -173,9 +175,9 @@ export function CartDrawer() {
                       />
                       <span>
                         Estou de acordo com a{' '}
-                        <Link href="/contato" className="text-brand underline">
+                        <button type="button" onClick={() => setPrivacyOpen(true)} className="text-brand underline">
                           política de privacidade
-                        </Link>{' '}
+                        </button>{' '}
                         da JG2®.
                       </span>
                     </label>
@@ -203,6 +205,8 @@ export function CartDrawer() {
         )}
       </div>
     </div>
+    <PrivacyPolicyModal open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
+    </>
   );
 }
 

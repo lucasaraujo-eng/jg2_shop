@@ -1,11 +1,15 @@
 'use client';
 
+import type { DocType } from '@/components/QuoteFormFields';
+
 export type PageQuoteFormValue = {
   name: string;
   company: string;
   email: string;
   phone: string;
   city: string;
+  docType: DocType;
+  cnpj: string;
   message: string;
 };
 
@@ -63,6 +67,24 @@ export function PageQuoteFormFields({
           className={`${inputClass} min-w-0 flex-1`}
         />
       </div>
+      <div className="flex gap-4 text-sm text-ink">
+        <label className="flex items-center gap-1.5">
+          <input type="radio" name="page-docType" checked={value.docType === 'cnpj'} onChange={() => onChange({ docType: 'cnpj', cnpj: '' })} />
+          CNPJ
+        </label>
+        <label className="flex items-center gap-1.5">
+          <input type="radio" name="page-docType" checked={value.docType === 'cpf'} onChange={() => onChange({ docType: 'cpf', cnpj: '' })} />
+          CPF
+        </label>
+      </div>
+      <input
+        required
+        value={value.cnpj}
+        onChange={(e) => onChange({ cnpj: e.target.value })}
+        placeholder={value.docType === 'cpf' ? 'CPF *' : 'CNPJ *'}
+        aria-label={value.docType === 'cpf' ? 'CPF' : 'CNPJ'}
+        className={inputClass}
+      />
       <textarea
         value={value.message}
         onChange={(e) => onChange({ message: e.target.value })}
@@ -75,5 +97,10 @@ export function PageQuoteFormFields({
 }
 
 export function isPageQuoteFormValid(value: PageQuoteFormValue): boolean {
-  return value.name.trim().length >= 2 && /\S+@\S+\.\S+/.test(value.email) && value.company.trim().length > 0;
+  return (
+    value.name.trim().length >= 2 &&
+    /\S+@\S+\.\S+/.test(value.email) &&
+    value.company.trim().length > 0 &&
+    value.cnpj.trim().length >= (value.docType === 'cpf' ? 11 : 14)
+  );
 }
