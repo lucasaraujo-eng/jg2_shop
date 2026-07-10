@@ -3,6 +3,10 @@ import { getPublishedPosts } from '@/server/blog';
 import { PostCard } from '@/components/blog/PostCard';
 import { NewsletterForm } from '@/components/NewsletterForm';
 
+// TODO: matérias atuais são de teste — esconder a listagem pública até termos
+// conteúdo real publicado. Trocar para `true` quando fizer sentido reativar.
+const SHOW_POSTS = false;
+
 export default async function BlogIndexPage() {
   const posts = await getPublishedPosts();
   const [featured, ...rest] = posts;
@@ -26,10 +30,12 @@ export default async function BlogIndexPage() {
       </section>
 
       <div className="mx-auto max-w-[1340px] px-7 py-12">
-        {posts.length === 0 ? (
-          <p className="rounded-xl border border-border-soft bg-white px-6 py-10 text-center text-sm text-tertiary">
-            Nenhum artigo publicado ainda.
-          </p>
+        {!SHOW_POSTS || posts.length === 0 ? (
+          <div className="py-24 text-center">
+            <p className="font-display text-2xl font-black leading-tight text-ink sm:text-3xl">
+              Muitos conteúdos relevantes serão lançados em breve, aguarde!
+            </p>
+          </div>
         ) : (
           <>
             {featured && (

@@ -89,7 +89,7 @@ export async function sendQuoteEmails(q: QuotePayload): Promise<void> {
          <strong>Telefone:</strong> ${escapeHtml(q.phone)}<br/>
          ${q.company ? `<strong>Empresa:</strong> ${escapeHtml(q.company)}<br/>` : ''}
          ${q.city ? `<strong>Cidade/UF:</strong> ${escapeHtml(q.city)}<br/>` : ''}
-         ${q.cnpj ? `<strong>CNPJ:</strong> ${escapeHtml(q.cnpj)}<br/>` : ''}
+         ${q.cnpj ? `<strong>CNPJ/CPF:</strong> ${escapeHtml(q.cnpj)}<br/>` : ''}
          ${q.purpose ? `<strong>Finalidade:</strong> ${escapeHtml(q.purpose)}<br/>` : ''}</p>
       ${q.message ? `<p><strong>Mensagem:</strong><br/>${escapeHtml(q.message)}</p>` : ''}
       <h3>Itens</h3>

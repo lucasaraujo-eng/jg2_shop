@@ -22,7 +22,7 @@ export default async function AdminQuotesPage() {
                 </p>
                 <p className="mt-1 text-sm text-muted-2">
                   {q.email} · {q.phone}
-                  {q.cnpj && <> · CNPJ {q.cnpj}</>}
+                  {q.cnpj && <> · CNPJ/CPF {q.cnpj}</>}
                   {q.city && <> · {q.city}</>}
                 </p>
                 <p className="mt-1.5 font-mono text-xs text-tertiary">

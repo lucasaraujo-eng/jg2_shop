@@ -5,9 +5,10 @@ import Link from 'next/link';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
 import { PageQuoteFormFields, isPageQuoteFormValid, type PageQuoteFormValue } from '@/components/PageQuoteFormFields';
+import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
 import { resolveImageUrl } from '@/lib/utils';
 
-const EMPTY_FORM: PageQuoteFormValue = { name: '', company: '', email: '', phone: '', city: '', message: '' };
+const EMPTY_FORM: PageQuoteFormValue = { name: '', company: '', email: '', phone: '', city: '', docType: 'cnpj', cnpj: '', message: '' };
 
 export default function OrcamentoPage() {
   const items = useCart((s) => s.items);
@@ -20,6 +21,7 @@ export default function OrcamentoPage() {
   const [error, setError] = useState('');
   const [protocol, setProtocol] = useState<string | null>(null);
   const [sentCount, setSentCount] = useState(0);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   const totalQty = items.reduce((n, i) => n + i.quantity, 0);
   const productCount = items.length;
@@ -177,12 +179,17 @@ export default function OrcamentoPage() {
                 {sending ? 'Enviando…' : 'Enviar solicitação de orçamento'}
               </button>
               <p className="mt-3 text-center text-xs text-tertiary">
-                Ao enviar você concorda com nossa Política de Privacidade. Sem compromisso de compra.
+                Ao enviar você concorda com nossa{' '}
+                <button type="button" onClick={() => setPrivacyOpen(true)} className="underline hover:text-brand">
+                  Política de Privacidade
+                </button>
+                . Sem compromisso de compra.
               </p>
             </div>
           </div>
         </div>
       )}
+      <PrivacyPolicyModal open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
     </div>
   );
 }
