@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { FaqAccordion } from '@/components/FaqAccordion';
+import { ScrollCarousel } from '@/components/ScrollCarousel';
 import type { ConsultoriaData } from '@/data/consultorias';
 
 export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
@@ -48,12 +49,12 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
               ))}
             </div>
           </div>
-          <div className="group h-[340px] w-full overflow-hidden rounded-2xl bg-white">
+          <div className="group h-[460px] w-full overflow-hidden rounded-2xl bg-white">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={data.problemImg}
               alt=""
-              className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${data.problemFit === 'contain' ? 'object-contain p-6' : 'object-cover'} ${data.problemPosition === 'top' ? 'object-top' : ''}`}
+              className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${data.problemFit === 'contain' ? 'object-contain p-2' : 'object-cover'} ${data.problemPosition === 'top' ? 'object-top' : ''}`}
             />
           </div>
         </div>
@@ -65,9 +66,9 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
           <h2 className="font-display text-2xl font-black text-ink sm:text-3xl">{data.gainsTitle}</h2>
           <div className="mt-7 grid gap-x-10 gap-y-3 sm:grid-cols-2">
             {data.gains.map((g) => (
-              <div key={g} className="flex items-start gap-3.5 border-t border-border-strong py-3.5">
-                <span className="flex-none font-black text-brand">→</span>
-                <span className="font-semibold text-muted-3">{g}</span>
+              <div key={g} className="group flex items-start gap-3.5 border-t border-border-strong py-3.5">
+                <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full border-2 border-brand text-xs font-black text-brand transition group-hover:bg-brand group-hover:text-white">✓</span>
+                <span className="inline-block font-semibold text-muted-3 transition duration-300 group-hover:translate-x-1.5 group-hover:text-brand">{g}</span>
               </div>
             ))}
           </div>
@@ -84,7 +85,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
             <h2 className="font-display text-2xl font-black leading-tight text-white sm:text-3xl">{data.stagesTitle}</h2>
             <div className="mt-6 flex flex-wrap gap-2.5">
               {data.stages.map((s) => (
-                <span key={s} className="rounded-full bg-brand px-4 py-2.5 text-sm font-bold text-white">
+                <span key={s} className="inline-block rounded-full bg-brand px-4 py-2.5 text-sm font-bold text-white transition hover:-translate-y-1 hover:bg-ink">
                   {s}
                 </span>
               ))}
@@ -117,13 +118,10 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
           <p className="font-mono text-xs uppercase tracking-widest text-brand">Entregáveis</p>
           <h2 className="mt-2 font-display text-3xl font-black text-ink">{data.showcaseTitle}</h2>
           <p className="mt-2 max-w-xl text-muted-2">{data.showcaseText}</p>
-          <div
-            className="mt-8 overflow-hidden"
-            style={{ WebkitMaskImage: 'linear-gradient(90deg, transparent 0, #000 3%, #000 97%, transparent 100%)', maskImage: 'linear-gradient(90deg, transparent 0, #000 3%, #000 97%, transparent 100%)' }}
-          >
-            <div className="flex w-max gap-6 hover:[animation-play-state:paused]" style={{ animation: 'jg-marquee 48s linear infinite' }}>
-              {[...data.showcase, ...data.showcase].map((item, i) => (
-                <div key={`${item.title}-${i}`} className="group flex w-[412px] flex-none flex-col overflow-hidden rounded-2xl border border-border-soft bg-white">
+          <div className="mt-8">
+            <ScrollCarousel autoPlay speed={35}>
+              {data.showcase.map((item) => (
+                <div key={item.title} className="group flex w-[412px] flex-none flex-col overflow-hidden rounded-2xl border border-border-soft bg-white transition duration-300 hover:z-10 hover:scale-105 hover:shadow-xl">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.img}
@@ -136,7 +134,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
                   </div>
                 </div>
               ))}
-            </div>
+            </ScrollCarousel>
           </div>
         </div>
       </section>
@@ -147,7 +145,10 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
           <h3 className="max-w-[280px] flex-none font-display text-lg font-black text-ink">{data.normsTitle}</h3>
           <div className="ml-auto flex flex-wrap gap-2.5">
             {data.norms.map((n) => (
-              <span key={n} className="rounded-lg border border-border bg-white px-4 py-2.5 font-mono text-sm font-bold text-muted-2">
+              <span
+                key={n}
+                className="inline-block rounded-lg border border-border bg-white px-4 py-2.5 font-mono text-sm font-bold text-muted-2 transition hover:-translate-y-1 hover:border-brand hover:bg-brand hover:text-white"
+              >
                 {n}
               </span>
             ))}
