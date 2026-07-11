@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { StatsCounter, type Stat } from '@/components/about/StatsCounter';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
+import { ScrollCarousel } from '@/components/ScrollCarousel';
+import { setores } from '@/data/setores';
 
 const STATS: Stat[] = [
   { prefix: '+', value: 5000, label: 'clientes atendidos em todo o Brasil' },
@@ -35,17 +37,6 @@ const AREAS = [
   'Software e tecnologia para gestão da segurança',
 ];
 
-const SECTORS = [
-  'Siderurgia',
-  'Alimentício',
-  'Papel e celulose',
-  'Automotivo',
-  'Madeireiro',
-  'Petrolífero',
-  'Combustíveis',
-  'Mineração',
-  'E diversos outros setores',
-];
 
 export default function SobrePage() {
   return (
@@ -144,7 +135,7 @@ export default function SobrePage() {
       {/* Diferenciais */}
       <section className="bg-surface-footer py-20">
         <div className="mx-auto max-w-[1340px] px-7">
-          <p className="font-mono text-xs uppercase tracking-widest text-brand">Por que o Grupo JG2 é diferente</p>
+          <p className="font-mono text-sm font-bold uppercase tracking-widest text-brand">Por que o Grupo JG2® é diferente</p>
           <h2 className="mt-3 max-w-2xl font-display text-3xl font-black leading-tight text-ink sm:text-4xl">
             Agilidade, profundidade técnica, estrutura produtiva e portfólio integrado
           </h2>
@@ -197,12 +188,22 @@ export default function SobrePage() {
             Atendemos algumas das maiores indústrias do país e do mundo — uma diversidade que nos permite
             compreender com profundidade os desafios de cada operação.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            {SECTORS.map((s) => (
-              <span key={s} className="rounded-full border border-white/25 bg-white/10 px-5 py-3 font-semibold text-white transition hover:bg-white/20">
-                {s}
-              </span>
-            ))}
+          <div className="mt-8">
+            <ScrollCarousel autoPlay speed={65} showControls={false}>
+              {setores.map((s) => (
+                <Link
+                  key={s.id}
+                  href={`/setores/${s.id}`}
+                  className="group relative flex h-[180px] w-[240px] flex-none items-end justify-between overflow-hidden rounded-2xl bg-ink p-4 shadow-sm transition hover:shadow-2xl"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={s.img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/20 to-transparent" />
+                  <span className="relative text-sm font-bold leading-tight text-white [text-shadow:0_1px_6px_rgba(0,0,0,.4)]">{s.name}</span>
+                  <span className="relative flex h-[30px] w-[30px] flex-none items-center justify-center rounded-full bg-brand text-white">↗</span>
+                </Link>
+              ))}
+            </ScrollCarousel>
           </div>
         </div>
       </section>
@@ -235,7 +236,7 @@ export default function SobrePage() {
       <section className="bg-ink-deeper py-20">
         <div className="mx-auto max-w-[1340px] px-7">
           <div className="jg-card-grid grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-2xl border border-dark-border p-8 transition hover:-translate-y-1">
+            <div className="rounded-2xl border border-dark-border p-8 transition hover:-translate-y-1 hover:border-brand">
               <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Missão</p>
               <p className="mt-3.5 leading-relaxed text-white/80">
                 Transformar o ambiente industrial em um local mais seguro, reduzindo acidentes e multas, promovendo
@@ -249,7 +250,7 @@ export default function SobrePage() {
                 capacidade de entrega e impacto real na prevenção de acidentes e na evolução da cultura de segurança.
               </p>
             </div>
-            <div className="rounded-2xl border border-dark-border p-8 transition hover:-translate-y-1">
+            <div className="rounded-2xl border border-dark-border p-8 transition hover:-translate-y-1 hover:border-brand">
               <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Compromisso</p>
               <p className="mt-3.5 leading-relaxed text-white/80">
                 Segurança industrial é uma decisão estratégica que protege pessoas, preserva operações e fortalece
