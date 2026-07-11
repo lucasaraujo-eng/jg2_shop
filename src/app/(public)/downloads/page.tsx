@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { SectionNav } from '@/components/downloads/SectionNav';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 
-type Doc = { tag: string; title: string; desc: string; meta: string; url?: string };
+type Doc = { tag: string; title: string; desc: string; meta: string; url?: string; cover?: string };
 
 const R2 = 'https://pub-c1e6b187e70f4fa69bdd79429ed7c8c2.r2.dev/catalogos';
 
@@ -13,6 +13,7 @@ const DOCS_CATALOGOS: Doc[] = [
     desc: 'Portfólio completo de soluções em segurança industrial do Grupo JG2®.',
     meta: 'PDF · 15 MB',
     url: `${R2}/seguranca-industrial.pdf`,
+    cover: `${R2}/seguranca-industrial-cover.png`,
   },
   {
     tag: 'Catálogo',
@@ -20,6 +21,7 @@ const DOCS_CATALOGOS: Doc[] = [
     desc: 'Linha completa de cadeados, garras, etiquetas e bloqueios de válvula e elétricos.',
     meta: 'PDF · 59 MB',
     url: `${R2}/lototo-bloqueio-etiquetagem.pdf`,
+    cover: `${R2}/lototo-bloqueio-etiquetagem-cover.png`,
   },
   {
     tag: 'Catálogo',
@@ -27,6 +29,7 @@ const DOCS_CATALOGOS: Doc[] = [
     desc: 'Proteções e dispositivos para prevenção de acidentes com as mãos.',
     meta: 'PDF · 12 MB',
     url: `${R2}/maos-seguras.pdf`,
+    cover: `${R2}/maos-seguras-cover.png`,
   },
   {
     tag: 'Catálogo',
@@ -34,6 +37,7 @@ const DOCS_CATALOGOS: Doc[] = [
     desc: 'Grades e barreiras modulares para delimitação e proteção de áreas de risco.',
     meta: 'PDF · 31 MB',
     url: `${R2}/gradis-seguranca.pdf`,
+    cover: `${R2}/gradis-seguranca-cover.png`,
   },
 ];
 
@@ -44,22 +48,33 @@ const DOCS_NORMAS: Doc[] = [
     desc: 'Guia de soluções JG2® para adequação de máquinas e equipamentos à NR-12.',
     meta: 'PDF · 14 MB',
     url: `${R2}/nr12-adequacao.pdf`,
+    cover: `${R2}/nr12-adequacao-cover.png`,
   },
 ];
+
+const DOCS_EBOOKS: Doc[] = [];
+const DOCS_ARTIGOS: Doc[] = [];
 
 const SECTIONS = [
   { id: 'cat-sec-catalogos', label: 'Catálogos e Portfólios JG2®', docs: DOCS_CATALOGOS },
   { id: 'cat-sec-normas', label: 'Normas Regulamentadoras', docs: DOCS_NORMAS },
+  { id: 'cat-sec-ebooks', label: 'E-books', docs: DOCS_EBOOKS },
+  { id: 'cat-sec-artigos', label: 'Artigos', docs: DOCS_ARTIGOS },
 ];
 
 function DocCard({ doc }: { doc: Doc }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-border-soft bg-white">
-      <div className="flex h-[200px] items-center justify-center bg-surface-alt">
-        <div className="relative flex h-[118px] w-[92px] flex-col items-center justify-end rounded-md border border-border bg-white pb-3.5 shadow-md">
-          <div className="absolute right-0 top-0 h-[26px] w-[26px] rounded-bl-md rounded-tr-md border-b border-l border-border bg-surface-alt" />
-          <span className="rounded bg-brand px-2 py-0.5 font-mono text-[11px] font-bold tracking-wide text-white">PDF</span>
-        </div>
+      <div className="relative flex h-[200px] items-center justify-center bg-surface-alt p-4">
+        {doc.cover ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={doc.cover} alt={doc.title} className="h-full w-full rounded-md object-contain shadow-md" />
+        ) : (
+          <div className="relative flex h-[118px] w-[92px] flex-col items-center justify-end rounded-md border border-border bg-white pb-3.5 shadow-md">
+            <div className="absolute right-0 top-0 h-[26px] w-[26px] rounded-bl-md rounded-tr-md border-b border-l border-border bg-surface-alt" />
+            <span className="rounded bg-brand px-2 py-0.5 font-mono text-[11px] font-bold tracking-wide text-white">PDF</span>
+          </div>
+        )}
       </div>
       <div className="flex flex-1 flex-col p-5">
         <span className="font-mono text-[11px] text-brand">{doc.tag}</span>
@@ -83,8 +98,11 @@ function DocCard({ doc }: { doc: Doc }) {
 export default function DownloadsPage() {
   return (
     <div>
-      <section className="bg-ink-deep py-14 text-white">
-        <div className="mx-auto max-w-[1340px] px-7">
+      <section className="relative overflow-hidden bg-ink-deep py-14 text-white">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/uploads/banner-catalogos-downloads.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-deep via-ink-deep/85 to-ink-deep/40" />
+        <div className="relative mx-auto max-w-[1340px] px-7">
           <p className="text-xs text-white/50">
             <Link href="/" className="hover:text-white">
               Home
@@ -110,11 +128,17 @@ export default function DownloadsPage() {
                 <span className="h-[30px] w-[5px] flex-none rounded-sm bg-brand" />
                 <h2 className="font-display text-2xl font-black leading-tight text-ink sm:text-3xl">{s.label}</h2>
               </div>
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {s.docs.map((doc) => (
-                  <DocCard key={doc.title} doc={doc} />
-                ))}
-              </div>
+              {s.docs.length === 0 ? (
+                <p className="rounded-2xl border border-border-soft bg-surface-alt px-6 py-10 text-center text-sm text-tertiary">
+                  Em breve, novos materiais nesta categoria.
+                </p>
+              ) : (
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {s.docs.map((doc) => (
+                    <DocCard key={doc.title} doc={doc} />
+                  ))}
+                </div>
+              )}
             </div>
           ))}
 

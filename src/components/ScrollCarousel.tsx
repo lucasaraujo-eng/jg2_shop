@@ -21,6 +21,7 @@ export function ScrollCarousel({
   loopToStart = false,
   gapClassName = 'gap-4',
   trackClassName = '',
+  showControls = true,
 }: {
   children: React.ReactNode;
   autoPlay?: boolean;
@@ -32,6 +33,8 @@ export function ScrollCarousel({
   gapClassName?: string;
   /** Classes extras no trilho rolável (ex.: fundo/arredondamento de um painel que envolve os itens). */
   trackClassName?: string;
+  /** Esconde as setas e a barra de progresso abaixo do trilho (ex.: quando o carrossel só rola sozinho, sem controle manual). */
+  showControls?: boolean;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
@@ -116,30 +119,32 @@ export function ScrollCarousel({
       >
         {children}
       </div>
-      <div className="mt-5 flex items-center gap-4">
-        <div className="flex flex-none gap-3">
-          <button
-            onClick={() => scroll(-1)}
-            aria-label="Anterior"
-            className="flex h-[46px] w-[46px] items-center justify-center rounded-full border border-border-strong-2 text-lg transition hover:border-brand hover:bg-brand hover:text-white"
-          >
-            ←
-          </button>
-          <button
-            onClick={() => scroll(1)}
-            aria-label="Próximo"
-            className="flex h-[46px] w-[46px] items-center justify-center rounded-full border border-border-strong-2 text-lg transition hover:border-brand hover:bg-brand hover:text-white"
-          >
-            →
-          </button>
+      {showControls && (
+        <div className="mt-5 flex items-center gap-4">
+          <div className="flex flex-none gap-3">
+            <button
+              onClick={() => scroll(-1)}
+              aria-label="Anterior"
+              className="flex h-[46px] w-[46px] items-center justify-center rounded-full border border-border-strong-2 text-lg transition hover:border-brand hover:bg-brand hover:text-white"
+            >
+              ←
+            </button>
+            <button
+              onClick={() => scroll(1)}
+              aria-label="Próximo"
+              className="flex h-[46px] w-[46px] items-center justify-center rounded-full border border-border-strong-2 text-lg transition hover:border-brand hover:bg-brand hover:text-white"
+            >
+              →
+            </button>
+          </div>
+          <div className="h-[3px] flex-1 overflow-hidden rounded-full bg-border-soft">
+            <div
+              className="h-full rounded-full bg-brand transition-[width] duration-150 ease-out"
+              style={{ width: `${Math.max(8, progress * 100)}%` }}
+            />
+          </div>
         </div>
-        <div className="h-[3px] flex-1 overflow-hidden rounded-full bg-border-soft">
-          <div
-            className="h-full rounded-full bg-brand transition-[width] duration-150 ease-out"
-            style={{ width: `${Math.max(8, progress * 100)}%` }}
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 }
