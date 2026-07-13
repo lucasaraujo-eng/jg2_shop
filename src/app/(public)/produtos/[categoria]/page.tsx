@@ -26,17 +26,28 @@ export default async function CategoryPage({
   ]);
 
   const kicker = isMaosSeguras ? 'Proteção das mãos' : 'Loja de bloqueio';
-  const bannerTitle = isMaosSeguras ? 'Catálogo Mãos Seguras' : 'Catálogo de produtos LOTO';
+  const bannerTitle = isMaosSeguras ? (
+    <>
+      Encontre o bloqueio ideal
+      <br />
+      para sua válvula ou dispositivo aqui!
+    </>
+  ) : (
+    'Catálogo de produtos LOTO'
+  );
   const bannerSubtitle = isMaosSeguras
-    ? 'Soluções personalizadas para afastar as mãos da zona de perigo. Adicione os itens ao seu orçamento e envie tudo de uma vez.'
+    ? 'Selecione o tipo de dispositivo de isolamento e encontre com mais rapidez os produtos de bloqueio indicados para a sua aplicação.'
     : 'Adicione os itens ao seu orçamento e envie tudo de uma vez. Sem compromisso — nossa equipe retorna com valores e prazos.';
   const groups = isMaosSeguras ? buildSubcategoryGroups(category.subcategories, products) : null;
   const cardProducts = toCardProducts(products);
 
   return (
     <div>
-      <section className="bg-ink-deep py-14 text-white">
-        <div className="mx-auto max-w-[1340px] px-7">
+      <section className="relative overflow-hidden bg-ink-deep py-14 text-white">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/uploads/banner-produtos-loto.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-deep from-45% via-ink-deep/80 via-65% to-transparent" />
+        <div className="relative mx-auto max-w-[1340px] px-7">
           <p className="text-xs text-white/50">
             <Link href="/" className="hover:text-white">
               Home
