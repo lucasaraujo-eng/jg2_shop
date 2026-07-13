@@ -17,8 +17,11 @@ export default async function AllProductsPage() {
 
   return (
     <div>
-      <section className="bg-ink-deep py-14 text-white">
-        <div className="mx-auto max-w-[1340px] px-7">
+      <section className="relative overflow-hidden bg-ink-deep py-14 text-white">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/uploads/banner-produtos-loto.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-deep from-45% via-ink-deep/80 via-65% to-transparent" />
+        <div className="relative mx-auto max-w-[1340px] px-7">
           <p className="text-xs text-white/50">
             <Link href="/" className="hover:text-white">
               Home

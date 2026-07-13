@@ -387,12 +387,12 @@ export default async function HomePage() {
               Explorar catálogo →
             </Link>
           </div>
-          <div className="relative flex h-[230px] items-center justify-center overflow-hidden rounded-2xl bg-white">
+          <div className="relative flex h-[230px] items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/uploads/banner-catalogo-online.png"
               alt="Catálogos JG2®"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain drop-shadow-[0_12px_20px_rgba(0,0,0,.35)]"
             />
           </div>
         </div>
