@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Children, cloneElement, isValidElement, useEffect, useRef, useState } from 'react';
 
 const LOOP_INTERVAL = 3500;
 
@@ -11,8 +11,10 @@ const LOOP_INTERVAL = 3500;
  *
  * `autoPlay` faz uma rolagem contínua e lenta (não aos saltos), indo e
  * voltando entre as pontas — pausa ao passar o mouse ou tocar. Com
- * `loopToStart`, em vez de inverter o sentido ao chegar no fim, salta de
- * volta pro início aos saltos (igual ao ProductCarousel).
+ * `loopToStart`, os filhos são duplicados no trilho e a posição é reiniciada
+ * silenciosamente (sem animação) assim que passa da primeira cópia — como o
+ * conteúdo é idêntico, o "wrap" é imperceptível e a rolagem parece infinita,
+ * sempre avançando para a direita (nunca volta visivelmente ao card 1).
  */
 export function ScrollCarousel({
   children,
@@ -27,7 +29,7 @@ export function ScrollCarousel({
   autoPlay?: boolean;
   /** Pixels por segundo da rolagem automática (ignorado quando loopToStart). */
   speed?: number;
-  /** Ao chegar no fim, salta de volta pro início em vez de inverter o sentido. */
+  /** Loop infinito: duplica os filhos e sempre avança para a direita, em vez de inverter o sentido. */
   loopToStart?: boolean;
   /** Espaçamento entre os itens do trilho (ex.: "gap-0" para itens colados, só separados por borda). */
   gapClassName?: string;
@@ -50,6 +52,17 @@ export function ScrollCarousel({
   function handleScroll() {
     const el = trackRef.current;
     if (!el) return;
+    if (loopToStart) {
+      // Trilho tem 2 cópias dos filhos; ao passar da primeira, volta ao
+      // início dela sem animação — como a 2ª cópia é idêntica, não se nota.
+      const singleWidth = el.scrollWidth / 2;
+      if (singleWidth > 0 && el.scrollLeft >= singleWidth) {
+        el.scrollLeft -= singleWidth;
+      }
+      const effectiveMax = singleWidth - el.clientWidth;
+      setProgress(effectiveMax > 0 ? el.scrollLeft / effectiveMax : 0);
+      return;
+    }
     const max = el.scrollWidth - el.clientWidth;
     setProgress(max > 0 ? el.scrollLeft / max : 0);
   }
@@ -62,10 +75,8 @@ export function ScrollCarousel({
       const id = setInterval(() => {
         const el = trackRef.current;
         if (!el || pausedRef.current || document.hidden) return;
-        const max = el.scrollWidth - el.clientWidth;
-        if (max <= 0) return;
-        if (el.scrollLeft >= max - 4) el.scrollTo({ left: 0, behavior: 'smooth' });
-        else el.scrollBy({ left: el.clientWidth * 0.85, behavior: 'smooth' });
+        if (el.scrollWidth - el.clientWidth <= 0) return;
+        el.scrollBy({ left: el.clientWidth * 0.85, behavior: 'smooth' });
       }, LOOP_INTERVAL);
       return () => clearInterval(id);
     }
@@ -118,6 +129,10 @@ export function ScrollCarousel({
         className={`jg-noscroll flex ${gapClassName} overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${trackClassName}`}
       >
         {children}
+        {loopToStart &&
+          Children.map(children, (child, i) =>
+            isValidElement(child) ? cloneElement(child, { key: `dup-${i}`, 'aria-hidden': true } as Record<string, unknown>) : child,
+          )}
       </div>
       {showControls && (
         <div className="mt-5 flex items-center gap-4">
