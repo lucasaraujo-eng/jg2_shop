@@ -7,6 +7,7 @@ import { submitQuote } from '@/server/actions/quote';
 import { PageQuoteFormFields, isPageQuoteFormValid, type PageQuoteFormValue } from '@/components/PageQuoteFormFields';
 import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
 import { resolveImageUrl } from '@/lib/utils';
+import { getRecaptchaToken } from '@/lib/recaptcha-client';
 
 const EMPTY_FORM: PageQuoteFormValue = { name: '', company: '', email: '', phone: '', city: '', docType: 'cnpj', cnpj: '', message: '' };
 
@@ -29,16 +30,20 @@ export default function OrcamentoPage() {
   async function handleSubmit() {
     setSending(true);
     setError('');
-    const result = await submitQuote({
-      ...form,
-      items: items.map((i) => ({
-        code: i.code,
-        name: i.name,
-        quantity: i.quantity,
-        variantLabel: i.variantLabel,
-        productId: i.productId,
-      })),
-    });
+    const token = await getRecaptchaToken('submit_quote');
+    const result = await submitQuote(
+      {
+        ...form,
+        items: items.map((i) => ({
+          code: i.code,
+          name: i.name,
+          quantity: i.quantity,
+          variantLabel: i.variantLabel,
+          productId: i.productId,
+        })),
+      },
+      token ?? undefined,
+    );
     setSending(false);
     if (result.ok) {
       setSentCount(totalQty);

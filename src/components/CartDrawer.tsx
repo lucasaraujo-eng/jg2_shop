@@ -6,6 +6,7 @@ import { submitQuote } from '@/server/actions/quote';
 import { QuoteFormFields, isQuoteFormValid, type QuoteFormValue } from '@/components/QuoteFormFields';
 import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
 import { resolveImageUrl } from '@/lib/utils';
+import { getRecaptchaToken } from '@/lib/recaptcha-client';
 
 const EMPTY_FORM: QuoteFormValue = { name: '', email: '', phone: '', docType: 'cnpj', cnpj: '', purpose: '', message: '' };
 
@@ -25,6 +26,9 @@ export function CartDrawer() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [sentCount, setSentCount] = useState(0);
+
+  const totalQty = items.reduce((n, i) => n + i.quantity, 0);
 
   function handleClose() {
     close();
@@ -37,18 +41,23 @@ export function CartDrawer() {
   async function handleSubmit() {
     setSending(true);
     setError('');
-    const result = await submitQuote({
-      ...form,
-      items: items.map((i) => ({
-        code: i.code,
-        name: i.name,
-        quantity: i.quantity,
-        variantLabel: i.variantLabel,
-        productId: i.productId,
-      })),
-    });
+    const token = await getRecaptchaToken('submit_quote');
+    const result = await submitQuote(
+      {
+        ...form,
+        items: items.map((i) => ({
+          code: i.code,
+          name: i.name,
+          quantity: i.quantity,
+          variantLabel: i.variantLabel,
+          productId: i.productId,
+        })),
+      },
+      token ?? undefined,
+    );
     setSending(false);
     if (result.ok) {
+      setSentCount(totalQty);
       clear();
       setStep('sent');
     } else {
@@ -58,7 +67,6 @@ export function CartDrawer() {
 
   if (!isOpen) return null;
 
-  const totalQty = items.reduce((n, i) => n + i.quantity, 0);
   const panelWidth = step === 'form' ? 'max-w-[880px]' : 'max-w-[420px]';
 
   return (
@@ -71,7 +79,7 @@ export function CartDrawer() {
         style={{ animation: 'jg-slide-in .32s cubic-bezier(.22,.61,.36,1) both' }}
       >
         {step === 'sent' ? (
-          <SentPanel itemCount={totalQty} onClose={handleClose} />
+          <SentPanel itemCount={sentCount} onClose={handleClose} />
         ) : (
           <>
             <header className="flex flex-none items-center justify-between border-b border-border-soft p-5">

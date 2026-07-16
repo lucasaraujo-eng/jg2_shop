@@ -4,14 +4,18 @@ import { headers } from 'next/headers';
 import { sendNewsletterEmail } from '@/lib/email';
 import { newsletterSubscribeSchema, type NewsletterSubscribeInput } from '@/lib/validations';
 import { checkRateLimit, clientIp } from '@/lib/rate-limit';
+import { verifyRecaptcha } from '@/lib/recaptcha';
 
 type ActionResult = { ok: true } | { ok: false; error: string };
 
 /** Inscrição na newsletter — sem itens/CNPJ. Não persiste no banco, só envia e-mail. */
-export async function submitNewsletter(input: NewsletterSubscribeInput): Promise<ActionResult> {
+export async function submitNewsletter(input: NewsletterSubscribeInput, recaptchaToken?: string): Promise<ActionResult> {
   const ip = clientIp(await headers());
   if (!checkRateLimit(`newsletter:${ip}`, 5, 10 * 60 * 1000)) {
     return { ok: false, error: 'Muitas solicitações. Aguarde alguns minutos e tente novamente.' };
+  }
+  if (!(await verifyRecaptcha(recaptchaToken, 'submit_newsletter'))) {
+    return { ok: false, error: 'Não foi possível validar sua solicitação. Recarregue a página e tente novamente.' };
   }
 
   const parsed = newsletterSubscribeSchema.safeParse(input);

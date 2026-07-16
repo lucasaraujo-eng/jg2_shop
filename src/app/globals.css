@@ -87,6 +87,13 @@ body {
   display: none;
 }
 
+/* Esconde o badge flutuante do reCAPTCHA v3 (regra recomendada pelo próprio
+   Google). Só é permitido escondê-lo se o aviso de marca ficar visível em
+   algum outro lugar da UI — ver o texto no rodapé em (public)/layout.tsx. */
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
 /* ===================== Animações do protótipo ===================== */
 @keyframes jg-up {
   from {
