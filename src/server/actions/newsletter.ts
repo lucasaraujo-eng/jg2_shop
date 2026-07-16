@@ -1,12 +1,19 @@
 'use server';
 
+import { headers } from 'next/headers';
 import { sendNewsletterEmail } from '@/lib/email';
 import { newsletterSubscribeSchema, type NewsletterSubscribeInput } from '@/lib/validations';
+import { checkRateLimit, clientIp } from '@/lib/rate-limit';
 
 type ActionResult = { ok: true } | { ok: false; error: string };
 
 /** Inscrição na newsletter — sem itens/CNPJ. Não persiste no banco, só envia e-mail. */
 export async function submitNewsletter(input: NewsletterSubscribeInput): Promise<ActionResult> {
+  const ip = clientIp(await headers());
+  if (!checkRateLimit(`newsletter:${ip}`, 5, 10 * 60 * 1000)) {
+    return { ok: false, error: 'Muitas solicitações. Aguarde alguns minutos e tente novamente.' };
+  }
+
   const parsed = newsletterSubscribeSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? 'Dados inválidos' };
