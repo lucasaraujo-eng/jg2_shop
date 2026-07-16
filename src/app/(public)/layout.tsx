@@ -5,6 +5,7 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 import { WhatsAppFloat } from '@/components/WhatsAppFloat';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 import { RecaptchaScript } from '@/components/RecaptchaScript';
+import { RecaptchaNotice } from '@/components/RecaptchaNotice';
 import { getCategories } from '@/server/catalog';
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -113,7 +114,8 @@ export default async function PublicLayout({ children }: { children: React.React
         </div>
 
         <div className="border-t border-white/10 py-6 text-center text-xs text-white/50">
-          © {new Date().getFullYear()} JG2 Produtos de Segurança®. Todos os direitos reservados.
+          <p>© {new Date().getFullYear()} JG2 Produtos de Segurança®. Todos os direitos reservados.</p>
+          <RecaptchaNotice className="mt-1.5" />
         </div>
       </footer>
     </>
