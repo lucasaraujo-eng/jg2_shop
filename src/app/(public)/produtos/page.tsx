@@ -1,10 +1,12 @@
 import { Suspense } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { getCategories, getAllProducts, getFilterTaxonomy } from '@/server/catalog';
 import { CategorySidebar } from '@/components/catalog/CategorySidebar';
 import { CatalogClient } from '@/components/catalog/CatalogClient';
 import { CatalogResultsLoading } from '@/components/Skeleton';
 import { buildCategoryGroups, toCardProducts } from '@/lib/catalogGrouping';
+import { r2Url } from '@/lib/utils';
 
 /** "Todos" — mesma casca das páginas de categoria, com o filtro de dispositivos e os carrosséis agrupados por categoria (igual ao protótipo: banner e barra de filtro fixos, independente de a listagem incluir Mãos Seguras também). */
 export default async function AllProductsPage() {
@@ -18,8 +20,7 @@ export default async function AllProductsPage() {
   return (
     <div>
       <section className="relative overflow-hidden bg-ink-deep py-14 text-white">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/uploads/banner-produtos-loto.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <Image src={r2Url('/uploads/banner-produtos-loto.png')} alt="" fill sizes="100vw" priority className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink-deep from-45% via-ink-deep/80 via-65% to-transparent" />
         <div className="relative mx-auto max-w-[1340px] px-7">
           <p className="text-xs text-white/50">

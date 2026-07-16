@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { CartDrawer } from '@/components/CartDrawer';
@@ -24,8 +25,7 @@ export default async function PublicLayout({ children }: { children: React.React
       <footer className="bg-ink-deep">
         <div className="mx-auto grid max-w-[1340px] grid-cols-2 gap-10 px-7 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/jg2-logo-white.png" alt="JG2" className="h-16 w-auto" />
+            <Image src="/assets/jg2-logo-white.png" alt="JG2" width={476} height={239} className="h-16 w-auto" />
             <p className="mt-4 max-w-xs text-sm text-white/70">
               Nosso time de especialistas está pronto para apresentar as soluções da JG2®.
             </p>

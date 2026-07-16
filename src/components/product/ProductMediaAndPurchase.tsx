@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ProductGallery } from '@/components/product/ProductGallery';
 import { PurchasePanel } from '@/components/product/PurchasePanel';
+import { r2Url } from '@/lib/utils';
 
 type SecretType = 'DIFERENTES' | 'IGUAIS' | 'CHAVE_MESTRA';
 type Variant = { color: string | null; secretType: SecretType | null; skuSuffix: string | null };
@@ -47,7 +48,7 @@ export function ProductMediaAndPurchase({
 }) {
   const [color, setColor] = useState<string | null>(() => variants.find((v) => v.color)?.color ?? null);
 
-  const colorImageUrl = isCadeado && color && COLOR_FILE_CODE[color] ? `/uploads/${code}-${COLOR_FILE_CODE[color]}.png` : null;
+  const colorImageUrl = isCadeado && color && COLOR_FILE_CODE[color] ? r2Url(`/uploads/${code}-${COLOR_FILE_CODE[color]}.png`) : null;
 
   return (
     <div className="grid gap-12 lg:grid-cols-2">

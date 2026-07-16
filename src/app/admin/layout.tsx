@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { auth, signOut } from '@/lib/auth';
 import { AdminNav } from '@/components/admin/AdminNav';
@@ -15,8 +16,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <header className="sticky top-0 z-10 border-b border-border-soft bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-[1200px] items-center gap-5 px-5 py-3 sm:px-7">
           <Link href="/admin/produtos" className="flex flex-none items-center gap-2.5">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/jg2-logo.png" alt="JG2" className="h-7 w-auto" />
+            <Image src="/assets/jg2-logo.png" alt="JG2" width={800} height={400} className="h-7 w-auto" />
             <span className="hidden h-5 w-px bg-border-soft sm:block" />
             <span className="hidden font-mono text-[11px] font-bold uppercase tracking-widest text-tertiary sm:block">Admin</span>
           </Link>

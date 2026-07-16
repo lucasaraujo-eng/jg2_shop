@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { getFeaturedProducts, getFilterTaxonomy } from '@/server/catalog';
 import { ProductCarousel } from '@/components/ProductCarousel';
@@ -7,6 +8,7 @@ import { FaqAccordion } from '@/components/FaqAccordion';
 import { NewsletterForm } from '@/components/NewsletterForm';
 import { DeviceFilterCard } from '@/components/home/DeviceFilterCard';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
+import { r2Url } from '@/lib/utils';
 
 /**
  * Home — as 14 seções do protótipo, na ordem original (ver
@@ -205,9 +207,8 @@ export default async function HomePage() {
                   ↗
                 </span>
               </div>
-              <div className="h-[260px] w-full overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={f.img} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="relative h-[260px] w-full overflow-hidden">
+                <Image src={r2Url(f.img)} alt="" fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-110" />
               </div>
             </Link>
           ))}
@@ -343,8 +344,7 @@ export default async function HomePage() {
                 href={`/setores/${sec.id}`}
                 className="group relative flex h-[180px] w-[240px] flex-none items-end justify-between overflow-hidden rounded-2xl bg-ink p-4 shadow-sm transition hover:shadow-2xl"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={sec.img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+                <Image src={r2Url(sec.img)} alt="" fill sizes="240px" className="object-cover transition duration-300 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/20 to-transparent" />
                 <span className="relative text-sm font-bold leading-tight text-white [text-shadow:0_1px_6px_rgba(0,0,0,.4)]">
                   {sec.name}
@@ -370,12 +370,13 @@ export default async function HomePage() {
               <FaqAccordion items={FAQS} />
             </div>
           </div>
-          <div className="hidden h-full min-h-[380px] w-full overflow-hidden rounded-2xl shadow-lg lg:block">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/uploads/why-jg2.jpg"
+          <div className="relative hidden h-full min-h-[380px] w-full overflow-hidden rounded-2xl shadow-lg lg:block">
+            <Image
+              src={r2Url('/uploads/why-jg2.jpg')}
               alt=""
-              className="h-full w-full object-cover transition duration-300 hover:scale-105"
+              fill
+              sizes="50vw"
+              className="object-cover transition duration-300 hover:scale-105"
             />
           </div>
         </div>
@@ -396,11 +397,12 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="relative flex h-[230px] items-center justify-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/uploads/banner-catalogo-online.png"
+            <Image
+              src={r2Url('/uploads/banner-catalogo-online.png')}
               alt="Catálogos JG2®"
-              className="h-full w-full object-contain drop-shadow-[0_12px_20px_rgba(0,0,0,.35)]"
+              fill
+              sizes="50vw"
+              className="object-contain drop-shadow-[0_12px_20px_rgba(0,0,0,.35)]"
             />
           </div>
         </div>
@@ -485,11 +487,12 @@ function ActionBanner({
         className={`group grid overflow-hidden rounded-2xl border border-border-soft shadow-xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl lg:grid-cols-[1fr_1.15fr] ${panelClassName}`}
       >
         <div className="relative min-h-[260px] overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={imageSrc}
+          <Image
+            src={r2Url(imageSrc)}
             alt=""
-            className={`absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${imagePosition}`}
+            fill
+            sizes="(max-width: 1024px) 100vw, 45vw"
+            className={`object-cover transition-transform duration-500 group-hover:scale-105 ${imagePosition}`}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/15 lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-black/20" />
         </div>

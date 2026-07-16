@@ -108,7 +108,7 @@ export function PurchasePanel({
               <button
                 key={c}
                 onClick={() => onColorChange(c)}
-                className={`flex items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-semibold transition ${
+                className={`flex items-center gap-2 rounded-full border px-3.5 py-3 text-xs font-semibold transition ${
                   color === c ? 'border-brand bg-surface-badge text-brand' : 'border-border text-muted-2 hover:border-brand'
                 }`}
               >
@@ -131,7 +131,7 @@ export function PurchasePanel({
               <button
                 key={s}
                 onClick={() => setSecretType(s)}
-                className={`rounded-full border px-3.5 py-2 text-xs font-semibold transition ${
+                className={`rounded-full border px-3.5 py-3 text-xs font-semibold transition ${
                   secretType === s ? 'border-brand bg-surface-badge text-brand' : 'border-border text-muted-2 hover:border-brand'
                 }`}
               >
@@ -181,7 +181,7 @@ function Stepper({ value, onChange, className = '' }: { value: number; onChange:
       <button
         onClick={() => onChange(Math.max(1, value - 1))}
         aria-label="Diminuir"
-        className="flex h-9 w-9 items-center justify-center text-lg font-bold text-muted-2 hover:text-brand"
+        className="flex h-10 w-10 items-center justify-center text-lg font-bold text-muted-2 hover:text-brand"
       >
         −
       </button>
@@ -195,7 +195,7 @@ function Stepper({ value, onChange, className = '' }: { value: number; onChange:
       <button
         onClick={() => onChange(value + 1)}
         aria-label="Aumentar"
-        className="flex h-9 w-9 items-center justify-center text-lg font-bold text-muted-2 hover:text-brand"
+        className="flex h-10 w-10 items-center justify-center text-lg font-bold text-muted-2 hover:text-brand"
       >
         +
       </button>

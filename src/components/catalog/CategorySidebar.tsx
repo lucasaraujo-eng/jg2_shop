@@ -14,7 +14,7 @@ export function CategorySidebar({ categories, activeSlug }: { categories: Catego
   return (
     <nav aria-label="Categorias" className="hidden w-[240px] flex-none lg:block">
       <div className="sticky top-[160px] flex flex-col gap-1">
-        <p className="mb-1 px-3 font-mono text-[11px] uppercase tracking-wider text-tertiary">Categorias</p>
+        <p className="mb-1 px-3 font-mono text-xs uppercase tracking-wider text-tertiary">Categorias</p>
         <SidebarLink href="/produtos" label="Todos" active={activeSlug === null} />
         {loto.map((c) => (
           <SidebarLink key={c.id} href={`/produtos/${c.slug}`} label={c.name} active={c.slug === activeSlug} />

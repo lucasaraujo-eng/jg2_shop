@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import Image from 'next/image';
 
 /**
  * Campo de upload de imagem com drag-and-drop.
@@ -64,8 +65,7 @@ export function ImageUpload({
       >
         <div className="flex h-20 w-20 flex-none items-center justify-center overflow-hidden rounded-lg border border-border bg-surface-alt">
           {value ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt="" className="h-full w-full object-contain" />
+            <Image src={value} alt="" width={80} height={80} className="h-full w-full object-contain" />
           ) : (
             <svg className="h-7 w-7 text-tertiary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="3" width="18" height="18" rx="2" />

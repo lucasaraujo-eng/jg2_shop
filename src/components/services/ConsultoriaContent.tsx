@@ -1,7 +1,9 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { FaqAccordion } from '@/components/FaqAccordion';
 import { ScrollCarousel } from '@/components/ScrollCarousel';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
+import { r2Url } from '@/lib/utils';
 import type { ConsultoriaData } from '@/data/consultorias';
 
 const OBJECTIVE_BY_SLUG: Record<ConsultoriaData['slug'], string> = {
@@ -16,8 +18,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-deeper py-14 text-white">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={data.heroImg} alt="" className="absolute inset-0 h-full w-full object-cover object-right" />
+        <Image src={r2Url(data.heroImg)} alt="" fill sizes="100vw" priority className="object-cover object-right" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink-deeper via-ink-deeper/90 to-ink-deeper/10" />
         <div className="relative mx-auto max-w-[1440px] px-7">
           <p className="text-xs text-white/60">
@@ -57,12 +58,13 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
               ))}
             </div>
           </div>
-          <div className="group h-[460px] w-full overflow-hidden rounded-2xl bg-white">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={data.problemImg}
+          <div className="group relative h-[460px] w-full overflow-hidden rounded-2xl bg-white">
+            <Image
+              src={r2Url(data.problemImg)}
               alt=""
-              className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${data.problemFit === 'contain' ? 'object-contain p-2' : 'object-cover'} ${data.problemPosition === 'top' ? 'object-top' : ''}`}
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className={`transition-transform duration-500 group-hover:scale-105 ${data.problemFit === 'contain' ? 'object-contain p-2' : 'object-cover'} ${data.problemPosition === 'top' ? 'object-top' : ''}`}
             />
           </div>
         </div>
@@ -86,8 +88,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
       {/* Etapas */}
       <section className="mx-auto max-w-[1340px] px-7 py-14">
         <div className="relative min-h-[400px] overflow-hidden rounded-3xl bg-black p-9 sm:p-12">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/uploads/loto/banner-equipe-bg.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-right" />
+          <Image src={r2Url('/uploads/loto/banner-equipe-bg.jpg')} alt="" fill sizes="100vw" className="object-cover object-right" />
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-black/0" />
           <div className="relative max-w-xl">
             <h2 className="font-display text-2xl font-black leading-tight text-white sm:text-3xl">{data.stagesTitle}</h2>
@@ -130,10 +131,11 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
             <ScrollCarousel autoPlay speed={35}>
               {data.showcase.map((item) => (
                 <div key={item.title} className="group flex w-[412px] flex-none flex-col overflow-hidden rounded-2xl border border-border-soft bg-white transition duration-300 hover:z-10 hover:scale-105 hover:shadow-xl">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.img}
+                  <Image
+                    src={r2Url(item.img)}
                     alt=""
+                    width={412}
+                    height={240}
                     className={`h-[240px] w-full border-b border-border-soft bg-white transition-transform duration-500 group-hover:scale-105 ${item.fit === 'contain' ? 'object-contain p-6' : 'object-cover'} ${item.position === 'top' ? 'object-top' : ''}`}
                   />
                   <div className="flex flex-1 flex-col p-6">
@@ -191,8 +193,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
               </ProposalRequestButton>
             </div>
             <div className="relative flex min-h-[200px] items-center justify-center rounded-2xl bg-white p-9">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={data.software.img} alt={data.software.title} className="max-h-full w-full object-contain" />
+              <Image src={r2Url(data.software.img)} alt={data.software.title} width={500} height={300} className="max-h-full w-full object-contain" />
             </div>
           </div>
         </section>

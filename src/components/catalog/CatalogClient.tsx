@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { ProductCard, type CardProduct } from '@/components/ProductCard';
 import { CategoryGroupSection } from '@/components/catalog/CategoryGroupSection';
 import { filterProductsByTag } from '@/server/actions/catalog';
 import type { getFilterTaxonomy } from '@/server/catalog';
 import type { ProductGroup } from '@/lib/catalogGrouping';
+import { r2Url } from '@/lib/utils';
 
 type Taxonomy = Awaited<ReturnType<typeof getFilterTaxonomy>>;
 
@@ -138,8 +140,7 @@ export function CatalogClient({
                       modelKey === m.key ? 'border-brand text-brand' : 'border-border-soft text-muted-2 hover:border-brand'
                     }`}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={`/assets/filtro/${m.key}.png`} alt="" className="h-[58px] w-full object-contain" />
+                    <Image src={r2Url(`/assets/filtro/${m.key}.png`)} alt="" width={120} height={58} className="h-[58px] w-full object-contain" />
                     <span className="leading-tight">{m.label}</span>
                   </button>
                 ))}
