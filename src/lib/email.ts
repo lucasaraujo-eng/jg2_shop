@@ -29,6 +29,11 @@ type ContactPayload = {
   message: string;
 };
 
+type NewsletterPayload = {
+  name: string;
+  email: string;
+};
+
 /** Os campos abaixo vêm de formulários públicos — nunca interpolar sem escapar antes do HTML do e-mail. */
 function escapeHtml(value: string): string {
   return value
@@ -45,9 +50,8 @@ function itemsTable(items: QuoteItem[]): string {
       (i) => `
       <tr>
         <td style="padding:8px;border-bottom:1px solid #eee;font-family:monospace;color:#b5202b;">${escapeHtml(i.code)}</td>
-        <td style="padding:8px;border-bottom:1px solid #eee;">${escapeHtml(i.name)}${
-          i.variantLabel ? ` <em style="color:#888;">(${escapeHtml(i.variantLabel)})</em>` : ''
-        }</td>
+        <td style="padding:8px;border-bottom:1px solid #eee;">${escapeHtml(i.name)}</td>
+        <td style="padding:8px;border-bottom:1px solid #eee;">${i.variantLabel ? escapeHtml(i.variantLabel) : '—'}</td>
         <td style="padding:8px;border-bottom:1px solid #eee;text-align:center;">${i.quantity}</td>
       </tr>`,
     )
@@ -56,7 +60,7 @@ function itemsTable(items: QuoteItem[]): string {
     <table style="width:100%;border-collapse:collapse;font-size:14px;">
       <thead>
         <tr style="text-align:left;color:#888;">
-          <th style="padding:8px;">Código</th><th style="padding:8px;">Produto</th><th style="padding:8px;text-align:center;">Qtd</th>
+          <th style="padding:8px;">SKU</th><th style="padding:8px;">Produto</th><th style="padding:8px;">Variação</th><th style="padding:8px;text-align:center;">Qtd</th>
         </tr>
       </thead>
       <tbody>${rows}</tbody>
@@ -72,6 +76,7 @@ export async function sendQuoteEmails(q: QuotePayload): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.QUOTE_FROM_EMAIL;
   const adminTo = process.env.QUOTE_TO_EMAIL;
+  const adminCc = process.env.QUOTE_TO_EMAIL_2;
 
   if (!apiKey || !from || !adminTo) {
     console.warn(
@@ -81,6 +86,7 @@ export async function sendQuoteEmails(q: QuotePayload): Promise<void> {
   }
 
   const resend = new Resend(apiKey);
+  const adminRecipients = adminCc ? [adminTo, adminCc] : adminTo;
 
   const adminHtml = `
     <div style="font-family:sans-serif;max-width:640px;margin:0 auto;">
@@ -107,7 +113,7 @@ export async function sendQuoteEmails(q: QuotePayload): Promise<void> {
 
   await resend.emails.send({
     from,
-    to: adminTo,
+    to: adminRecipients,
     replyTo: q.email,
     subject: `Orçamento #${q.id.slice(0, 8)} — ${q.name}`,
     html: adminHtml,
@@ -154,6 +160,35 @@ export async function sendContactEmail(c: ContactPayload): Promise<void> {
     to: adminTo,
     replyTo: c.email,
     subject: c.subject ? `Contato — ${c.subject}` : `Contato — ${c.name}`,
+    html,
+  });
+}
+
+/** Notifica a administração de uma nova inscrição na newsletter. Não persiste no banco, só dispara o e-mail. */
+export async function sendNewsletterEmail(n: NewsletterPayload): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.QUOTE_FROM_EMAIL;
+  const adminTo = process.env.QUOTE_TO_EMAIL;
+
+  if (!apiKey || !from || !adminTo) {
+    console.warn('[email] RESEND_API_KEY/QUOTE_FROM_EMAIL/QUOTE_TO_EMAIL ausentes — inscrição de newsletter não enviada.');
+    return;
+  }
+
+  const resend = new Resend(apiKey);
+
+  const html = `
+    <div style="font-family:sans-serif;max-width:640px;margin:0 auto;">
+      <h2 style="color:#b5202b;">Nova inscrição na newsletter</h2>
+      <p><strong>Nome:</strong> ${escapeHtml(n.name)}<br/>
+         <strong>E-mail:</strong> ${escapeHtml(n.email)}</p>
+    </div>`;
+
+  await resend.emails.send({
+    from,
+    to: adminTo,
+    replyTo: n.email,
+    subject: `Newsletter — ${n.name}`,
     html,
   });
 }

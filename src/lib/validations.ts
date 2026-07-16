@@ -34,6 +34,13 @@ export const contactMessageSchema = z.object({
 });
 export type ContactMessageInput = z.infer<typeof contactMessageSchema>;
 
+// ---------- Newsletter ----------
+export const newsletterSubscribeSchema = z.object({
+  name: z.string().min(2, 'Informe seu nome'),
+  email: z.string().email('E-mail inválido'),
+});
+export type NewsletterSubscribeInput = z.infer<typeof newsletterSubscribeSchema>;
+
 // ---------- Produto (admin) ----------
 export const productSchema = z.object({
   code: z.string().min(1, 'Informe o SKU'),
