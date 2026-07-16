@@ -26,6 +26,9 @@ export function CartDrawer() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [sentCount, setSentCount] = useState(0);
+
+  const totalQty = items.reduce((n, i) => n + i.quantity, 0);
 
   function handleClose() {
     close();
@@ -54,6 +57,7 @@ export function CartDrawer() {
     );
     setSending(false);
     if (result.ok) {
+      setSentCount(totalQty);
       clear();
       setStep('sent');
     } else {
@@ -63,7 +67,6 @@ export function CartDrawer() {
 
   if (!isOpen) return null;
 
-  const totalQty = items.reduce((n, i) => n + i.quantity, 0);
   const panelWidth = step === 'form' ? 'max-w-[880px]' : 'max-w-[420px]';
 
   return (
@@ -76,7 +79,7 @@ export function CartDrawer() {
         style={{ animation: 'jg-slide-in .32s cubic-bezier(.22,.61,.36,1) both' }}
       >
         {step === 'sent' ? (
-          <SentPanel itemCount={totalQty} onClose={handleClose} />
+          <SentPanel itemCount={sentCount} onClose={handleClose} />
         ) : (
           <>
             <header className="flex flex-none items-center justify-between border-b border-border-soft p-5">
