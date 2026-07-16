@@ -2,15 +2,9 @@
 
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
-import { auth } from '@/lib/auth';
 import { postSchema, type PostInput } from '@/lib/validations';
 import { slugify } from '@/lib/utils';
-
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user) throw new Error('Não autorizado');
-  return session;
-}
+import { requireAdmin, requireRoleResult } from '@/lib/auth-guards';
 
 type Result = { ok: true; id: string } | { ok: false; error: string };
 
@@ -74,7 +68,8 @@ export async function updatePost(id: string, input: PostInput): Promise<Result> 
 }
 
 export async function deletePost(id: string): Promise<Result> {
-  await requireAdmin();
+  const session = await requireRoleResult('ADMIN');
+  if (!session) return { ok: false, error: 'Apenas administradores podem remover matérias.' };
   try {
     await prisma.blogPost.delete({ where: { id } });
     revalidatePath('/admin/blog');
