@@ -53,7 +53,7 @@ export function ProductMediaAndPurchase({
     <div className="grid gap-12 lg:grid-cols-2">
       <ProductGallery images={images} name={name} overrideImageUrl={colorImageUrl} />
 
-      <div>
+      <div className="min-w-0">
         <div className="flex items-center gap-2">
           <span className="rounded-full bg-surface-badge px-3 py-1 text-xs font-bold text-brand">{categoryName}</span>
           <span className="rounded-full bg-surface-alt px-3 py-1 text-xs font-bold text-tertiary">JG2®</span>

@@ -31,7 +31,7 @@ export function ProductGallery({
   }
 
   return (
-    <div className="lg:sticky lg:top-[160px]">
+    <div className="min-w-0 lg:sticky lg:top-[160px]">
       <div className="group flex h-[440px] items-center justify-center overflow-hidden rounded-2xl border border-border-soft bg-white p-6">
         {current ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -58,8 +58,7 @@ export function ProductGallery({
           )}
           <div
             ref={thumbsRef}
-            className="jg-noscroll flex gap-3 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            style={{ maxWidth: THUMBS_VISIBLE_WIDTH }}
+            className="jg-noscroll flex w-full min-w-0 max-w-[min(448px,calc(100vw-8.5rem))] gap-3 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {realImages.map((url, i) => (
               <button
