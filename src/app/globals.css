@@ -87,6 +87,15 @@ body {
   display: none;
 }
 
+/* O botão flutuante do WhatsApp já ocupa o canto inferior direito — move o
+   badge do reCAPTCHA v3 pro canto oposto pra não sobrepor (o badge precisa
+   continuar visível, é exigência do Google por não mostrarmos o aviso de
+   marca em cada formulário). */
+.grecaptcha-badge {
+  right: auto !important;
+  left: 14px !important;
+}
+
 /* ===================== Animações do protótipo ===================== */
 @keyframes jg-up {
   from {

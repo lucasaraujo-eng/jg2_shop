@@ -6,16 +6,20 @@ import { prisma } from '@/lib/prisma';
 import { sendQuoteEmails } from '@/lib/email';
 import { quoteRequestSchema, type QuoteRequestInput } from '@/lib/validations';
 import { checkRateLimit, clientIp } from '@/lib/rate-limit';
+import { verifyRecaptcha } from '@/lib/recaptcha';
 
 type ActionResult = { ok: true; id: string } | { ok: false; error: string };
 
 const RATE_LIMIT_MSG = 'Muitas solicitações. Aguarde alguns minutos e tente novamente.';
 
 /** Cria o pedido de orçamento, persiste e dispara os e-mails. */
-export async function submitQuote(input: QuoteRequestInput): Promise<ActionResult> {
+export async function submitQuote(input: QuoteRequestInput, recaptchaToken?: string): Promise<ActionResult> {
   const ip = clientIp(await headers());
   if (!checkRateLimit(`quote:${ip}`, 5, 10 * 60 * 1000)) {
     return { ok: false, error: RATE_LIMIT_MSG };
+  }
+  if (!(await verifyRecaptcha(recaptchaToken, 'submit_quote'))) {
+    return { ok: false, error: 'Não foi possível validar sua solicitação. Recarregue a página e tente novamente.' };
   }
 
   const parsed = quoteRequestSchema.safeParse(input);

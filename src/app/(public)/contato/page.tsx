@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { submitContact } from '@/server/actions/contact';
 import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
+import { getRecaptchaToken } from '@/lib/recaptcha-client';
 
 const inputClass =
   'rounded-[11px] border border-border bg-surface-card px-4 py-3.5 text-[15px] outline-none transition focus:border-brand focus:bg-white focus:shadow-[0_0_0_3px_rgba(181,32,43,.1)]';
@@ -19,7 +20,8 @@ export default function ContatoPage() {
     e.preventDefault();
     setSending(true);
     setError('');
-    const result = await submitContact(form);
+    const token = await getRecaptchaToken('submit_contact');
+    const result = await submitContact(form, token ?? undefined);
     setSending(false);
     if (result.ok) {
       setSent(true);

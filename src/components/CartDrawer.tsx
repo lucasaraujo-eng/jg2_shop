@@ -6,6 +6,7 @@ import { submitQuote } from '@/server/actions/quote';
 import { QuoteFormFields, isQuoteFormValid, type QuoteFormValue } from '@/components/QuoteFormFields';
 import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
 import { resolveImageUrl } from '@/lib/utils';
+import { getRecaptchaToken } from '@/lib/recaptcha-client';
 
 const EMPTY_FORM: QuoteFormValue = { name: '', email: '', phone: '', docType: 'cnpj', cnpj: '', purpose: '', message: '' };
 
@@ -37,16 +38,20 @@ export function CartDrawer() {
   async function handleSubmit() {
     setSending(true);
     setError('');
-    const result = await submitQuote({
-      ...form,
-      items: items.map((i) => ({
-        code: i.code,
-        name: i.name,
-        quantity: i.quantity,
-        variantLabel: i.variantLabel,
-        productId: i.productId,
-      })),
-    });
+    const token = await getRecaptchaToken('submit_quote');
+    const result = await submitQuote(
+      {
+        ...form,
+        items: items.map((i) => ({
+          code: i.code,
+          name: i.name,
+          quantity: i.quantity,
+          variantLabel: i.variantLabel,
+          productId: i.productId,
+        })),
+      },
+      token ?? undefined,
+    );
     setSending(false);
     if (result.ok) {
       clear();

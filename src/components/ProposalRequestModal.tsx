@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { submitContact } from '@/server/actions/contact';
 import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
+import { getRecaptchaToken } from '@/lib/recaptcha-client';
 
 const OBJECTIVES = ['Adequação LOTOTO', 'Adequação NR-12', 'Adequação Mãos Seguras', 'Outro assunto'];
 
@@ -38,14 +39,18 @@ export function ProposalRequestModal({ onClose, defaultObjective }: { onClose: (
   async function handleSubmit() {
     setSending(true);
     setError('');
-    const result = await submitContact({
-      name: form.name,
-      email: form.email,
-      phone: form.phone,
-      subject: form.subject,
-      cnpj: form.cnpj ? `${docType.toUpperCase()}: ${form.cnpj}` : null,
-      message: form.message,
-    });
+    const token = await getRecaptchaToken('submit_contact');
+    const result = await submitContact(
+      {
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        subject: form.subject,
+        cnpj: form.cnpj ? `${docType.toUpperCase()}: ${form.cnpj}` : null,
+        message: form.message,
+      },
+      token ?? undefined,
+    );
     setSending(false);
     if (result.ok) {
       setSent(true);

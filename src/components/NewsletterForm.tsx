@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { submitNewsletter } from '@/server/actions/newsletter';
+import { getRecaptchaToken } from '@/lib/recaptcha-client';
 
 export function NewsletterForm({ ctaLabel = 'Assinar agora →' }: { ctaLabel?: string }) {
   const [form, setForm] = useState({ name: '', email: '' });
@@ -17,7 +18,8 @@ export function NewsletterForm({ ctaLabel = 'Assinar agora →' }: { ctaLabel?: 
     e.preventDefault();
     setSending(true);
     setError('');
-    const result = await submitNewsletter(form);
+    const token = await getRecaptchaToken('submit_newsletter');
+    const result = await submitNewsletter(form, token ?? undefined);
     setSending(false);
     if (result.ok) {
       setSent(true);
