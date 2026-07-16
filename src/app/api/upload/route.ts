@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { uploadImage } from '@/lib/storage';
+import { sniffImageType } from '@/lib/image-sniff';
+
+const EXT_BY_TYPE = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/gif': 'gif' } as const;
 
 // Upload de imagem (multipart) → Cloudflare R2. Restrito a admins.
 export async function POST(req: Request) {
@@ -14,18 +17,21 @@ export async function POST(req: Request) {
   const folder = ((form.get('folder') as string) || 'uploads').replace(/[^a-z0-9/_-]/gi, '');
 
   if (!file) return NextResponse.json({ error: 'Arquivo ausente' }, { status: 400 });
-  if (!file.type.startsWith('image/')) {
-    return NextResponse.json({ error: 'Envie um arquivo de imagem' }, { status: 400 });
-  }
   if (file.size > 8 * 1024 * 1024) {
     return NextResponse.json({ error: 'Imagem acima de 8 MB' }, { status: 400 });
   }
 
   try {
     const bytes = new Uint8Array(await file.arrayBuffer());
-    const ext = (file.name.split('.').pop() || 'png').toLowerCase().replace(/[^a-z0-9]/g, '');
-    const key = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-    const url = await uploadImage(key, bytes, file.type);
+    // Não confia no Content-Type enviado pelo cliente (é só um header, trocável) —
+    // detecta o formato pelos magic bytes reais. SVG fica de fora de propósito
+    // (pode conter <script>, abrindo XSS armazenado no arquivo servido).
+    const detectedType = sniffImageType(bytes);
+    if (!detectedType) {
+      return NextResponse.json({ error: 'Envie um PNG, JPEG, WEBP ou GIF válido' }, { status: 400 });
+    }
+    const key = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${EXT_BY_TYPE[detectedType]}`;
+    const url = await uploadImage(key, bytes, detectedType);
     return NextResponse.json({ url });
   } catch (e) {
     console.error('upload', e);
