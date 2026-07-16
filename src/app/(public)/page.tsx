@@ -187,13 +187,13 @@ export default async function HomePage() {
           autoPlay
           loopToStart
           gapClassName="gap-0"
-          trackClassName="divide-x divide-white/15 rounded-[20px] text-white"
+          trackClassName="snap-x snap-mandatory divide-x divide-white/15 rounded-[20px] text-white"
         >
           {FRENTES.map((f, i) => (
             <Link
               key={f.title}
               href={f.href}
-              className={`group flex w-full flex-none flex-col sm:w-1/2 lg:w-1/3 ${i % 2 === 0 ? 'bg-brand-dark' : 'bg-brand'}`}
+              className={`group flex w-full flex-none snap-start flex-col sm:w-1/2 lg:w-1/3 ${i % 2 === 0 ? 'bg-brand-dark' : 'bg-brand'}`}
             >
               <div className="flex flex-1 flex-col justify-between gap-4 px-8 py-10">
                 <div>
@@ -284,14 +284,15 @@ export default async function HomePage() {
       <ActionBanner
         title="Adequação Completa à NR-12"
         kicker="NR-12"
-        kickerColor="text-gold"
+        kickerColor="text-white/90"
         heading="NR-12: Conformidade completa para sua indústria"
-        headingColor="text-gold"
+        headingColor="text-white"
         text="Da apreciação de riscos ao laudo técnico com ART — a JG2 entrega cada etapa da adequação NR-12: inventário, apreciação de riscos, projetos conceituais e detalhados, fabricação personalizada, instalação, laudos técnicos, treinamentos e auditorias."
-        textColor="text-muted-2"
-        panelClassName="bg-white"
+        textColor="text-white/90"
+        panelClassName="bg-[linear-gradient(135deg,#c8121f_0%,#a3101a_100%)]"
         imageSrc="/uploads/banner-nr12.jpg"
-        ctaClassName="bg-brand text-white hover:bg-brand-dark"
+        ctaClassName="bg-white text-brand hover:bg-ink-deep hover:text-white"
+        showAccent
         objective="Adequação NR-12"
       />
 
@@ -317,15 +318,16 @@ export default async function HomePage() {
       <ActionBanner
         title="Reduza os Riscos dos Trabalhos Manuais Agora"
         kicker="MÃOS SEGURAS"
-        kickerColor="text-gold"
+        kickerColor="text-white/90"
         heading="Mãos Seguras: Dispositivos Necessários para Sua Operação"
-        headingColor="text-gold"
+        headingColor="text-white"
         text="Te guiamos da identificação da aplicação ao apoio técnico especializado — a JG2 entrega cada etapa da solução Mãos Seguras: análise da demanda, definição do produto ideal, desenvolvimento da aplicação, suporte técnico e orientação para implementação segura na operação."
-        textColor="text-muted-2"
-        panelClassName="bg-surface-alt"
+        textColor="text-white/90"
+        panelClassName="bg-[linear-gradient(135deg,#c8121f_0%,#a3101a_100%)]"
         imageSrc="/uploads/banner-maos.png"
         imagePosition="object-top"
-        ctaClassName="bg-brand text-white hover:bg-brand-dark"
+        ctaClassName="bg-white text-brand hover:bg-ink-deep hover:text-white"
+        showAccent
         objective="Adequação Mãos Seguras"
       />
 
@@ -358,7 +360,7 @@ export default async function HomePage() {
 
       {/* 11. Por que a JG2? */}
       <section className="bg-surface-alt py-18">
-        <div className="mx-auto grid max-w-[1340px] gap-12 px-7 lg:grid-cols-2 lg:items-center">
+        <div className="mx-auto grid max-w-[1340px] gap-12 px-7 lg:grid-cols-2 lg:items-stretch">
           <div>
             <p className="font-mono text-xs uppercase tracking-widest text-brand">Por que a JG2?</p>
             <h2 className="mt-2 font-display text-3xl font-black text-ink sm:text-4xl">
@@ -368,8 +370,14 @@ export default async function HomePage() {
               <FaqAccordion items={FAQS} />
             </div>
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/uploads/why-jg2.jpg" alt="" className="hidden h-[380px] w-full rounded-2xl object-cover shadow-lg lg:block" />
+          <div className="hidden h-full min-h-[380px] w-full overflow-hidden rounded-2xl shadow-lg lg:block">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/uploads/why-jg2.jpg"
+              alt=""
+              className="h-full w-full object-cover transition duration-300 hover:scale-105"
+            />
+          </div>
         </div>
       </section>
 
