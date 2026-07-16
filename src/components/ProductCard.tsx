@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/stores/cart';
 import { resolveImageUrl } from '@/lib/utils';
@@ -37,18 +38,24 @@ export function ProductCard({ product, variant = 'compact' }: { product: CardPro
           className="flex h-[190px] items-center justify-center overflow-hidden bg-white p-3"
         >
           {shown ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={shown} alt={product.name} className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110" />
+            <Image
+              src={shown}
+              alt={product.name}
+              width={400}
+              height={400}
+              sizes="(max-width: 640px) 45vw, 268px"
+              className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110"
+            />
           ) : (
-            <span className="text-center font-mono text-[11px] text-code">[ foto: {product.name} ]</span>
+            <span className="text-center font-mono text-xs text-code">[ foto: {product.name} ]</span>
           )}
         </Link>
         <div className="flex flex-1 flex-col p-[18px]">
-          {product.category && <span className="font-mono text-[11px] text-brand">{product.category}</span>}
+          {product.category && <span className="font-mono text-xs text-brand">{product.category}</span>}
           <Link href={href} className="mb-1 mt-1.5 text-[15.5px] font-bold leading-snug text-ink">
             {product.name}
           </Link>
-          <span className="mb-3.5 font-mono text-[11px] text-code">{product.code}</span>
+          <span className="mb-3.5 font-mono text-xs text-code">{product.code}</span>
           <div className="mt-auto flex gap-2">
             <Link
               href={href}
@@ -77,14 +84,20 @@ export function ProductCard({ product, variant = 'compact' }: { product: CardPro
         className="flex h-[180px] items-center justify-center overflow-hidden bg-white p-3"
       >
         {shown ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={shown} alt={product.name} className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110" />
+          <Image
+            src={shown}
+            alt={product.name}
+            width={400}
+            height={400}
+            sizes="(max-width: 640px) 45vw, 268px"
+            className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110"
+          />
         ) : (
-          <span className="text-center font-mono text-[11px] text-code">[ foto: {product.name} ]</span>
+          <span className="text-center font-mono text-xs text-code">[ foto: {product.name} ]</span>
         )}
       </Link>
       <div className="flex flex-1 flex-col p-[18px]">
-        <span className="font-mono text-[11px] text-code">{product.code}</span>
+        <span className="font-mono text-xs text-code">{product.code}</span>
         <Link href={href} className="mb-3.5 mt-1.5 flex-1 text-[15px] font-bold leading-snug text-ink">
           {product.name}
         </Link>

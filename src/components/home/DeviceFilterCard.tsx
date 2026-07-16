@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import type { getFilterTaxonomy } from '@/server/catalog';
+import { r2Url } from '@/lib/utils';
 
 type Taxonomy = Awaited<ReturnType<typeof getFilterTaxonomy>>;
 
@@ -39,9 +41,8 @@ export function DeviceFilterCard({ taxonomy }: { taxonomy: Taxonomy }) {
             href={`/produtos?app=${application.key}&model=${m.key}`}
             className="flex flex-col items-center gap-1.5 rounded-lg border-2 border-border-soft p-2 transition hover:border-brand"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`/assets/filtro/${m.key}.png`} alt="" className="h-[54px] w-full object-contain" />
-            <span className="text-center text-[10.5px] font-semibold leading-tight text-muted-2">{m.label}</span>
+            <Image src={r2Url(`/assets/filtro/${m.key}.png`)} alt="" width={120} height={54} className="h-[54px] w-full object-contain" />
+            <span className="text-center text-xs font-semibold leading-tight text-muted-2">{m.label}</span>
           </Link>
         ))}
       </div>

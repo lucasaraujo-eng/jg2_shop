@@ -1,5 +1,7 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { SectionNav } from '@/components/downloads/SectionNav';
+import { r2Url } from '@/lib/utils';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 
 type Doc = { tag: string; title: string; desc: string; meta: string; url?: string; cover?: string };
@@ -67,8 +69,7 @@ function DocCard({ doc }: { doc: Doc }) {
     <div className="flex flex-col overflow-hidden rounded-2xl border border-border-soft bg-white">
       <div className="relative flex h-[200px] items-center justify-center bg-surface-alt p-4">
         {doc.cover ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={doc.cover} alt={doc.title} className="h-full w-full rounded-md object-contain shadow-md" />
+          <Image src={doc.cover} alt={doc.title} width={300} height={400} className="h-full w-full rounded-md object-contain shadow-md" />
         ) : (
           <div className="relative flex h-[118px] w-[92px] flex-col items-center justify-end rounded-md border border-border bg-white pb-3.5 shadow-md">
             <div className="absolute right-0 top-0 h-[26px] w-[26px] rounded-bl-md rounded-tr-md border-b border-l border-border bg-surface-alt" />
@@ -77,7 +78,7 @@ function DocCard({ doc }: { doc: Doc }) {
         )}
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <span className="font-mono text-[11px] text-brand">{doc.tag}</span>
+        <span className="font-mono text-xs text-brand">{doc.tag}</span>
         <h3 className="mt-1.5 text-[17px] font-bold leading-snug text-ink">{doc.title}</h3>
         <p className="mt-1.5 flex-1 text-sm leading-snug text-tertiary">{doc.desc}</p>
         <div className="mt-3.5 flex items-center justify-between border-t border-surface-stripe-a pt-3.5">
@@ -99,8 +100,7 @@ export default function DownloadsPage() {
   return (
     <div>
       <section className="relative overflow-hidden bg-ink-deep py-14 text-white">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/uploads/banner-catalogos-downloads.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <Image src={r2Url('/uploads/banner-catalogos-downloads.png')} alt="" fill sizes="100vw" priority className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink-deep via-ink-deep/85 to-ink-deep/40" />
         <div className="relative mx-auto max-w-[1340px] px-7">
           <p className="text-xs text-white/50">

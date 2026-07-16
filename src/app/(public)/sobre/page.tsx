@@ -1,9 +1,11 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { StatsCounter, type Stat } from '@/components/about/StatsCounter';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 import { ScrollCarousel } from '@/components/ScrollCarousel';
 import { setores } from '@/data/setores';
+import { r2Url } from '@/lib/utils';
 
 const STATS: Stat[] = [
   { prefix: '+', value: 5000, label: 'clientes atendidos em todo o Brasil' },
@@ -43,8 +45,7 @@ export default function SobrePage() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-deeper">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/uploads/sobre/banner-equipe.png" alt="" className="absolute inset-0 h-full w-full object-cover object-top opacity-[.42]" />
+        <Image src={r2Url('/uploads/sobre/banner-equipe.png')} alt="" fill sizes="100vw" priority className="object-cover object-top opacity-[.42]" />
         <div className="absolute inset-0 bg-gradient-to-b from-ink-deeper/55 to-ink-deeper/80" />
         <div className="relative mx-auto max-w-[1340px] px-7 py-28">
           <p className="text-xs text-white/55">
@@ -87,9 +88,8 @@ export default function SobrePage() {
               sinalização, cabines e salas, escadas, plataformas, meios de acesso e dispositivos mãos seguras.
             </p>
           </div>
-          <div className="group h-[420px] w-full overflow-hidden rounded-3xl shadow-xl">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/uploads/sobre/p-producao.jpg" alt="Produção JG2®" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+          <div className="group relative h-[420px] w-full overflow-hidden rounded-3xl shadow-xl">
+            <Image src={r2Url('/uploads/sobre/p-producao.jpg')} alt="Produção JG2®" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
           </div>
         </div>
       </section>
@@ -110,9 +110,8 @@ export default function SobrePage() {
       {/* Especialidade */}
       <section className="mx-auto max-w-[1340px] px-7 py-20">
         <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
-          <div className="group order-2 h-[400px] w-full overflow-hidden rounded-3xl shadow-xl lg:order-1">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/uploads/sobre/p-solda.jpg" alt="Solda JG2®" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+          <div className="group relative order-2 h-[400px] w-full overflow-hidden rounded-3xl shadow-xl lg:order-1">
+            <Image src={r2Url('/uploads/sobre/p-solda.jpg')} alt="Solda JG2®" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
           </div>
           <div className="order-1 lg:order-2">
             <p className="font-mono text-xs uppercase tracking-widest text-brand">Nossa especialidade</p>
@@ -196,8 +195,7 @@ export default function SobrePage() {
                   href={`/setores/${s.id}`}
                   className="group relative flex h-[180px] w-[240px] flex-none items-end justify-between overflow-hidden rounded-2xl bg-ink p-4 shadow-sm transition hover:shadow-2xl"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={s.img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+                  <Image src={r2Url(s.img)} alt="" fill sizes="240px" className="object-cover transition duration-300 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/20 to-transparent" />
                   <span className="relative text-sm font-bold leading-tight text-white [text-shadow:0_1px_6px_rgba(0,0,0,.4)]">{s.name}</span>
                   <span className="relative flex h-[30px] w-[30px] flex-none items-center justify-center rounded-full bg-brand text-white">↗</span>
@@ -225,9 +223,8 @@ export default function SobrePage() {
               controle em cada etapa e mais confiança para quem depende de soluções robustas e seguras.
             </p>
           </div>
-          <div className="group h-[420px] w-full overflow-hidden rounded-3xl shadow-xl">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/uploads/sobre/p-empilhadeira.jpg" alt="Estrutura JG2®" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+          <div className="group relative h-[420px] w-full overflow-hidden rounded-3xl shadow-xl">
+            <Image src={r2Url('/uploads/sobre/p-empilhadeira.jpg')} alt="Estrutura JG2®" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
           </div>
         </div>
       </section>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useTransition } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { CartButton } from '@/components/CartButton';
@@ -107,8 +108,7 @@ export function Header({ categories }: { categories: Categories }) {
         <div className="border-b border-surface-alt">
           <div className="mx-auto flex max-w-[1340px] items-center justify-between gap-6 px-7 py-4 md:grid md:grid-cols-[1fr_auto_1fr]">
             <Link href="/" className="flex-none md:justify-self-start">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/jg2-logo.png" alt="JG2 Produtos de Segurança" className="h-[60px] w-auto" />
+              <Image src="/assets/jg2-logo.png" alt="JG2 Produtos de Segurança" width={800} height={400} priority className="h-[60px] w-auto" />
             </Link>
 
             <div className="relative hidden w-[600px] max-w-full justify-self-center md:block">
@@ -125,16 +125,13 @@ export function Header({ categories }: { categories: Categories }) {
                   {results.products.length === 0 && results.posts.length === 0 && <p className="p-5 text-center text-sm text-tertiary">Nenhum resultado para sua busca.</p>}
                   {results.products.length > 0 && (
                     <>
-                      <p className="px-3.5 pb-1.5 pt-2.5 font-mono text-[10.5px] font-bold uppercase tracking-wider text-brand">Produtos</p>
+                      <p className="px-3.5 pb-1.5 pt-2.5 font-mono text-xs font-bold uppercase tracking-wider text-brand">Produtos</p>
                       {results.products.map((r) => {
                         const image = resolveImageUrl(r.image);
                         return (
                           <Link key={r.code} href={`/produto/${encodeURIComponent(r.code)}`} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
-                            <span className="flex h-10 w-10 flex-none items-center justify-center overflow-hidden rounded-lg border border-border-soft bg-surface-alt">
-                              {image ? (
-                                // eslint-disable-next-line @next/next/no-img-element
-                                <img src={image} alt="" className="h-full w-full object-contain" />
-                              ) : null}
+                            <span className="relative flex h-10 w-10 flex-none items-center justify-center overflow-hidden rounded-lg border border-border-soft bg-surface-alt">
+                              {image ? <Image src={image} alt="" fill sizes="40px" className="object-contain" /> : null}
                             </span>
                             <span className="min-w-0 flex-1">
                               <span className="block truncate font-semibold text-ink">{r.name}</span>
@@ -149,7 +146,7 @@ export function Header({ categories }: { categories: Categories }) {
                   )}
                   {results.posts.length > 0 && (
                     <>
-                      <p className="mt-1 border-t border-surface-stripe-a px-3.5 pb-1.5 pt-3 font-mono text-[10.5px] font-bold uppercase tracking-wider text-brand">Blog</p>
+                      <p className="mt-1 border-t border-surface-stripe-a px-3.5 pb-1.5 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Blog</p>
                       {results.posts.map((r) => (
                         <Link key={r.slug} href={`/blog/${r.slug}`} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
                           <span className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-badge text-brand">
@@ -323,8 +320,7 @@ function MobileMenu({ categories, onClose }: { categories: Categories; onClose: 
       <button className="absolute inset-0 bg-ink/40" style={{ animation: 'jg-fade .2s ease both' }} onClick={onClose} aria-label="Fechar menu" />
       <div className="absolute inset-x-0 top-0 max-h-full overflow-y-auto bg-white p-6" style={{ animation: 'jg-up .26s ease both' }}>
         <div className="flex items-center justify-between">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/jg2-logo.png" alt="JG2" className="h-10 w-auto" />
+          <Image src="/assets/jg2-logo.png" alt="JG2" width={800} height={400} className="h-10 w-auto" />
           <button onClick={onClose} aria-label="Fechar" className="p-2 text-ink">
             ✕
           </button>
@@ -343,7 +339,7 @@ function MobileMenu({ categories, onClose }: { categories: Categories; onClose: 
             Home
           </Link>
 
-          <p className="mt-3 px-3 font-mono text-[11px] uppercase tracking-wider text-brand">Produtos</p>
+          <p className="mt-3 px-3 font-mono text-xs uppercase tracking-wider text-brand">Produtos</p>
           <Link href="/produtos" onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
             Bloqueio e Etiquetagem – LOTO
           </Link>
@@ -353,7 +349,7 @@ function MobileMenu({ categories, onClose }: { categories: Categories; onClose: 
             </Link>
           )}
 
-          <p className="mt-3 px-3 font-mono text-[11px] uppercase tracking-wider text-brand">Serviços</p>
+          <p className="mt-3 px-3 font-mono text-xs uppercase tracking-wider text-brand">Serviços</p>
           {SERVICOS_LINKS.map((l) => (
             <Link key={l.href} href={l.href} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
               {l.label}
@@ -367,7 +363,7 @@ function MobileMenu({ categories, onClose }: { categories: Categories; onClose: 
             Sobre nós
           </Link>
 
-          <p className="mt-3 px-3 font-mono text-[11px] uppercase tracking-wider text-brand">Conteúdos</p>
+          <p className="mt-3 px-3 font-mono text-xs uppercase tracking-wider text-brand">Conteúdos</p>
           {CONTEUDOS_LINKS.map((l) => (
             <Link key={l.href} href={l.href} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
               {l.label}

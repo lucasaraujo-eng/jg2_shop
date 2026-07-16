@@ -1,7 +1,9 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { setores, getSetorById } from '@/data/setores';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
+import { r2Url } from '@/lib/utils';
 
 export function generateStaticParams() {
   return setores.map((s) => ({ id: s.id }));
@@ -22,8 +24,7 @@ export default async function SetorPage({
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-deep">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={sector.img} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
+        <Image src={r2Url(sector.img)} alt="" fill sizes="100vw" priority className="object-cover opacity-30" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/85" />
         <div className="relative mx-auto max-w-[900px] px-7 py-16">
           <p className="text-xs text-white/60">
@@ -47,9 +48,8 @@ export default async function SetorPage({
       </section>
 
       <article className="mx-auto max-w-[820px] px-7 py-12">
-        <div className="group mb-10 h-[380px] w-full overflow-hidden rounded-2xl shadow-lg">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={sector.img} alt={sector.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div className="group relative mb-10 h-[380px] w-full overflow-hidden rounded-2xl shadow-lg">
+          <Image src={r2Url(sector.img)} alt={sector.name} fill sizes="820px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
         </div>
 
         <h2 className="font-display text-2xl font-black text-ink">O setor</h2>
@@ -88,8 +88,9 @@ export default async function SetorPage({
         </p>
 
         <div className="group mb-5.5 overflow-hidden rounded-2xl border border-border-soft">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/uploads/banner-lototo.jpg" alt="" className="h-[200px] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div className="relative h-[200px] w-full">
+            <Image src={r2Url('/uploads/banner-lototo.jpg')} alt="" fill sizes="820px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
           <div className="p-7">
             <span className="mb-3 inline-block rounded-full bg-surface-badge px-3 py-1.5 text-xs font-bold text-brand">
               Bloqueio e Etiquetagem (LOTO)
@@ -106,8 +107,9 @@ export default async function SetorPage({
         </div>
 
         <div className="group mb-5.5 overflow-hidden rounded-2xl border border-border-soft">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/uploads/banner-maos.png" alt="" className="h-[200px] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div className="relative h-[200px] w-full">
+            <Image src={r2Url('/uploads/banner-maos.png')} alt="" fill sizes="820px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
           <div className="p-7">
             <span className="mb-3 inline-block rounded-full px-3 py-1.5 text-xs font-bold text-maos" style={{ background: '#fdf0d8' }}>
               Mãos Seguras
@@ -124,8 +126,9 @@ export default async function SetorPage({
         </div>
 
         <div className="group mb-12 overflow-hidden rounded-2xl border border-border-soft">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/uploads/banner-nr12.jpg" alt="" className="h-[200px] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div className="relative h-[200px] w-full">
+            <Image src={r2Url('/uploads/banner-nr12.jpg')} alt="" fill sizes="820px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
           <div className="p-7">
             <span className="mb-3 inline-block rounded-full px-3 py-1.5 text-xs font-bold text-nr12" style={{ background: '#e9f3ec' }}>
               Adequação à NR-12
@@ -162,8 +165,7 @@ export default async function SetorPage({
                 href={`/setores/${r.id}`}
                 className="group relative flex h-[200px] items-end overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-xl"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={r.img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+                <Image src={r2Url(r.img)} alt="" fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover transition duration-300 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
                 <span className="relative p-4 text-base font-bold text-white [text-shadow:0_1px_6px_rgba(0,0,0,.4)]">{r.name}</span>
               </Link>

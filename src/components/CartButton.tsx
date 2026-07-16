@@ -15,7 +15,7 @@ export function CartButton() {
       onClick={open}
       aria-label="Seu orçamento"
       title="Seu orçamento"
-      className="relative flex items-center gap-2 p-1 font-semibold text-ink transition hover:text-brand"
+      className="relative flex h-11 w-11 items-center justify-center gap-2 font-semibold text-ink transition hover:text-brand"
     >
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
         <circle cx="9" cy="20" r="1.3" />

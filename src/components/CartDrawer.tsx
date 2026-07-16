@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
 import { QuoteFormFields, isQuoteFormValid, type QuoteFormValue } from '@/components/QuoteFormFields';
@@ -107,10 +108,7 @@ export function CartDrawer() {
                         return (
                         <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex min-w-0 gap-3 text-sm">
                           <div className="flex h-14 w-14 flex-none items-center justify-center overflow-hidden rounded-lg border border-border-soft bg-surface-alt">
-                            {image && (
-                              // eslint-disable-next-line @next/next/no-img-element
-                              <img src={image} alt="" className="h-full w-full object-contain" />
-                            )}
+                            {image && <Image src={image} alt="" width={56} height={56} className="h-full w-full object-contain" />}
                           </div>
                           <div className="min-w-0 flex-1">
                             <p className="truncate font-semibold text-ink">{i.name}</p>
@@ -122,7 +120,7 @@ export function CartDrawer() {
                               <button
                                 onClick={() => setQty(i.code, i.quantity - 1, i.variantLabel)}
                                 aria-label="Diminuir"
-                                className="flex h-8 w-8 flex-none items-center justify-center rounded-lg border border-border text-sm font-bold text-muted-2 transition hover:border-brand hover:text-brand active:bg-surface-alt"
+                                className="flex h-10 w-10 flex-none items-center justify-center rounded-lg border border-border text-sm font-bold text-muted-2 transition hover:border-brand hover:text-brand active:bg-surface-alt"
                               >
                                 −
                               </button>
@@ -130,7 +128,7 @@ export function CartDrawer() {
                               <button
                                 onClick={() => setQty(i.code, i.quantity + 1, i.variantLabel)}
                                 aria-label="Aumentar"
-                                className="flex h-8 w-8 flex-none items-center justify-center rounded-lg border border-border text-sm font-bold text-muted-2 transition hover:border-brand hover:text-brand active:bg-surface-alt"
+                                className="flex h-10 w-10 flex-none items-center justify-center rounded-lg border border-border text-sm font-bold text-muted-2 transition hover:border-brand hover:text-brand active:bg-surface-alt"
                               >
                                 +
                               </button>
@@ -139,7 +137,7 @@ export function CartDrawer() {
                           <button
                             onClick={() => remove(i.code, i.variantLabel)}
                             aria-label={`Remover ${i.name}`}
-                            className="flex h-8 w-8 flex-none items-center justify-center self-start rounded-lg text-tertiary transition hover:bg-surface-alt hover:text-brand"
+                            className="flex h-10 w-10 flex-none items-center justify-center self-start rounded-lg text-tertiary transition hover:bg-surface-alt hover:text-brand"
                           >
                             🗑
                           </button>

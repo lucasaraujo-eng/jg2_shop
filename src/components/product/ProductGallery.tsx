@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import Image from 'next/image';
 import { resolveImageUrl } from '@/lib/utils';
 
 /** Largura de 5 miniaturas (80px) + 4 espaços (12px) — só essa "janela" fica visível, o resto rola. */
@@ -31,11 +32,17 @@ export function ProductGallery({
   }
 
   return (
-    <div className="lg:sticky lg:top-[160px]">
+    <div className="min-w-0 lg:sticky lg:top-[160px]">
       <div className="group flex h-[440px] items-center justify-center overflow-hidden rounded-2xl border border-border-soft bg-white p-6">
         {current ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={current} alt={name} className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105" />
+          <Image
+            src={current}
+            alt={name}
+            width={600}
+            height={600}
+            priority
+            className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+          />
         ) : (
           <div className="flex h-full w-full items-center justify-center rounded-xl" style={STRIPE_BG}>
             <span className="rounded bg-white/90 px-3 py-1.5 text-center font-mono text-xs text-code">
@@ -51,15 +58,14 @@ export function ProductGallery({
             <button
               onClick={() => scrollThumbs(-1)}
               aria-label="Fotos anteriores"
-              className="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-border-strong-2 text-sm transition hover:border-brand hover:bg-brand hover:text-white"
+              className="flex h-11 w-11 flex-none items-center justify-center rounded-full border border-border-strong-2 text-sm transition hover:border-brand hover:bg-brand hover:text-white"
             >
               ←
             </button>
           )}
           <div
             ref={thumbsRef}
-            className="jg-noscroll flex gap-3 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            style={{ maxWidth: THUMBS_VISIBLE_WIDTH }}
+            className="jg-noscroll flex w-full min-w-0 max-w-[min(448px,calc(100vw-10rem))] gap-3 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {realImages.map((url, i) => (
               <button
@@ -70,8 +76,7 @@ export function ProductGallery({
                   i === active ? 'border-brand' : 'border-border hover:border-brand/50'
                 }`}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={url} alt="" className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-110" />
+                <Image src={url} alt="" width={80} height={80} className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-110" />
               </button>
             ))}
           </div>
@@ -79,7 +84,7 @@ export function ProductGallery({
             <button
               onClick={() => scrollThumbs(1)}
               aria-label="Próximas fotos"
-              className="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-border-strong-2 text-sm transition hover:border-brand hover:bg-brand hover:text-white"
+              className="flex h-11 w-11 flex-none items-center justify-center rounded-full border border-border-strong-2 text-sm transition hover:border-brand hover:bg-brand hover:text-white"
             >
               →
             </button>

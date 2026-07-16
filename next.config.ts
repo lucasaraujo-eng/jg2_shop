@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
 
 const R2_PUBLIC_URL = (process.env.R2_PUBLIC_URL ?? "").replace(/\/$/, "");
+const r2Hostname = R2_PUBLIC_URL ? new URL(R2_PUBLIC_URL).hostname : "";
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: r2Hostname ? [{ protocol: "https", hostname: r2Hostname, pathname: "/**" }] : [],
+  },
   async redirects() {
     if (!R2_PUBLIC_URL) return [];
     return [

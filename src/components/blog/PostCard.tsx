@@ -39,7 +39,7 @@ export function PostCard({ post, featured = false }: { post: PostSummary; featur
               Destaque · {post.tag}
             </span>
           ) : (
-            <span className="self-start font-mono text-[11px] uppercase tracking-wide text-brand">{post.tag}</span>
+            <span className="self-start font-mono text-xs uppercase tracking-wide text-brand">{post.tag}</span>
           ))}
         <h3 className={`mt-2 font-display font-bold text-ink ${featured ? 'text-2xl' : 'text-lg'} leading-snug`}>{post.title}</h3>
         {post.excerpt && <p className="mt-2.5 flex-1 text-sm text-muted-2">{post.excerpt}</p>}

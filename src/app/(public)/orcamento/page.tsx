@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
@@ -121,10 +122,7 @@ export default function OrcamentoPage() {
                 return (
                 <li key={`${i.code}-${i.variantLabel ?? ''}`} className="flex items-start gap-4 rounded-xl border border-border-soft bg-white p-4">
                   <div className="flex h-16 w-16 flex-none items-center justify-center overflow-hidden rounded-lg border border-border-soft bg-surface-alt">
-                    {image && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={image} alt="" className="h-full w-full object-contain" />
-                    )}
+                    {image && <Image src={image} alt="" width={64} height={64} className="h-full w-full object-contain" />}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-semibold text-ink">{i.name}</p>
@@ -137,7 +135,7 @@ export default function OrcamentoPage() {
                       <button
                         onClick={() => setQty(i.code, i.quantity - 1, i.variantLabel)}
                         aria-label="Diminuir"
-                        className="flex h-7 w-7 flex-none items-center justify-center rounded-full border border-border text-sm font-bold text-muted-2"
+                        className="flex h-10 w-10 flex-none items-center justify-center rounded-full border border-border text-sm font-bold text-muted-2"
                       >
                         −
                       </button>
@@ -145,7 +143,7 @@ export default function OrcamentoPage() {
                       <button
                         onClick={() => setQty(i.code, i.quantity + 1, i.variantLabel)}
                         aria-label="Aumentar"
-                        className="flex h-7 w-7 flex-none items-center justify-center rounded-full border border-border text-sm font-bold text-muted-2"
+                        className="flex h-10 w-10 flex-none items-center justify-center rounded-full border border-border text-sm font-bold text-muted-2"
                       >
                         +
                       </button>
@@ -154,7 +152,7 @@ export default function OrcamentoPage() {
                   <button
                     onClick={() => remove(i.code, i.variantLabel)}
                     aria-label={`Remover ${i.name}`}
-                    className="flex h-8 w-8 flex-none items-center justify-center self-start rounded-lg text-tertiary transition hover:bg-surface-alt hover:text-brand"
+                    className="flex h-10 w-10 flex-none items-center justify-center self-start rounded-lg text-tertiary transition hover:bg-surface-alt hover:text-brand"
                   >
                     🗑
                   </button>

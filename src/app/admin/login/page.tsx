@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
@@ -35,9 +36,8 @@ export default function AdminLoginPage() {
 
       <div className="relative w-full max-w-[400px]">
         <div className="flex flex-col items-center text-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/jg2-logo.png" alt="JG2 Produtos de Segurança" className="h-11 w-auto" />
-          <p className="mt-4 font-mono text-[11px] font-bold uppercase tracking-widest text-brand">Painel administrativo</p>
+          <Image src="/assets/jg2-logo.png" alt="JG2 Produtos de Segurança" width={800} height={400} className="h-11 w-auto" />
+          <p className="mt-4 font-mono text-xs font-bold uppercase tracking-widest text-brand">Painel administrativo</p>
           <h1 className="mt-1.5 font-display text-2xl font-black text-ink">Entrar na sua conta</h1>
         </div>
 
