@@ -12,18 +12,36 @@ config({ quiet: true });
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
+const COMMON_PASSWORDS = new Set([
+  'password', 'password1', '12345678', '123456789', 'qwerty123', 'senha123',
+  'admin123', 'administrador', 'jg2produtos', 'letmein', 'welcome1',
+]);
+
+/** Sem libs externas: comprimento mínimo + pelo menos 3 das 4 classes de caractere. */
+function checkPasswordStrength(password: string): string | null {
+  if (password.length < 12) return 'A senha precisa ter ao menos 12 caracteres.';
+  if (COMMON_PASSWORDS.has(password.toLowerCase())) return 'Essa senha é comum demais — escolha outra.';
+
+  const classes = [/[a-z]/, /[A-Z]/, /[0-9]/, /[^a-zA-Z0-9]/].filter((re) => re.test(password)).length;
+  if (classes < 3) {
+    return 'Combine ao menos 3 destes: minúsculas, maiúsculas, números e símbolos.';
+  }
+  return null;
+}
+
 async function main() {
   const [name, email, password] = process.argv.slice(2);
   if (!name || !email || !password) {
     console.error('Uso: npx tsx scripts/create-admin.ts "Nome" email@dominio.com "senhaForte"');
     process.exit(1);
   }
-  if (password.length < 8) {
-    console.error('A senha precisa ter ao menos 8 caracteres.');
+  const strengthError = checkPasswordStrength(password);
+  if (strengthError) {
+    console.error(strengthError);
     process.exit(1);
   }
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  const passwordHash = await bcrypt.hash(password, 12);
 
   const user = await prisma.adminUser.upsert({
     where: { email },

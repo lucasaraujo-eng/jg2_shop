@@ -2,13 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
-import { auth } from '@/lib/auth';
-
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user) throw new Error('Não autorizado');
-  return session;
-}
+import { requireAdmin } from '@/lib/auth-guards';
 
 const STATUSES = ['NEW', 'IN_PROGRESS', 'SENT', 'ARCHIVED'] as const;
 type QuoteStatus = (typeof STATUSES)[number];

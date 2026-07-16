@@ -2,14 +2,8 @@
 
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
-import { auth } from '@/lib/auth';
 import { productSchema, type ProductInput } from '@/lib/validations';
-
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user) throw new Error('Não autorizado');
-  return session;
-}
+import { requireAdmin, requireRoleResult } from '@/lib/auth-guards';
 
 type Result = { ok: true; id: string } | { ok: false; error: string };
 
@@ -89,7 +83,8 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Re
 }
 
 export async function deleteProduct(id: string): Promise<Result> {
-  await requireAdmin();
+  const session = await requireRoleResult('ADMIN');
+  if (!session) return { ok: false, error: 'Apenas administradores podem remover produtos.' };
   try {
     await prisma.product.delete({ where: { id } });
     revalidatePath('/admin/produtos');
