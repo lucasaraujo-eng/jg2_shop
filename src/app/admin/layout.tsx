@@ -6,7 +6,6 @@ import { AdminNav } from '@/components/admin/AdminNav';
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
 
-  // Tela de login tem identidade visual própria, sem o chrome autenticado.
   if (!session) {
     return <div className="min-h-screen bg-surface-alt">{children}</div>;
   }

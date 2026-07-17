@@ -30,13 +30,11 @@ export async function getAllProducts() {
   });
 }
 
-/** Todos os códigos (SKU) ativos — usado para reconhecer URLs antigas com o SKU embutido no slug. */
 export async function getAllProductCodes() {
   const products = await prisma.product.findMany({ where: { active: true }, select: { code: true } });
   return products.map((p) => p.code);
 }
 
-/** Todos os slugs de categoria — usado para reconhecer URLs antigas de categoria (ver [...slug]/page.tsx). */
 export async function getAllCategorySlugs() {
   const categories = await prisma.category.findMany({ select: { slug: true } });
   return categories.map((c) => c.slug);

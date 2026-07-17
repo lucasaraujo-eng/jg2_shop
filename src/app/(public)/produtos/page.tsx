@@ -10,7 +10,6 @@ import { r2Url } from '@/lib/utils';
 
 export default async function AllProductsPage() {
   const [categories, products, taxonomy] = await Promise.all([getCategories(), getAllProducts(), getFilterTaxonomy()]);
-  // Mãos Seguras é uma ramificação à parte — fora da lista de categorias usada para os grupos/sidebar.
   const lotoCategories = categories.filter((c) => c.type === 'LOTO');
   const groups = buildCategoryGroups(lotoCategories, products);
   const cardProducts = toCardProducts(products);

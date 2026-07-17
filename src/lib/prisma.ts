@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';
 
-// Evita múltiplas instâncias do Prisma em dev (hot reload).
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 function createClient() {

@@ -8,7 +8,6 @@ function isAnimated(s: Stat): s is { value: number; prefix?: string; suffix?: st
   return 'value' in s;
 }
 
-/** Números sobem de 0 até o valor final (2s, easing cúbico) ao entrar na viewport. */
 export function StatsCounter({ stats }: { stats: Stat[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);

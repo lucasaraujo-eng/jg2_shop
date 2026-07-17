@@ -22,7 +22,6 @@ export type PageQuoteFormValue = {
 const inputClass =
   'rounded-lg border border-border bg-white px-4 py-3 text-sm outline-none transition focus:border-brand focus:shadow-[0_0_0_3px_rgba(181,32,43,.1)]';
 
-/** Distinto do formulário do drawer — ver QuoteFormFields. */
 export function PageQuoteFormFields({
   value,
   onChange,

@@ -1,10 +1,3 @@
-/**
- * Cadeados (isCadeado) têm um PDF por cor (ex.: JGL050-1-VM.pdf) — como o
- * banco só tem um campo datasheetUrl por produto, uso a versão da cor VM
- * (Vermelho) como referência única, já que o conteúdo técnico é o mesmo em
- * todas as cores.
- * Uso: npx tsx --env-file=.env scripts/upload-datasheets.ts [--dry-run]
- */
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { PrismaClient } from '@prisma/client';

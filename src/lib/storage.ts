@@ -1,9 +1,5 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 
-/**
- * Cloudflare R2 (S3-compatível). USAR APENAS NO SERVIDOR
- * (Server Actions / route handlers). Nunca importar em client components.
- */
 function getClient() {
   if (!process.env.R2_ACCOUNT_ID || !process.env.R2_ACCESS_KEY_ID || !process.env.R2_SECRET_ACCESS_KEY) {
     return null;

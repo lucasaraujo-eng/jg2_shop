@@ -3,8 +3,6 @@ import { getPublishedPosts } from '@/server/blog';
 import { PostCard } from '@/components/blog/PostCard';
 import { NewsletterForm } from '@/components/NewsletterForm';
 
-// TODO: matérias atuais são de teste — esconder a listagem pública até termos
-// conteúdo real publicado. Trocar para `true` quando fizer sentido reativar.
 const SHOW_POSTS = false;
 
 export default async function BlogIndexPage() {

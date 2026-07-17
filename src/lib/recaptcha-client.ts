@@ -11,12 +11,6 @@ declare global {
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
-/**
- * Gera um token do reCAPTCHA v3 pra uma ação (ex.: "submit_quote"). Sem site
- * key configurada, ou se o script do Google não carregou, devolve `null` —
- * a action no servidor trata ausência de token como "verificação
- * indisponível" e não bloqueia o envio (ver lib/recaptcha.ts).
- */
 export function getRecaptchaToken(action: string): Promise<string | null> {
   if (!SITE_KEY || typeof window === 'undefined' || !window.grecaptcha) {
     return Promise.resolve(null);

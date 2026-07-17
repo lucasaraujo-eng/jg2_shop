@@ -1,7 +1,3 @@
-/**
- * Fonte: pasta "C:\Users\Kaique\Desktop\Catálogos".
- * Uso: npx tsx --env-file=.env scripts/upload-catalogos.ts [--dry-run]
- */
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { uploadImage } from '../src/lib/storage';

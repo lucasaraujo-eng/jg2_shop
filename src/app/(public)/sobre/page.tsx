@@ -43,7 +43,6 @@ const AREAS = [
 export default function SobrePage() {
   return (
     <div>
-      {/* Hero */}
       <section className="relative overflow-hidden bg-ink-deeper">
         <Image src={r2Url('/uploads/sobre/banner-equipe.png')} alt="" fill sizes="100vw" priority className="object-cover object-top opacity-[.42]" />
         <div className="absolute inset-0 bg-gradient-to-b from-ink-deeper/55 to-ink-deeper/80" />
@@ -69,7 +68,6 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* Quem somos */}
       <section className="mx-auto max-w-[1340px] px-7 py-20">
         <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
           <div>
@@ -94,7 +92,6 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* Números */}
       <section className="bg-ink-deeper py-16">
         <div className="mx-auto max-w-[1340px] px-7">
           <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Nossa trajetória em números</p>
@@ -107,7 +104,6 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* Especialidade */}
       <section className="mx-auto max-w-[1340px] px-7 py-20">
         <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
           <div className="group relative order-2 h-[400px] w-full overflow-hidden rounded-3xl shadow-xl lg:order-1">
@@ -131,7 +127,6 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* Diferenciais */}
       <section className="bg-surface-footer py-20">
         <div className="mx-auto max-w-[1340px] px-7">
           <p className="font-mono text-sm font-bold uppercase tracking-widest text-brand">Por que o Grupo JG2® é diferente</p>
@@ -154,7 +149,6 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* O que fazemos */}
       <section className="mx-auto max-w-[1340px] px-7 py-20">
         <div className="mx-auto max-w-2xl text-center">
           <p className="font-mono text-xs uppercase tracking-widest text-brand">O que fazemos</p>
@@ -176,7 +170,6 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* Setores atendidos */}
       <section className="bg-brand py-20">
         <div className="mx-auto max-w-[1340px] px-7">
           <p className="font-mono text-xs uppercase tracking-widest text-white/70">Setores atendidos</p>
@@ -206,7 +199,6 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* Estrutura */}
       <section className="mx-auto max-w-[1340px] px-7 py-20">
         <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
           <div>
@@ -229,7 +221,6 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* Missão / Visão / Compromisso */}
       <section className="bg-ink-deeper py-20">
         <div className="mx-auto max-w-[1340px] px-7">
           <div className="jg-card-grid grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -264,7 +255,6 @@ export default function SobrePage() {
 
       <ClientsMarquee />
 
-      {/* CTA final */}
       <section className="mx-auto max-w-[1340px] px-7 py-20">
         <div className="relative flex flex-wrap items-center justify-between gap-9 overflow-hidden rounded-3xl bg-ink-deeper p-10 sm:p-14">
           <div className="absolute -right-16 -top-16 h-80 w-80 rounded-full" style={{ background: 'radial-gradient(circle, rgba(181,32,43,.34), transparent 70%)' }} />

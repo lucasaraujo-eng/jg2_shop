@@ -1,8 +1,3 @@
-/**
- * Fonte: pasta "C:\Users\Kaique\Desktop\Principais Clientes". Mesma chave já
- * usada — sobrescreve o arquivo existente no R2, sem precisar mexer em ClientsMarquee.tsx.
- * Uso: npx tsx --env-file=.env scripts/upload-client-logos.ts [--dry-run]
- */
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { uploadImage } from '../src/lib/storage';

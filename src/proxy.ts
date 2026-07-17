@@ -2,8 +2,6 @@ import NextAuth from 'next-auth';
 import { NextResponse } from 'next/server';
 import { authConfig } from '@/lib/auth.config';
 
-// Instância separada da de lib/auth.ts, de propósito: sem adapter/Prisma,
-// pra rodar como Edge Function (ver nota em auth.config.ts).
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {

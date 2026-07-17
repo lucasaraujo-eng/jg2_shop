@@ -145,7 +145,6 @@ function CatalogHeroSkeleton() {
   );
 }
 
-/** Fallback do Suspense em torno do CatalogClient (useSearchParams) — também reutilizada dentro de CatalogLoading. */
 export function CatalogResultsLoading() {
   return (
     <div className="flex-1">

@@ -19,13 +19,10 @@ export function CatalogClient({
 }: {
   initialProducts: CardProduct[];
   taxonomy: Taxonomy | null;
-  /** Quando presente, exibe carrosséis agrupados (por categoria em "Todos", por subcategoria em Mãos Seguras) em vez da grade — some durante busca/filtro. */
   groups?: ProductGroup[] | null;
 }) {
   const searchParams = useSearchParams();
   const [query, setQuery] = useState('');
-  // Deep link vindo da Home (ex.: /produtos?app=eletrico&model=disjuntor_din) —
-  // pré-seleciona a aplicação/modelo, pulando os 2 primeiros cliques.
   const [applicationKey, setApplicationKey] = useState<string | null>(() => searchParams.get('app'));
   const [modelKey, setModelKey] = useState<string | null>(() => searchParams.get('model'));
   const [configKey, setConfigKey] = useState<string | null>(null);
@@ -71,9 +68,6 @@ export function CatalogClient({
     setFilteredProducts(null);
   }
 
-  // Já filtra pelo modelo vindo por query string (efeito só na montagem — a
-  // seleção acima já cobre a exibição, aqui só falta buscar os produtos).
-  // queueMicrotask evita o setState síncrono dentro do efeito.
   useEffect(() => {
     const model = searchParams.get('model');
     if (model) queueMicrotask(() => runFilter(model));

@@ -1,5 +1,3 @@
-/** Estático de propósito: não há necessidade de um modelo no banco pra conteúdo de marketing fixo como este. */
-
 export type ConsultoriaStep = { n: string; title: string; body: string };
 export type ConsultoriaShowcaseItem = { title: string; desc: string; img: string; fit: 'cover' | 'contain'; position?: 'center' | 'top' };
 export type ConsultoriaDiff = { title: string; body: string };
@@ -16,7 +14,6 @@ export type ConsultoriaData = {
   problemParas: string[];
   problemImg: string;
   problemFit: 'cover' | 'contain';
-  /** Retratos verticais (rosto próximo do topo) precisam de 'top' pra não cortar o rosto no crop 'cover'. */
   problemPosition?: 'center' | 'top';
   gainsTitle: string;
   gains: string[];

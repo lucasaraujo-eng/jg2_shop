@@ -19,7 +19,6 @@ const CONTEUDOS_LINKS = [
   { label: 'Vídeos', href: '/videos' },
 ];
 
-/** Lista curada do dropdown "Produtos" (LOTO) — rótulos e recorte exatos do protótipo, não é 1:1 com o nome/lista completa das categorias no banco (ex.: "Malas e Bolsas" não aparece aqui). */
 const PROD_LOTO_MENU = [
   { label: 'Cadeados de Bloqueio', categoryName: 'Cadeados de Bloqueio' },
   { label: 'Etiquetas de Bloqueio', categoryName: 'Etiquetas e Placas' },
@@ -50,8 +49,6 @@ export function Header({ categories }: { categories: Categories }) {
   const [, startSearch] = useTransition();
   const navRef = useRef<HTMLDivElement>(null);
 
-  // fecha dropdowns/menu mobile ao trocar de rota — ajuste de estado durante
-  // a renderização (não em efeito) para evitar um re-render em cascata.
   const [lastPathname, setLastPathname] = useState(pathname);
   if (pathname !== lastPathname) {
     setLastPathname(pathname);
@@ -256,11 +253,6 @@ function DropdownNav({ label, active = false, open, onToggle, children }: { labe
   );
 }
 
-/**
- * Flyout de dois estágios: painel 1 com só 2 linhas (LOTO / Mãos Seguras,
- * cada uma navegável), painel 2 troca de conteúdo conforme qual linha está
- * em hover (LOTO por padrão).
- */
 function ProdutosDropdown({ active, open, onToggle, lotoItems, maosSeguras }: { active: boolean; open: boolean; onToggle: () => void; lotoItems: { label: string; slug: string }[]; maosSeguras: Categories[number] | null }) {
   const [hoverCat, setHoverCat] = useState<'loto' | 'maos'>('loto');
   const maosHref = maosSeguras ? `/produtos/${maosSeguras.slug}` : '/produtos';

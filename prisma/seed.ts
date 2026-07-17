@@ -1,8 +1,3 @@
-/**
- * Uso:
- *   npx prisma migrate dev --name init   # cria as tabelas
- *   npx prisma db seed                   # roda este arquivo
- */
 import { config } from 'dotenv';
 import { PrismaClient, CategoryType, PostStatus, SecretType } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';
@@ -19,14 +14,13 @@ const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
 const SECRETS: { type: SecretType; prefix: string }[] = [
-  { type: 'DIFERENTES', prefix: '' }, // sem sigla
-  { type: 'IGUAIS', prefix: 'SI' }, // segredos iguais
-  { type: 'CHAVE_MESTRA', prefix: 'CM' }, // chave mestra
+  { type: 'DIFERENTES', prefix: '' },
+  { type: 'IGUAIS', prefix: 'SI' },
+  { type: 'CHAVE_MESTRA', prefix: 'CM' },
 ];
 
 async function main() {
   console.log('Limpando tabelas...');
-  // ordem respeita as foreign keys
   await prisma.quoteItem.deleteMany();
   await prisma.quoteRequest.deleteMany();
   await prisma.productFilterTag.deleteMany();
@@ -43,7 +37,7 @@ async function main() {
 
   console.log('Categorias...');
   const categoryIdByName = new Map<string, string>();
-  const subcategoryIdByKey = new Map<string, string>(); // `${categoria}|${sub}` -> id
+  const subcategoryIdByKey = new Map<string, string>();
 
   for (const cat of categories as Array<{
     name: string;
@@ -123,7 +117,6 @@ async function main() {
         order: p.order ?? 0,
         categoryId,
         subcategoryId,
-        // imagem de capa: caminho do protótipo como referência até termos os arquivos reais no R2.
         images: p.image ? { create: [{ url: p.image, order: 0 }] } : undefined,
         filterTags: p.filterTags?.length
           ? {
@@ -140,7 +133,6 @@ async function main() {
       const variants = [];
       for (const color of cadeadoColors) {
         for (const secret of SECRETS) {
-          // SKU: <code>[-<prefixSegredo>]-<corSigla>  ex.: JGL050-2-SI-VM / JGL050-2-VM
           const suffix = secret.prefix ? `-${secret.prefix}-${color.code}` : `-${color.code}`;
           variants.push({
             color: color.name,

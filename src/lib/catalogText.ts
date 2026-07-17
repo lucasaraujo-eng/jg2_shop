@@ -1,4 +1,3 @@
-/** Segue a lógica de artigo gramatical do protótipo de referência. */
 const ARTICLE_BY_CATEGORY: Record<string, string> = {
   Todos: 'das',
   'Cadeados de Bloqueio': 'dos',

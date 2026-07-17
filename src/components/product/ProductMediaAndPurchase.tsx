@@ -8,7 +8,6 @@ import { r2Url } from '@/lib/utils';
 type SecretType = 'DIFERENTES' | 'IGUAIS' | 'CHAVE_MESTRA';
 type Variant = { color: string | null; secretType: SecretType | null; skuSuffix: string | null };
 
-// Sigla usada no nome do arquivo: <código>-<sigla>.png
 const COLOR_FILE_CODE: Record<string, string> = {
   Vermelho: 'VM',
   Amarelo: 'AM',
@@ -22,7 +21,6 @@ const COLOR_FILE_CODE: Record<string, string> = {
   Roxo: 'RX',
 };
 
-/** Galeria e painel de compra compartilham a cor selecionada — escolher uma cor troca a foto principal exibida. */
 export function ProductMediaAndPurchase({
   productId,
   code,

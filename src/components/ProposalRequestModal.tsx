@@ -19,7 +19,6 @@ const EMAIL_RE = /\S+@\S+\.\S+/;
 
 const EMPTY = { name: '', email: '', phone: '', cnpj: '', subject: '', message: '' };
 
-/** Só é montado quando aberto (ver ProposalRequestButton) — cada abertura já nasce com o estado limpo, sem precisar de efeito pra resetar. */
 export function ProposalRequestModal({ onClose, defaultObjective }: { onClose: () => void; defaultObjective: string }) {
   const [form, setForm] = useState(() => ({ ...EMPTY, subject: defaultObjective }));
   const [docType, setDocType] = useState<DocType>('cpf');

@@ -139,7 +139,6 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* 1. Hero */}
       <section className="relative flex min-h-[520px] items-center overflow-hidden bg-ink-deep py-16 text-white">
         <video autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover">
           <source src="/assets/hero.mp4" type="video/mp4" />
@@ -176,7 +175,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 2. Banner "4 frentes" — carrossel de cartões (3 visíveis por vez, o 4º some e aparece rolando) */}
       <section className="mx-auto mt-8 max-w-[1340px] px-7">
         <ScrollCarousel
           autoPlay
@@ -208,10 +206,8 @@ export default async function HomePage() {
         </ScrollCarousel>
       </section>
 
-      {/* 3. Trust / marquee de clientes */}
       <ClientsMarquee />
 
-      {/* 4. Filtro inteligente de bloqueio — cartão escuro contido, não uma faixa full-bleed */}
       <section className="mx-auto max-w-[1340px] px-7 py-14">
         <div className="relative overflow-hidden rounded-3xl bg-ink-deep p-8 text-white sm:p-12">
           <div className="pointer-events-none absolute -bottom-24 -left-20 h-[340px] w-[340px] rounded-full bg-[radial-gradient(circle,rgba(181,32,43,.30)_0%,transparent_70%)]" />
@@ -242,7 +238,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5. Banner ação LOTOTO */}
       <ActionBanner
         title="Adeque seu Programa LOTOTO com a Excelência e Expertise da JG2®"
         kicker="LOTOTO"
@@ -258,7 +253,6 @@ export default async function HomePage() {
         objective="Adequação LOTOTO"
       />
 
-      {/* 6. Carrossel "Produtos mais vendidos" */}
       <section className="bg-white py-16">
         <div className="mx-auto max-w-[1340px] px-7">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
@@ -274,7 +268,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 7. Banner ação NR-12 */}
       <ActionBanner
         title="Adequação Completa à NR-12"
         kicker="NR-12"
@@ -290,7 +283,6 @@ export default async function HomePage() {
         objective="Adequação NR-12"
       />
 
-      {/* 8. Carrossel Mãos Seguras mais vendidos */}
       <section className="bg-surface-footer py-16">
         <div className="mx-auto max-w-[1340px] px-7">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
@@ -308,7 +300,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 9. Banner ação Mãos Seguras */}
       <ActionBanner
         title="Reduza os Riscos dos Trabalhos Manuais Agora"
         kicker="MÃOS SEGURAS"
@@ -325,7 +316,6 @@ export default async function HomePage() {
         objective="Adequação Mãos Seguras"
       />
 
-      {/* 10. Áreas de atuação */}
       <section className="mx-auto max-w-[1340px] px-7 py-16">
         <p className="font-mono text-xs uppercase tracking-widest text-brand">Onde atuamos</p>
         <h2 className="mt-2 font-display text-3xl font-black text-ink sm:text-4xl">Áreas de atuação</h2>
@@ -351,7 +341,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 11. Por que a JG2? */}
       <section className="bg-surface-alt py-18">
         <div className="mx-auto grid max-w-[1340px] gap-12 px-7 lg:grid-cols-2 lg:items-stretch">
           <div>
@@ -375,7 +364,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 12. Catálogo online */}
       <section className="mx-auto max-w-[1340px] px-7 py-16">
         <div className="relative grid gap-8 overflow-hidden rounded-3xl bg-brand p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
           <div className="absolute -right-10 -top-10 h-80 w-80 rounded-full bg-white/6" />
@@ -401,7 +389,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 13. Depoimentos — desativado até termos depoimentos reais de clientes (citações abaixo são fictícias/placeholder). */}
       {false && (
       <section className="bg-ink-deeper py-18">
         <div className="mx-auto max-w-[1340px] px-7">
@@ -433,7 +420,6 @@ export default async function HomePage() {
       </section>
       )}
 
-      {/* 14. Newsletter */}
       <section className="mx-auto max-w-[1340px] px-7 py-16">
         <div className="grid gap-6 rounded-2xl border border-border-soft bg-surface-card p-8 sm:p-10 lg:grid-cols-[1fr_1.4fr] lg:items-center lg:gap-8">
           <h2 className="font-display text-2xl font-black text-ink">Assine nossa newsletter</h2>

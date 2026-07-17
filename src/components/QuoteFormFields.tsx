@@ -30,7 +30,6 @@ export const PURPOSE_OPTIONS = [
 const inputClass =
   'rounded-lg border border-border bg-surface-card px-4 py-3 text-sm outline-none transition focus:border-brand focus:bg-white focus:shadow-[0_0_0_3px_rgba(181,32,43,.1)]';
 
-/** Distinto do formulário da página /orcamento — ver PageQuoteFormFields. */
 export function QuoteFormFields({
   value,
   onChange,

@@ -2,7 +2,6 @@
 
 import { useCart } from '@/stores/cart';
 
-/** Contador lido só depois da hidratação, pra não divergir do HTML gerado no servidor. */
 export function CartButton() {
   const open = useCart((s) => s.open);
   const count = useCart((s) => s.items.reduce((n, i) => n + i.quantity, 0));

@@ -95,8 +95,6 @@ export function CartDrawer() {
             </header>
 
             <div className="flex min-h-0 flex-1">
-              {/* coluna de itens — no mobile some durante a etapa de formulário (a coluna de
-                  formulário assume a tela toda); no desktop as duas colunas ficam lado a lado */}
               <div className={`min-h-0 min-w-0 flex-col ${step === 'form' ? 'hidden md:flex md:flex-1' : 'flex flex-1'}`}>
                 <div className="min-w-0 flex-1 overflow-y-auto overflow-x-hidden p-5">
                   {items.length === 0 ? (
@@ -165,7 +163,6 @@ export function CartDrawer() {
                 )}
               </div>
 
-              {/* coluna de formulário — só na etapa 2; ocupa a tela toda no mobile */}
               {step === 'form' && (
                 <div className="flex w-full flex-1 flex-col bg-surface-card md:w-[440px] md:flex-none" style={{ animation: 'jg-form-in .42s cubic-bezier(.22,.61,.36,1) both' }}>
                   <div className="flex-1 overflow-y-auto p-6">

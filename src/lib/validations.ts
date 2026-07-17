@@ -24,7 +24,6 @@ export const quoteRequestSchema = z.object({
     .min(1, 'Informe seu telefone')
     .max(30)
     .refine((v) => isValidBrPhone(v), 'Telefone inválido'),
-  // Empresa/Cidade só vêm da página /orçamento; CNPJ/Finalidade só vêm do drawer — nunca os dois juntos.
   company: z.string().max(200).optional().nullable(),
   city: z.string().max(120).optional().nullable(),
   cnpj: cnpjField,

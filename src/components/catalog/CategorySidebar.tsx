@@ -3,7 +3,6 @@ import type { getCategories } from '@/server/catalog';
 
 type Categories = Awaited<ReturnType<typeof getCategories>>;
 
-/** Só lista Todos + categorias LOTO — Mãos Seguras é uma ramificação à parte, acessada só pelo dropdown do menu e pelos banners da Home. */
 export function CategorySidebar({ categories, activeSlug }: { categories: Categories; activeSlug: string | null }) {
   const loto = categories.filter((c) => c.type === 'LOTO');
   return (

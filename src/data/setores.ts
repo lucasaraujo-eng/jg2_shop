@@ -1,5 +1,3 @@
-/** Estático de propósito: conteúdo institucional fixo, sem necessidade de modelo no banco. */
-
 export type SetorData = {
   id: string;
   name: string;

@@ -66,7 +66,6 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Re
           : undefined,
       },
     });
-    // atualiza a imagem de capa (order 0), se enviada
     if (typeof d.coverUrl === 'string') {
       await prisma.productImage.deleteMany({ where: { productId: id, order: 0 } });
       if (d.coverUrl) {

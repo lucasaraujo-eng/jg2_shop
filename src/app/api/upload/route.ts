@@ -22,9 +22,6 @@ export async function POST(req: Request) {
 
   try {
     const bytes = new Uint8Array(await file.arrayBuffer());
-    // Não confia no Content-Type enviado pelo cliente (é só um header, trocável) —
-    // detecta o formato pelos magic bytes reais. SVG fica de fora de propósito
-    // (pode conter <script>, abrindo XSS armazenado no arquivo servido).
     const detectedType = sniffImageType(bytes);
     if (!detectedType) {
       return NextResponse.json({ error: 'Envie um PNG, JPEG, WEBP ou GIF válido' }, { status: 400 });

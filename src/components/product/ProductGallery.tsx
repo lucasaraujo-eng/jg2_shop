@@ -4,7 +4,6 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { resolveImageUrl } from '@/lib/utils';
 
-/** Largura de 5 miniaturas (80px) + 4 espaços (12px) — só essa "janela" fica visível, o resto rola. */
 const THUMBS_VISIBLE_WIDTH = 5 * 80 + 4 * 12;
 
 const STRIPE_BG = {
@@ -19,7 +18,6 @@ export function ProductGallery({
 }: {
   images: { url: string }[];
   name: string;
-  /** Foto da cor selecionada (cadeados) — substitui a galeria enquanto ativa. */
   overrideImageUrl?: string | null;
 }) {
   const realImages = images.map((i) => resolveImageUrl(i.url)).filter((u): u is string => !!u);

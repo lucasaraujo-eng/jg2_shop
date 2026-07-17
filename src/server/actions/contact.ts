@@ -8,7 +8,6 @@ import { verifyRecaptcha } from '@/lib/recaptcha';
 
 type ActionResult = { ok: true } | { ok: false; error: string };
 
-/** Não persiste no banco — só envia e-mail. */
 export async function submitContact(input: ContactMessageInput, recaptchaToken?: string): Promise<ActionResult> {
   const ip = clientIp(await headers());
   if (!checkRateLimit(`contact:${ip}`, 5, 10 * 60 * 1000)) {

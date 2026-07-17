@@ -14,10 +14,6 @@ export type CardProduct = {
   category?: string;
 };
 
-/**
- * `variant="compact"` (padrão): código, nome e um único botão.
- * `variant="catalog"`: etiqueta de categoria, nome, código e os botões "Detalhes" + "+ Orçamento".
- */
 export function ProductCard({ product, variant = 'compact' }: { product: CardProduct; variant?: 'compact' | 'catalog' }) {
   const add = useCart((s) => s.add);
   const image = resolveImageUrl(product.images[0]?.url);
