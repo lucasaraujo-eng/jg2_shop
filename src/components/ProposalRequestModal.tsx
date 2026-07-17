@@ -5,6 +5,8 @@ import { createPortal } from 'react-dom';
 import { submitContact } from '@/server/actions/contact';
 import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
 import { getRecaptchaToken } from '@/lib/recaptcha-client';
+import { isValidBrPhone, isValidCpfCnpj } from '@/lib/cpfCnpj';
+import { formatCpfCnpj, formatPhone } from '@/lib/masks';
 
 const OBJECTIVES = ['Adequação LOTOTO', 'Adequação NR-12', 'Adequação Mãos Seguras', 'Outro assunto'];
 
@@ -12,6 +14,8 @@ type DocType = 'cpf' | 'cnpj';
 
 const inputClass =
   'rounded-lg border border-border bg-white px-4 py-3 text-sm outline-none transition focus:border-brand focus:shadow-[0_0_0_3px_rgba(181,32,43,.1)]';
+const errorClass = 'text-xs font-semibold text-brand';
+const EMAIL_RE = /\S+@\S+\.\S+/;
 
 const EMPTY = { name: '', email: '', phone: '', cnpj: '', subject: '', message: '' };
 
@@ -20,6 +24,7 @@ export function ProposalRequestModal({ onClose, defaultObjective }: { onClose: (
   const [form, setForm] = useState(() => ({ ...EMPTY, subject: defaultObjective }));
   const [docType, setDocType] = useState<DocType>('cpf');
   const [showDoc, setShowDoc] = useState(false);
+  const [touched, setTouched] = useState({ email: false, phone: false, cnpj: false });
   const [privacyChecked, setPrivacyChecked] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [sending, setSending] = useState(false);
@@ -34,7 +39,19 @@ export function ProposalRequestModal({ onClose, defaultObjective }: { onClose: (
     return () => document.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  const isValid = form.name.trim().length >= 2 && /\S+@\S+\.\S+/.test(form.email) && form.phone.trim().length >= 8 && form.subject.trim().length > 0 && form.message.trim().length >= 5 && privacyChecked;
+  const emailValid = EMAIL_RE.test(form.email);
+  const phoneValid = isValidBrPhone(form.phone);
+  const cnpjValid = isValidCpfCnpj(form.cnpj);
+  const docLabel = docType === 'cpf' ? 'CPF' : 'CNPJ';
+
+  const isValid =
+    form.name.trim().length >= 2 &&
+    emailValid &&
+    phoneValid &&
+    (!showDoc || !form.cnpj || cnpjValid) &&
+    form.subject.trim().length > 0 &&
+    form.message.trim().length >= 5 &&
+    privacyChecked;
 
   async function handleSubmit() {
     setSending(true);
@@ -111,9 +128,11 @@ export function ProposalRequestModal({ onClose, defaultObjective }: { onClose: (
                         type="email"
                         value={form.email}
                         onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                        onBlur={() => setTouched((t) => ({ ...t, email: true }))}
                         placeholder="voce@empresa.com"
                         className={inputClass}
                       />
+                      {touched.email && form.email && !emailValid && <span className={errorClass}>E-mail inválido</span>}
                     </label>
                     <label className="flex flex-col gap-1.5 text-sm">
                       <span className="font-bold text-ink">
@@ -121,10 +140,12 @@ export function ProposalRequestModal({ onClose, defaultObjective }: { onClose: (
                       </span>
                       <input
                         value={form.phone}
-                        onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                        onChange={(e) => setForm((f) => ({ ...f, phone: formatPhone(e.target.value) }))}
+                        onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
                         placeholder="(00) 00000-0000"
                         className={inputClass}
                       />
+                      {touched.phone && form.phone && !phoneValid && <span className={errorClass}>Telefone inválido</span>}
                     </label>
                   </div>
 
@@ -153,12 +174,16 @@ export function ProposalRequestModal({ onClose, defaultObjective }: { onClose: (
                       </button>
                     </div>
                     {showDoc && (
-                      <input
-                        value={form.cnpj}
-                        onChange={(e) => setForm((f) => ({ ...f, cnpj: e.target.value }))}
-                        placeholder={docType === 'cpf' ? '000.000.000-00' : '00.000.000/0000-00'}
-                        className={`${inputClass} mt-1`}
-                      />
+                      <>
+                        <input
+                          value={form.cnpj}
+                          onChange={(e) => setForm((f) => ({ ...f, cnpj: formatCpfCnpj(e.target.value, docType) }))}
+                          onBlur={() => setTouched((t) => ({ ...t, cnpj: true }))}
+                          placeholder={docType === 'cpf' ? '000.000.000-00' : '00.000.000/0000-00'}
+                          className={`${inputClass} mt-1`}
+                        />
+                        {touched.cnpj && form.cnpj && !cnpjValid && <span className={errorClass}>{docLabel} inválido</span>}
+                      </>
                     )}
                   </div>
 

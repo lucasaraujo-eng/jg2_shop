@@ -4,10 +4,14 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { submitContact } from '@/server/actions/contact';
 import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
+import { formatPhone } from '@/lib/masks';
+import { isValidBrPhone } from '@/lib/cpfCnpj';
 import { getRecaptchaToken } from '@/lib/recaptcha-client';
 
 const inputClass =
   'rounded-[11px] border border-border bg-surface-card px-4 py-3.5 text-[15px] outline-none transition focus:border-brand focus:bg-white focus:shadow-[0_0_0_3px_rgba(181,32,43,.1)]';
+const errorClass = 'text-xs font-semibold text-brand';
+const EMAIL_RE = /\S+@\S+\.\S+/;
 
 export default function ContatoPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
@@ -15,6 +19,9 @@ export default function ContatoPage() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
   const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [touched, setTouched] = useState({ email: false, phone: false });
+  const emailValid = EMAIL_RE.test(form.email);
+  const phoneValid = isValidBrPhone(form.phone);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -146,17 +153,21 @@ export default function ContatoPage() {
                       placeholder="voce@empresa.com"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      onBlur={() => setTouched((t) => ({ ...t, email: true }))}
                       className={inputClass}
                     />
+                    {touched.email && form.email && !emailValid && <span className={errorClass}>E-mail inválido</span>}
                   </label>
                   <label className="flex min-w-[170px] flex-1 flex-col gap-1.5 text-sm">
                     <span className="font-bold text-ink">Telefone</span>
                     <input
                       placeholder="(00) 00000-0000"
                       value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      onChange={(e) => setForm({ ...form, phone: formatPhone(e.target.value) })}
+                      onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
                       className={inputClass}
                     />
+                    {touched.phone && form.phone && !phoneValid && <span className={errorClass}>Telefone inválido</span>}
                   </label>
                 </div>
 

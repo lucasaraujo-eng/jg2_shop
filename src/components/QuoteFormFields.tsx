@@ -1,5 +1,12 @@
 'use client';
 
+import { useState } from 'react';
+import { isValidBrPhone, isValidCpfCnpj } from '@/lib/cpfCnpj';
+import { formatCpfCnpj, formatPhone } from '@/lib/masks';
+
+const EMAIL_RE = /\S+@\S+\.\S+/;
+const errorClass = 'text-xs font-semibold text-brand';
+
 export type DocType = 'cnpj' | 'cpf';
 
 export type QuoteFormValue = {
@@ -31,6 +38,12 @@ export function QuoteFormFields({
   value: QuoteFormValue;
   onChange: (patch: Partial<QuoteFormValue>) => void;
 }) {
+  const [touched, setTouched] = useState({ email: false, phone: false, cnpj: false });
+  const emailValid = EMAIL_RE.test(value.email);
+  const phoneValid = isValidBrPhone(value.phone);
+  const cnpjValid = isValidCpfCnpj(value.cnpj);
+  const docLabel = value.docType === 'cpf' ? 'CPF' : 'CNPJ';
+
   return (
     <div className="flex flex-col gap-4">
       <label className="flex flex-col gap-1.5 text-sm">
@@ -44,19 +57,23 @@ export function QuoteFormFields({
           type="email"
           value={value.email}
           onChange={(e) => onChange({ email: e.target.value })}
+          onBlur={() => setTouched((t) => ({ ...t, email: true }))}
           placeholder="seu@email.com.br"
           className={inputClass}
         />
+        {touched.email && value.email && !emailValid && <span className={errorClass}>E-mail inválido</span>}
       </label>
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-bold text-ink">Telefone*</span>
         <input
           required
           value={value.phone}
-          onChange={(e) => onChange({ phone: e.target.value })}
-          placeholder="(00) 00000 0000"
+          onChange={(e) => onChange({ phone: formatPhone(e.target.value) })}
+          onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
+          placeholder="(00) 00000-0000"
           className={inputClass}
         />
+        {touched.phone && value.phone && !phoneValid && <span className={errorClass}>Telefone inválido</span>}
       </label>
       <div className="flex flex-col gap-1.5 text-sm">
         <span className="font-bold text-ink">Documento*</span>
@@ -73,10 +90,12 @@ export function QuoteFormFields({
         <input
           required
           value={value.cnpj}
-          onChange={(e) => onChange({ cnpj: e.target.value })}
+          onChange={(e) => onChange({ cnpj: formatCpfCnpj(e.target.value, value.docType) })}
+          onBlur={() => setTouched((t) => ({ ...t, cnpj: true }))}
           placeholder={value.docType === 'cpf' ? '000.000.000-00' : '00.000.000/0000-00'}
           className={inputClass}
         />
+        {touched.cnpj && value.cnpj && !cnpjValid && <span className={errorClass}>{docLabel} inválido</span>}
       </div>
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-bold text-ink">Finalidade da Compra*</span>
@@ -107,8 +126,8 @@ export function isQuoteFormValid(value: QuoteFormValue, privacyChecked: boolean)
   return (
     value.name.trim().length >= 2 &&
     /\S+@\S+\.\S+/.test(value.email) &&
-    value.phone.trim().length >= 8 &&
-    value.cnpj.trim().length >= (value.docType === 'cpf' ? 11 : 14) &&
+    isValidBrPhone(value.phone) &&
+    isValidCpfCnpj(value.cnpj) &&
     value.purpose.trim().length > 0 &&
     privacyChecked
   );
