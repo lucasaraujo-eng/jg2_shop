@@ -1,4 +1,12 @@
 import { z } from 'zod';
+import { isValidBrPhone, isValidCpfCnpj } from './cpfCnpj';
+
+const cnpjField = z
+  .string()
+  .max(30)
+  .optional()
+  .nullable()
+  .refine((v) => !v || isValidCpfCnpj(v), 'CNPJ/CPF inválido');
 
 // ---------- Orçamento ----------
 export const quoteItemSchema = z.object({
@@ -12,11 +20,15 @@ export const quoteItemSchema = z.object({
 export const quoteRequestSchema = z.object({
   name: z.string().min(2, 'Informe seu nome').max(120),
   email: z.string().email('E-mail inválido').max(200),
-  phone: z.string().min(8, 'Telefone inválido').max(30),
+  phone: z
+    .string()
+    .min(1, 'Informe seu telefone')
+    .max(30)
+    .refine((v) => isValidBrPhone(v), 'Telefone inválido'),
   // Empresa/Cidade só vêm da página /orçamento; CNPJ/Finalidade só vêm do drawer — nunca os dois juntos.
   company: z.string().max(200).optional().nullable(),
   city: z.string().max(120).optional().nullable(),
-  cnpj: z.string().max(30).optional().nullable(),
+  cnpj: cnpjField,
   purpose: z.string().max(200).optional().nullable(),
   message: z.string().max(3000).optional().nullable(),
   items: z.array(quoteItemSchema).min(1, 'Adicione ao menos um item').max(50, 'Máximo de 50 itens por orçamento'),
@@ -27,9 +39,14 @@ export type QuoteRequestInput = z.infer<typeof quoteRequestSchema>;
 export const contactMessageSchema = z.object({
   name: z.string().min(2, 'Informe seu nome').max(120),
   email: z.string().email('E-mail inválido').max(200),
-  phone: z.string().max(30).optional().nullable(),
+  phone: z
+    .string()
+    .max(30)
+    .optional()
+    .nullable()
+    .refine((v) => !v || isValidBrPhone(v), 'Telefone inválido'),
   subject: z.string().max(200).optional().nullable(),
-  cnpj: z.string().max(30).optional().nullable(),
+  cnpj: cnpjField,
   message: z.string().min(5, 'Escreva sua mensagem').max(5000),
 });
 export type ContactMessageInput = z.infer<typeof contactMessageSchema>;
