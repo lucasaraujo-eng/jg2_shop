@@ -21,7 +21,6 @@ function getClient() {
 const BUCKET = process.env.R2_BUCKET ?? 'jg2-produtos';
 const PUBLIC_URL = (process.env.R2_PUBLIC_URL ?? '').replace(/\/$/, '');
 
-/** Faz upload de um arquivo e devolve a URL pública. */
 export async function uploadImage(
   path: string,
   file: Uint8Array | Buffer,

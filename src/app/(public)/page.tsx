@@ -10,13 +10,6 @@ import { DeviceFilterCard } from '@/components/home/DeviceFilterCard';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 import { r2Url } from '@/lib/utils';
 
-/**
- * Home — as 14 seções do protótipo, na ordem original (ver
- * scratchpad/jg2-prototipo-spec.md §3). Textos, códigos de produto e
- * perguntas da sanfona foram extraídos literalmente do HTML fonte — nada
- * inventado.
- */
-
 const LOTO_CATALOG_HREF = '/produtos/cadeados-de-bloqueio';
 const MAOS_CATALOG_HREF = '/produtos/maos-seguras';
 

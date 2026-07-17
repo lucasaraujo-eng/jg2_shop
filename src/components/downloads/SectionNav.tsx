@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-/** Sidebar sticky com scroll-spy — mesmo padrão do ProductTabs (Bloco 4), generalizado. */
 export function SectionNav({ items }: { items: { id: string; label: string }[] }) {
   const [activeId, setActiveId] = useState(items[0]?.id);
 

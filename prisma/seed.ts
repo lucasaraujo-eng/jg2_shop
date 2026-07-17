@@ -1,7 +1,4 @@
 /**
- * Seed do catálogo JG2 — popula categorias, subcategorias, produtos,
- * variações de cadeado, taxonomia do filtro de dispositivos e posts do blog.
- *
  * Uso:
  *   npx prisma migrate dev --name init   # cria as tabelas
  *   npx prisma db seed                   # roda este arquivo
@@ -21,7 +18,6 @@ config({ quiet: true });
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
-// Combinações de segredo aplicadas a cada cadeado
 const SECRETS: { type: SecretType; prefix: string }[] = [
   { type: 'DIFERENTES', prefix: '' }, // sem sigla
   { type: 'IGUAIS', prefix: 'SI' }, // segredos iguais
@@ -45,7 +41,6 @@ async function main() {
   await prisma.category.deleteMany();
   await prisma.blogPost.deleteMany();
 
-  // ---------- CATEGORIAS + SUBCATEGORIAS ----------
   console.log('Categorias...');
   const categoryIdByName = new Map<string, string>();
   const subcategoryIdByKey = new Map<string, string>(); // `${categoria}|${sub}` -> id
@@ -80,7 +75,6 @@ async function main() {
     }
   }
 
-  // ---------- FILTRO DE DISPOSITIVOS ----------
   console.log('Taxonomia do filtro...');
   const modelIdByKey = new Map<string, string>();
   for (const app of filters.applications) {
@@ -107,7 +101,6 @@ async function main() {
     }
   }
 
-  // ---------- PRODUTOS ----------
   console.log(`Produtos (${products.length})...`);
   for (const p of products) {
     const categoryId = categoryIdByName.get(p.category);
@@ -143,7 +136,6 @@ async function main() {
       },
     });
 
-    // ---------- VARIAÇÕES DE CADEADO ----------
     if (p.isCadeado) {
       const variants = [];
       for (const color of cadeadoColors) {
@@ -162,7 +154,6 @@ async function main() {
     }
   }
 
-  // ---------- BLOG ----------
   console.log(`Posts (${posts.length})...`);
   for (const post of posts as Array<{
     title: string;

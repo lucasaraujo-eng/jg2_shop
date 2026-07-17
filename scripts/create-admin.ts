@@ -1,7 +1,4 @@
-/**
- * Cria (ou atualiza a senha de) o primeiro administrador.
- * Uso: npx tsx scripts/create-admin.ts "Nome" email@dominio.com "senhaForte"
- */
+/** Uso: npx tsx scripts/create-admin.ts "Nome" email@dominio.com "senhaForte" */
 import { config } from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';

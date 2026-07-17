@@ -1,9 +1,4 @@
-/**
- * Conteúdo das 12 páginas de setor de atuação — texto real extraído do
- * protótipo de referência (Site JG2.dc.html, função sectorData()).
- * Estático de propósito: conteúdo institucional fixo, sem necessidade de
- * modelo no banco.
- */
+/** Estático de propósito: conteúdo institucional fixo, sem necessidade de modelo no banco. */
 
 export type SetorData = {
   id: string;

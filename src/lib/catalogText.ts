@@ -1,5 +1,4 @@
-/** Formata os títulos "A importância d[o/a/os/as] X para a segurança na indústria", replicando a lógica de artigo gramatical do protótipo. */
-
+/** Segue a lógica de artigo gramatical do protótipo de referência. */
 const ARTICLE_BY_CATEGORY: Record<string, string> = {
   Todos: 'das',
   'Cadeados de Bloqueio': 'dos',
@@ -45,14 +44,12 @@ const ARTICLE_BY_PRODUCT_FIRST_WORD: Record<string, string> = {
   Maquete: 'da',
 };
 
-/** "A importância das soluções de Bloqueio e Etiquetagem / dos Cadeados de Bloqueio / ... para a segurança na indústria" */
 export function categorySupportTitle(categoryName: string): string {
   const article = ARTICLE_BY_CATEGORY[categoryName] ?? 'dos';
   const key = categoryName === 'Todos' ? 'soluções de Bloqueio e Etiquetagem' : categoryName;
   return `A importância ${article} ${key} para a segurança na indústria`;
 }
 
-/** "A importância do Cadeado de Bloqueio X para a segurança na indústria" */
 export function productSupportTitle(productName: string): string {
   const firstWord = productName.trim().split(' ')[0] ?? '';
   const article = ARTICLE_BY_PRODUCT_FIRST_WORD[firstWord] ?? 'do';

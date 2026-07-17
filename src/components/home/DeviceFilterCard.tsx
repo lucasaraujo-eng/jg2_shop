@@ -8,7 +8,6 @@ import { r2Url } from '@/lib/utils';
 
 type Taxonomy = Awaited<ReturnType<typeof getFilterTaxonomy>>;
 
-/** Mini-versão do filtro de dispositivos do catálogo, usada no teaser da Home — cada modelo leva direto para /produtos com o filtro já aplicado. */
 export function DeviceFilterCard({ taxonomy }: { taxonomy: Taxonomy }) {
   const [applicationKey, setApplicationKey] = useState<string | null>(taxonomy[0]?.key ?? null);
   const application = taxonomy.find((a) => a.key === applicationKey) ?? null;

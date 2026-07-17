@@ -5,10 +5,6 @@ import { Children, cloneElement, isValidElement, useEffect, useRef, useState } f
 const LOOP_INTERVAL = 3500;
 
 /**
- * Carrossel horizontal genérico — setas + barra de progresso, mesma
- * interação do ProductCarousel, mas recebendo qualquer conteúdo como filhos
- * (ex.: tiles de setor) em vez de só CardProduct.
- *
  * `autoPlay` faz uma rolagem contínua e lenta (não aos saltos), indo e
  * voltando entre as pontas — pausa ao passar o mouse ou tocar. Com
  * `loopToStart`, os filhos são duplicados no trilho e a posição é reiniciada

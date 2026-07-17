@@ -1,10 +1,7 @@
 /**
- * Sobe as imagens adicionais dos produtos (pasta "C:\Users\Kaique\Desktop\Produtos",
- * uma subpasta por produto, nome iniciando com o código) para o R2, criando um
- * ProductImage por arquivo. A imagem que já está no R2 (product.images[0], em geral
- * "uploads/cover-{codigo}.png") é identificada por hash (MD5 local vs ETag do R2,
- * que é o MD5 pra uploads simples) e excluída — só o restante da pasta é enviado.
- *
+ * A imagem que já está no R2 (product.images[0]) é identificada por hash
+ * (MD5 local vs ETag do R2, que é o MD5 pra uploads simples) e excluída —
+ * só o restante da pasta é enviado.
  * Uso: npx tsx --env-file=.env scripts/upload-product-gallery.ts [--dry-run]
  */
 import { readFileSync, readdirSync, statSync } from 'fs';

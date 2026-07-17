@@ -19,7 +19,7 @@ export function CatalogClient({
 }: {
   initialProducts: CardProduct[];
   taxonomy: Taxonomy | null;
-  /** Quando presente, exibe carrosséis agrupados (por categoria em "Todos", por subcategoria em Mãos Seguras) em vez da grade — igual ao protótipo, só some durante busca/filtro. */
+  /** Quando presente, exibe carrosséis agrupados (por categoria em "Todos", por subcategoria em Mãos Seguras) em vez da grade — some durante busca/filtro. */
   groups?: ProductGroup[] | null;
 }) {
   const searchParams = useSearchParams();

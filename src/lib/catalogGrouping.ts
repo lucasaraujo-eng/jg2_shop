@@ -21,7 +21,6 @@ export function toCardProducts(products: GroupableProduct[]): CardProduct[] {
   return products.map(toCardProduct);
 }
 
-/** Agrupa produtos por categoria — usado na visão "Todos" do catálogo. */
 export function buildCategoryGroups(categories: { id: string; name: string }[], products: GroupableProduct[]): ProductGroup[] {
   return categories.map((c) => ({
     name: c.name,
@@ -30,7 +29,6 @@ export function buildCategoryGroups(categories: { id: string; name: string }[], 
   }));
 }
 
-/** Agrupa produtos por subcategoria — usado na raiz de Mãos Seguras (sem subcategoria selecionada). */
 export function buildSubcategoryGroups(subcategories: { id: string; name: string }[], products: GroupableProduct[]): ProductGroup[] {
   return subcategories.map((sc) => ({
     name: sc.name,

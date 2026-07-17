@@ -3,12 +3,7 @@ import type { getCategories } from '@/server/catalog';
 
 type Categories = Awaited<ReturnType<typeof getCategories>>;
 
-/**
- * Sidebar sticky de categorias — sem interatividade, então nem precisa ser client.
- * Só lista Todos + categorias LOTO, igual ao protótipo (a função `categories()`
- * da fonte exclui explicitamente Mãos Seguras — ela é uma ramificação à parte,
- * acessada só pelo dropdown do menu e pelos banners da Home).
- */
+/** Só lista Todos + categorias LOTO — Mãos Seguras é uma ramificação à parte, acessada só pelo dropdown do menu e pelos banners da Home. */
 export function CategorySidebar({ categories, activeSlug }: { categories: Categories; activeSlug: string | null }) {
   const loto = categories.filter((c) => c.type === 'LOTO');
   return (

@@ -5,7 +5,6 @@ import { sniffImageType } from '@/lib/image-sniff';
 
 const EXT_BY_TYPE = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/gif': 'gif' } as const;
 
-// Upload de imagem (multipart) → Cloudflare R2. Restrito a admins.
 export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) {

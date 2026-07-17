@@ -96,7 +96,6 @@ export async function deleteProduct(id: string): Promise<Result> {
   }
 }
 
-/** Lista para a tela de admin (todas as categorias). */
 export async function listAdminProducts(query?: string) {
   await requireAdmin();
   return prisma.product.findMany({
@@ -113,7 +112,6 @@ export async function listAdminProducts(query?: string) {
   });
 }
 
-/** Produto para pré-preencher o formulário de edição. */
 export async function getAdminProduct(id: string) {
   await requireAdmin();
   return prisma.product.findUnique({

@@ -60,7 +60,6 @@ export function Header({ categories }: { categories: Categories }) {
     setSearchOpen(false);
   }
 
-  // fecha dropdown ao clicar fora ou pressionar Esc
   useEffect(() => {
     function onClick(e: MouseEvent) {
       if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenMenu(null);
@@ -91,7 +90,6 @@ export function Header({ categories }: { categories: Categories }) {
   const maosSeguras = categories.filter((c) => c.type === 'MAOS_SEGURAS');
   const slugByCategoryName = new Map(categories.map((c) => [c.name, c.slug]));
 
-  // Destaque de item ativo no menu — mesma lógica de agrupamento de "telas" do protótipo.
   const isHomeActive = pathname === '/';
   const isProdutosActive = pathname.startsWith('/produtos') || pathname.startsWith('/produto/');
   const isServicosActive = pathname === '/servicos' || pathname.startsWith('/servicos/');
@@ -104,7 +102,6 @@ export function Header({ categories }: { categories: Categories }) {
   return (
     <>
       <header className="sticky top-0 z-[60] border-b border-border-soft bg-white/95 backdrop-blur">
-        {/* linha 1 */}
         <div className="border-b border-surface-alt">
           <div className="mx-auto flex max-w-[1340px] items-center justify-between gap-6 px-7 py-4 md:grid md:grid-cols-[1fr_auto_1fr]">
             <Link href="/" className="flex-none md:justify-self-start">
@@ -185,7 +182,6 @@ export function Header({ categories }: { categories: Categories }) {
           </div>
         </div>
 
-        {/* linha 2 */}
         <div ref={navRef} className="hidden md:block">
           <div className="mx-auto grid max-w-[1340px] grid-cols-[1fr_auto_1fr] items-center gap-6 px-7 py-3">
             <span />
@@ -261,9 +257,9 @@ function DropdownNav({ label, active = false, open, onToggle, children }: { labe
 }
 
 /**
- * Dropdown "Produtos" — flyout de dois estágios igual ao protótipo: painel 1
- * com só 2 linhas (LOTO / Mãos Seguras, cada uma navegável), painel 2 troca de
- * conteúdo conforme qual linha está em hover (LOTO por padrão).
+ * Flyout de dois estágios: painel 1 com só 2 linhas (LOTO / Mãos Seguras,
+ * cada uma navegável), painel 2 troca de conteúdo conforme qual linha está
+ * em hover (LOTO por padrão).
  */
 function ProdutosDropdown({ active, open, onToggle, lotoItems, maosSeguras }: { active: boolean; open: boolean; onToggle: () => void; lotoItems: { label: string; slug: string }[]; maosSeguras: Categories[number] | null }) {
   const [hoverCat, setHoverCat] = useState<'loto' | 'maos'>('loto');

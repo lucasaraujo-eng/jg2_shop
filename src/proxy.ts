@@ -6,10 +6,6 @@ import { authConfig } from '@/lib/auth.config';
 // pra rodar como Edge Function (ver nota em auth.config.ts).
 const { auth } = NextAuth(authConfig);
 
-/**
- * Protege todas as rotas /admin (exceto /admin/login).
- * Usuário não autenticado é redirecionado ao login.
- */
 export default auth((req) => {
   const { pathname } = req.nextUrl;
   const isAdmin = pathname.startsWith('/admin');

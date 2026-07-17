@@ -1,8 +1,5 @@
 /**
- * Sobe as fotos de capa dos produtos LOTO que ainda não têm imagem (pasta
- * public/Produtos/{CODIGO}[...]/) para o R2, e cria o ProductImage no banco.
  * Produtos que já têm imagem (cadeados, Mãos Seguras) são ignorados.
- *
  * Uso: npx tsx --env-file=.env scripts/upload-product-covers.ts [--dry-run]
  */
 import { readFileSync, readdirSync } from 'fs';

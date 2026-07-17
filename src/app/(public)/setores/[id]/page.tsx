@@ -22,7 +22,6 @@ export default async function SetorPage({
 
   return (
     <div>
-      {/* Hero */}
       <section className="relative overflow-hidden bg-ink-deep">
         <Image src={r2Url(sector.img)} alt="" fill sizes="100vw" priority className="object-cover opacity-30" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/85" />

@@ -1,9 +1,4 @@
-/**
- * Conteúdo institucional das 3 páginas de consultoria — texto real extraído
- * do protótipo de referência (Site JG2.dc.html, função consultorias()).
- * Estático de propósito: não há necessidade de um modelo no banco pra
- * conteúdo de marketing fixo como este.
- */
+/** Estático de propósito: não há necessidade de um modelo no banco pra conteúdo de marketing fixo como este. */
 
 export type ConsultoriaStep = { n: string; title: string; body: string };
 export type ConsultoriaShowcaseItem = { title: string; desc: string; img: string; fit: 'cover' | 'contain'; position?: 'center' | 'top' };

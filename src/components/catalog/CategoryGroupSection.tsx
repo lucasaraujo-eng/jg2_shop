@@ -2,7 +2,6 @@ import { ProductCard } from '@/components/ProductCard';
 import type { ProductGroup } from '@/lib/catalogGrouping';
 import { slugify } from '@/lib/utils';
 
-/** Uma seção de grupo (categoria/subcategoria) no catálogo agrupado — heading, descrição e grade com todos os produtos, ou estado vazio. */
 export function CategoryGroupSection({ group }: { group: ProductGroup }) {
   return (
     <div id={slugify(group.name)} className="scroll-mt-[160px]">

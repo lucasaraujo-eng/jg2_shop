@@ -8,7 +8,7 @@ import { r2Url } from '@/lib/utils';
 type SecretType = 'DIFERENTES' | 'IGUAIS' | 'CHAVE_MESTRA';
 type Variant = { color: string | null; secretType: SecretType | null; skuSuffix: string | null };
 
-// Sigla do arquivo <código>-<sigla>.png — mesmo mapa do protótipo (photoCss do cadeado).
+// Sigla usada no nome do arquivo: <código>-<sigla>.png
 const COLOR_FILE_CODE: Record<string, string> = {
   Vermelho: 'VM',
   Amarelo: 'AM',
@@ -22,11 +22,7 @@ const COLOR_FILE_CODE: Record<string, string> = {
   Roxo: 'RX',
 };
 
-/**
- * Une a galeria de fotos e o painel de compra — precisam compartilhar a cor
- * selecionada do cadeado, porque escolher uma cor troca a foto principal
- * exibida (mesmo comportamento do protótipo: photoCss reage a s.prodColor).
- */
+/** Galeria e painel de compra compartilham a cor selecionada — escolher uma cor troca a foto principal exibida. */
 export function ProductMediaAndPurchase({
   productId,
   code,

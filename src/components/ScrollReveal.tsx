@@ -4,11 +4,10 @@ import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
 /**
- * Replica o reveal-ao-rolar do protótipo sem exigir marcação manual em cada
- * seção: toda <section> dentro de <main> ganha fade+translateY ao entrar na
- * tela, e todo grid marcado com .jg-card-grid ganha stagger nos filhos
- * (min(i,10)*70ms, igual ao original). CSS trata prefers-reduced-motion —
- * aqui só alternamos classes.
+ * Sem marcação manual em cada seção: toda <section> dentro de <main> ganha
+ * fade+translateY ao entrar na tela, e todo grid marcado com .jg-card-grid
+ * ganha stagger nos filhos. CSS trata prefers-reduced-motion — aqui só
+ * alternamos classes.
  */
 export function ScrollReveal() {
   const pathname = usePathname();

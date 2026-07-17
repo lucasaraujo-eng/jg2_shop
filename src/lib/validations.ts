@@ -8,7 +8,6 @@ const cnpjField = z
   .nullable()
   .refine((v) => !v || isValidCpfCnpj(v), 'CNPJ/CPF inválido');
 
-// ---------- Orçamento ----------
 export const quoteItemSchema = z.object({
   code: z.string().min(1).max(50),
   name: z.string().min(1).max(200),
@@ -35,7 +34,6 @@ export const quoteRequestSchema = z.object({
 });
 export type QuoteRequestInput = z.infer<typeof quoteRequestSchema>;
 
-// ---------- Contato (fale conosco — sem itens/CNPJ, mensagem avulsa) ----------
 export const contactMessageSchema = z.object({
   name: z.string().min(2, 'Informe seu nome').max(120),
   email: z.string().email('E-mail inválido').max(200),
@@ -51,14 +49,12 @@ export const contactMessageSchema = z.object({
 });
 export type ContactMessageInput = z.infer<typeof contactMessageSchema>;
 
-// ---------- Newsletter ----------
 export const newsletterSubscribeSchema = z.object({
   name: z.string().min(2, 'Informe seu nome').max(120),
   email: z.string().email('E-mail inválido').max(200),
 });
 export type NewsletterSubscribeInput = z.infer<typeof newsletterSubscribeSchema>;
 
-// ---------- Produto (admin) ----------
 export const productSchema = z.object({
   code: z.string().min(1, 'Informe o SKU').max(50),
   name: z.string().min(2, 'Informe o nome').max(200),
@@ -74,7 +70,6 @@ export const productSchema = z.object({
 });
 export type ProductInput = z.infer<typeof productSchema>;
 
-// ---------- Blog (admin) ----------
 export const postSchema = z.object({
   title: z.string().min(2, 'Informe o título').max(200),
   slug: z.string().min(2).max(200),
