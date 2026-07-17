@@ -39,6 +39,12 @@ export async function getAllProductCodes() {
   return products.map((p) => p.code);
 }
 
+/** Todos os slugs de categoria — usado para reconhecer URLs antigas de categoria (ver [...slug]/page.tsx). */
+export async function getAllCategorySlugs() {
+  const categories = await prisma.category.findMany({ select: { slug: true } });
+  return categories.map((c) => c.slug);
+}
+
 export async function getProductByCode(code: string) {
   return prisma.product.findUnique({
     where: { code },
