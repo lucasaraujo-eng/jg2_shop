@@ -1,9 +1,3 @@
-/**
- * Detecta o formato real de uma imagem pelos magic bytes, sem depender do
- * Content-Type informado pelo cliente (que é só um header trocável). Cobre
- * só os formatos rasterizados que o app realmente usa — em particular NÃO
- * inclui SVG (que pode carregar <script> e habilitar XSS armazenado).
- */
 export function sniffImageType(bytes: Uint8Array): 'image/png' | 'image/jpeg' | 'image/webp' | 'image/gif' | null {
   if (bytes.length < 12) return null;
 

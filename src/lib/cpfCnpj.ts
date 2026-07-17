@@ -1,5 +1,3 @@
-/** Validação de CPF/CNPJ por dígito verificador — evita envio de documentos inventados/aleatórios nos formulários públicos. */
-
 function onlyDigits(value: string): string {
   return value.replace(/\D/g, '');
 }
@@ -32,7 +30,6 @@ export function isValidCNPJ(value: string): boolean {
   return d1 === Number(digits[12]) && d2 === Number(digits[13]);
 }
 
-/** Aceita o valor cru do campo (pode ter máscara e/ou prefixo tipo "CPF: 000.000.000-00"). */
 export function isValidCpfCnpj(value: string): boolean {
   const digits = onlyDigits(value);
   if (digits.length === 11) return isValidCPF(digits);
@@ -40,7 +37,6 @@ export function isValidCpfCnpj(value: string): boolean {
   return false;
 }
 
-/** Telefone BR: 10 dígitos (fixo, com DDD) ou 11 (celular, com DDD e 9º dígito). */
 export function isValidBrPhone(value: string): boolean {
   const digits = onlyDigits(value);
   return digits.length === 10 || digits.length === 11;

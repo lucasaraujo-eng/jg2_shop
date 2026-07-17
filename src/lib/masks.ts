@@ -1,5 +1,3 @@
-/** Máscaras de digitação (telefone, CPF, CNPJ) — formata progressivamente conforme o usuário digita. */
-
 export function formatPhone(value: string): string {
   const digits = value.replace(/\D/g, '').slice(0, 11);
   if (digits.length === 0) return '';

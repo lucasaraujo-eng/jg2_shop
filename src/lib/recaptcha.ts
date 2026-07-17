@@ -8,14 +8,6 @@ type SiteVerifyResponse = {
   'error-codes'?: string[];
 };
 
-/**
- * Verifica um token do reCAPTCHA v3 contra a API do Google. Sem
- * RECAPTCHA_SECRET_KEY configurada (antes do setup no Google Console), não
- * bloqueia o formulário — só loga (mesmo padrão de degradação de
- * email.ts/storage.ts pra RESEND_API_KEY/R2). Falha de rede também não
- * bloqueia (não é justo travar o formulário por uma instabilidade do
- * Google); só reprova quando o Google responde claramente "não é humano".
- */
 export async function verifyRecaptcha(token: string | undefined, action: string): Promise<boolean> {
   if (!SECRET_KEY) {
     console.warn('[recaptcha] RECAPTCHA_SECRET_KEY ausente — verificação pulada.');

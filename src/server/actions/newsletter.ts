@@ -8,7 +8,6 @@ import { verifyRecaptcha } from '@/lib/recaptcha';
 
 type ActionResult = { ok: true } | { ok: false; error: string };
 
-/** Inscrição na newsletter — sem itens/CNPJ. Não persiste no banco, só envia e-mail. */
 export async function submitNewsletter(input: NewsletterSubscribeInput, recaptchaToken?: string): Promise<ActionResult> {
   const ip = clientIp(await headers());
   if (!checkRateLimit(`newsletter:${ip}`, 5, 10 * 60 * 1000)) {

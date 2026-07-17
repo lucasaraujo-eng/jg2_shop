@@ -13,7 +13,6 @@ export function ProductCarousel({
 }: {
   products: CardProduct[];
   variant?: 'compact' | 'catalog';
-  /** Avança sozinho a cada alguns segundos; pausa ao passar o mouse ou tocar. */
   autoPlay?: boolean;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);

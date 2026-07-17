@@ -16,7 +16,6 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
   const objective = OBJECTIVE_BY_SLUG[data.slug];
   return (
     <div>
-      {/* Hero */}
       <section className="relative overflow-hidden bg-ink-deeper py-14 text-white">
         <Image src={r2Url(data.heroImg)} alt="" fill sizes="100vw" priority className="object-cover object-right" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink-deeper via-ink-deeper/90 to-ink-deeper/10" />
@@ -44,7 +43,6 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
         </div>
       </section>
 
-      {/* O problema */}
       <section className="mx-auto max-w-[1340px] px-7 py-14">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
@@ -70,7 +68,6 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
         </div>
       </section>
 
-      {/* Ganhos */}
       <section className="bg-surface-alt py-14">
         <div className="mx-auto max-w-[1340px] px-7">
           <h2 className="font-display text-2xl font-black text-ink sm:text-3xl">{data.gainsTitle}</h2>
@@ -85,7 +82,6 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
         </div>
       </section>
 
-      {/* Etapas */}
       <section className="mx-auto max-w-[1340px] px-7 py-14">
         <div className="relative min-h-[400px] overflow-hidden rounded-3xl bg-black p-9 sm:p-12">
           <Image src={r2Url('/uploads/loto/banner-equipe-bg.jpg')} alt="" fill sizes="100vw" className="object-cover object-right" />
@@ -106,7 +102,6 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
         </div>
       </section>
 
-      {/* Passo a passo */}
       <section className="mx-auto max-w-[1340px] px-7 py-14">
         <p className="font-mono text-xs uppercase tracking-widest text-brand">Passo a passo</p>
         <h2 className="mt-2 font-display text-3xl font-black text-ink">{data.howTitle}</h2>
@@ -121,7 +116,6 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
         </div>
       </section>
 
-      {/* Entregáveis */}
       <section className="bg-surface-alt py-14">
         <div className="mx-auto max-w-[1340px] px-7">
           <p className="font-mono text-xs uppercase tracking-widest text-brand">Entregáveis</p>
@@ -149,7 +143,6 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
         </div>
       </section>
 
-      {/* Normas */}
       <section className="mx-auto max-w-[1340px] px-7 py-14">
         <div className="flex flex-wrap items-center gap-8 rounded-2xl border border-border-soft bg-surface-card p-9">
           <h3 className="max-w-[280px] flex-none font-display text-lg font-black text-ink">{data.normsTitle}</h3>
@@ -166,7 +159,6 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
         </div>
       </section>
 
-      {/* Diferenciais */}
       <section className="mx-auto max-w-[1340px] px-7 py-14">
         <h2 className="font-display text-3xl font-black text-ink">{data.diffTitle}</h2>
         <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -179,7 +171,6 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
         </div>
       </section>
 
-      {/* Software JG2 Smart Loto — só na consultoria LOTO */}
       {data.software && (
         <section id="software" className="mx-auto max-w-[1340px] scroll-mt-[160px] px-7 py-14">
           <div className="relative grid gap-11 overflow-hidden rounded-3xl bg-ink-deep p-9 sm:p-12 lg:grid-cols-2 lg:items-center">
@@ -199,7 +190,6 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
         </section>
       )}
 
-      {/* FAQ */}
       <section className="mx-auto max-w-[900px] px-7 py-14">
         <p className="font-mono text-xs uppercase tracking-widest text-brand">Tire suas dúvidas</p>
         <h2 className="mt-2 font-display text-3xl font-black text-ink">Perguntas frequentes</h2>
@@ -208,7 +198,6 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
         </div>
       </section>
 
-      {/* CTA final */}
       <section className="mx-auto max-w-[1340px] px-7 pb-16">
         <div className="relative overflow-hidden rounded-3xl bg-brand p-9 text-center sm:p-14">
           <div className="absolute -bottom-16 -left-10 h-60 w-60 rounded-full bg-white/6" />

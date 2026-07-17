@@ -66,7 +66,6 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Re
           : undefined,
       },
     });
-    // atualiza a imagem de capa (order 0), se enviada
     if (typeof d.coverUrl === 'string') {
       await prisma.productImage.deleteMany({ where: { productId: id, order: 0 } });
       if (d.coverUrl) {
@@ -96,7 +95,6 @@ export async function deleteProduct(id: string): Promise<Result> {
   }
 }
 
-/** Lista para a tela de admin (todas as categorias). */
 export async function listAdminProducts(query?: string) {
   await requireAdmin();
   return prisma.product.findMany({
@@ -113,7 +111,6 @@ export async function listAdminProducts(query?: string) {
   });
 }
 
-/** Produto para pré-preencher o formulário de edição. */
 export async function getAdminProduct(id: string) {
   await requireAdmin();
   return prisma.product.findUnique({

@@ -1,11 +1,3 @@
-/**
- * Migração única: sobe public/uploads/** e as mídias pesadas de public/assets/
- * (filtro/ + vídeos) para o Cloudflare R2, preservando o mesmo caminho relativo
- * como key (ex.: public/uploads/setores/alimentos.jpg -> uploads/setores/alimentos.jpg).
- * Os logos (assets/jg2-logo*.png) ficam de fora de propósito — continuam locais/no git.
- *
- * Uso: npx tsx --env-file=.env scripts/migrate-media-to-r2.ts
- */
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { join, relative, extname } from 'path';
 import { uploadImage } from '../src/lib/storage';
@@ -45,7 +37,7 @@ async function main() {
   let fail = 0;
 
   for (const filePath of files) {
-    const key = relative(ROOT, filePath).split('\\').join('/'); // 'uploads/setores/alimentos.jpg'
+    const key = relative(ROOT, filePath).split('\\').join('/');
     const contentType = CONTENT_TYPES[extname(filePath).toLowerCase()] ?? 'application/octet-stream';
     try {
       const bytes = readFileSync(filePath);

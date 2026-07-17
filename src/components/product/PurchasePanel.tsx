@@ -18,8 +18,6 @@ const SECRET_LABELS: Record<SecretType, string> = {
   CHAVE_MESTRA: 'Chave mestra',
 };
 
-// Cores decorativas do seletor — o nome vem do banco (ProductVariant.color),
-// o hex é só apoio visual do dot (mesmos valores extraídos do protótipo).
 const COLOR_HEX: Record<string, string> = {
   Vermelho: '#c0392b',
   Amarelo: '#f1c40f',
@@ -51,7 +49,6 @@ export function PurchasePanel({
   isCadeado: boolean;
   variants: Variant[];
   category: string;
-  /** Cor selecionada — controlada pelo componente pai para poder trocar a foto exibida na galeria junto. */
   color: string | null;
   onColorChange: (color: string) => void;
 }) {

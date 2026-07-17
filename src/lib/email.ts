@@ -34,7 +34,6 @@ type NewsletterPayload = {
   email: string;
 };
 
-/** Os campos abaixo vêm de formulários públicos — nunca interpolar sem escapar antes do HTML do e-mail. */
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, '&amp;')
@@ -67,11 +66,6 @@ function itemsTable(items: QuoteItem[]): string {
     </table>`;
 }
 
-/**
- * Envia o orçamento para a administração e uma confirmação ao cliente.
- * Sem RESEND_API_KEY configurada (ex.: Bloco 1 em dev), apenas loga —
- * evita quebrar o fluxo de orçamento enquanto a conta Resend não existe.
- */
 export async function sendQuoteEmails(q: QuotePayload): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.QUOTE_FROM_EMAIL;
@@ -127,11 +121,6 @@ export async function sendQuoteEmails(q: QuotePayload): Promise<void> {
   });
 }
 
-/**
- * Envia a mensagem de "Fale conosco" para a administração. Diferente do
- * orçamento, não tem tabela própria — é só uma mensagem avulsa, então nem
- * chega a persistir no banco, só dispara o e-mail.
- */
 export async function sendContactEmail(c: ContactPayload): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.QUOTE_FROM_EMAIL;
@@ -164,7 +153,6 @@ export async function sendContactEmail(c: ContactPayload): Promise<void> {
   });
 }
 
-/** Notifica a administração de uma nova inscrição na newsletter. Não persiste no banco, só dispara o e-mail. */
 export async function sendNewsletterEmail(n: NewsletterPayload): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.QUOTE_FROM_EMAIL;

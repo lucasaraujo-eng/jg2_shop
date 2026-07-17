@@ -5,7 +5,6 @@ import { sniffImageType } from '@/lib/image-sniff';
 
 const EXT_BY_TYPE = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/gif': 'gif' } as const;
 
-// Upload de imagem (multipart) → Cloudflare R2. Restrito a admins.
 export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) {
@@ -23,9 +22,6 @@ export async function POST(req: Request) {
 
   try {
     const bytes = new Uint8Array(await file.arrayBuffer());
-    // Não confia no Content-Type enviado pelo cliente (é só um header, trocável) —
-    // detecta o formato pelos magic bytes reais. SVG fica de fora de propósito
-    // (pode conter <script>, abrindo XSS armazenado no arquivo servido).
     const detectedType = sniffImageType(bytes);
     if (!detectedType) {
       return NextResponse.json({ error: 'Envie um PNG, JPEG, WEBP ou GIF válido' }, { status: 400 });

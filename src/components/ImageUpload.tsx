@@ -3,10 +3,6 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 
-/**
- * Campo de upload de imagem com drag-and-drop.
- * Envia para /api/upload (Cloudflare R2) e devolve a URL pública via onChange.
- */
 export function ImageUpload({
   value,
   onChange,

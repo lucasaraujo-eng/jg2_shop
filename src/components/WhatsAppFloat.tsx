@@ -1,6 +1,5 @@
 import Image from 'next/image';
 
-/** Botão flutuante de WhatsApp, presente em todas as páginas públicas — igual ao protótipo (posição, pulso), nunca implementado em nenhum dos blocos anteriores. */
 export function WhatsAppFloat() {
   return (
     <a

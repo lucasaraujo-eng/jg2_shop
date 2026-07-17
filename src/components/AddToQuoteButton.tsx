@@ -2,10 +2,6 @@
 
 import { useCart } from '@/stores/cart';
 
-/**
- * Stub (Bloco 1): adiciona o produto ao carrinho sem seletor de variação.
- * O seletor de cor/segredo do cadeado entra no Bloco 4 (página de produto).
- */
 export function AddToQuoteButton({
   productId,
   code,

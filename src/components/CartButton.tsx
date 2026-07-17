@@ -2,10 +2,6 @@
 
 import { useCart } from '@/stores/cart';
 
-/**
- * Botão de carrinho do header. Usa `count()` (derivado, não persistido) —
- * lido só depois da hidratação para não divergir do HTML gerado no servidor.
- */
 export function CartButton() {
   const open = useCart((s) => s.open);
   const count = useCart((s) => s.items.reduce((n, i) => n + i.quantity, 0));

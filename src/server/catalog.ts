@@ -1,7 +1,5 @@
 import { prisma } from '@/lib/prisma';
 
-/** Catálogo público — leituras (Server Components). */
-
 export async function getCategories() {
   return prisma.category.findMany({
     orderBy: { order: 'asc' },
@@ -24,7 +22,6 @@ export async function getProductsByCategory(categorySlug: string) {
   });
 }
 
-/** Todos os produtos ativos, para a visão "Todos" do catálogo. */
 export async function getAllProducts() {
   return prisma.product.findMany({
     where: { active: true },
@@ -33,13 +30,11 @@ export async function getAllProducts() {
   });
 }
 
-/** Todos os códigos (SKU) ativos — usado para reconhecer URLs antigas com o SKU embutido no slug. */
 export async function getAllProductCodes() {
   const products = await prisma.product.findMany({ where: { active: true }, select: { code: true } });
   return products.map((p) => p.code);
 }
 
-/** Todos os slugs de categoria — usado para reconhecer URLs antigas de categoria (ver [...slug]/page.tsx). */
 export async function getAllCategorySlugs() {
   const categories = await prisma.category.findMany({ select: { slug: true } });
   return categories.map((c) => c.slug);
@@ -59,7 +54,6 @@ export async function getProductByCode(code: string) {
   });
 }
 
-/** "Veja também" — outros produtos da mesma categoria. */
 export async function getRelatedProducts(categoryId: string, excludeProductId: string) {
   return prisma.product.findMany({
     where: { active: true, categoryId, id: { not: excludeProductId } },
@@ -69,7 +63,6 @@ export async function getRelatedProducts(categoryId: string, excludeProductId: s
   });
 }
 
-/** Filtra produtos por tag do filtro de dispositivos (modelo/config). */
 export async function getProductsByFilterTag(tagKey: string) {
   return prisma.product.findMany({
     where: { active: true, filterTags: { some: { tagKey } } },
@@ -90,7 +83,6 @@ export async function getFilterTaxonomy() {
   });
 }
 
-/** Produtos mais vendidos / destaque (ajuste o critério conforme necessário). */
 export async function getFeaturedProducts(codes: string[]) {
   return prisma.product.findMany({
     where: { code: { in: codes }, active: true },

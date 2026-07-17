@@ -1,7 +1,3 @@
-/**
- * Cria (ou atualiza a senha de) o primeiro administrador.
- * Uso: npx tsx scripts/create-admin.ts "Nome" email@dominio.com "senhaForte"
- */
 import { config } from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';
@@ -17,7 +13,6 @@ const COMMON_PASSWORDS = new Set([
   'admin123', 'administrador', 'jg2produtos', 'letmein', 'welcome1',
 ]);
 
-/** Sem libs externas: comprimento mínimo + pelo menos 3 das 4 classes de caractere. */
 function checkPasswordStrength(password: string): string | null {
   if (password.length < 12) return 'A senha precisa ter ao menos 12 caracteres.';
   if (COMMON_PASSWORDS.has(password.toLowerCase())) return 'Essa senha é comum demais — escolha outra.';

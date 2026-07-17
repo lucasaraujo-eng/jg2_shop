@@ -8,21 +8,8 @@ const TABS = [
   { id: 'prod-sec-especificacoes', label: 'Especificações' },
 ];
 
-// Altura real do header sticky do site (2 linhas — logo/busca + menu) é maior
-// que os 96/100px usados antes em vários lugares, o que fazia o header cobrir
-// o topo de sidebars/âncoras sticky. 160px cobre com folga.
 const TOP_OFFSET = 160;
 
-/**
- * Sidebar sticky com scroll-spy — destaca a aba da seção visível. O
- * conteúdo em si é renderizado pelo servidor; aqui só observamos os ids.
- *
- * O "sticky" nativo soltava de forma inconsistente perto do fim da coluna
- * (cortava o menu no meio antes de "Veja também"). Em vez de depender só do
- * CSS, medimos o próprio container (o <nav>, esticado pelo flex pai até a
- * altura do conteúdo) e travamos o menu no rodapé dele assim que o fim da
- * coluna se aproxima — soltando de novo se o usuário rolar pra cima.
- */
 export function ProductTabs() {
   const [activeId, setActiveId] = useState(TABS[0].id);
   const [pinnedToBottom, setPinnedToBottom] = useState(false);

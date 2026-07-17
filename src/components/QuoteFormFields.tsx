@@ -30,7 +30,6 @@ export const PURPOSE_OPTIONS = [
 const inputClass =
   'rounded-lg border border-border bg-surface-card px-4 py-3 text-sm outline-none transition focus:border-brand focus:bg-white focus:shadow-[0_0_0_3px_rgba(181,32,43,.1)]';
 
-/** Campos do drawer de orçamento (etapa 2). A página /orcamento tem seu próprio conjunto de campos — ver PageQuoteFormFields. */
 export function QuoteFormFields({
   value,
   onChange,

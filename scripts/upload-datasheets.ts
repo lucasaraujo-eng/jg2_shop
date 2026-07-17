@@ -1,15 +1,3 @@
-/**
- * Sobe as fichas técnicas (datasheets) dos produtos LOTO para o R2 e grava a
- * URL em Product.datasheetUrl. Pasta de origem:
- * "C:\Users\Kaique\Desktop\Datasheet - Produtos LOTO"
- *
- * Cadeados (isCadeado) têm um PDF por cor (ex.: JGL050-1-VM.pdf) — como o
- * banco só tem um campo datasheetUrl por produto, uso a versão da cor VM
- * (Vermelho) como referência única, já que o conteúdo técnico é o mesmo em
- * todas as cores.
- *
- * Uso: npx tsx --env-file=.env scripts/upload-datasheets.ts [--dry-run]
- */
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { PrismaClient } from '@prisma/client';
@@ -30,7 +18,6 @@ function normalize(filename: string): string {
 async function main() {
   const files = readdirSync(DIR).filter((f) => f.toLowerCase().endsWith('.pdf'));
 
-  // agrupa por código-base (cadeados têm um arquivo por cor: {code}-{COR}.pdf)
   const groups = new Map<string, { file: string; color: string | null }[]>();
   for (const f of files) {
     const name = normalize(f);

@@ -4,18 +4,6 @@ import { Children, cloneElement, isValidElement, useEffect, useRef, useState } f
 
 const LOOP_INTERVAL = 3500;
 
-/**
- * Carrossel horizontal genérico — setas + barra de progresso, mesma
- * interação do ProductCarousel, mas recebendo qualquer conteúdo como filhos
- * (ex.: tiles de setor) em vez de só CardProduct.
- *
- * `autoPlay` faz uma rolagem contínua e lenta (não aos saltos), indo e
- * voltando entre as pontas — pausa ao passar o mouse ou tocar. Com
- * `loopToStart`, os filhos são duplicados no trilho e a posição é reiniciada
- * silenciosamente (sem animação) assim que passa da primeira cópia — como o
- * conteúdo é idêntico, o "wrap" é imperceptível e a rolagem parece infinita,
- * sempre avançando para a direita (nunca volta visivelmente ao card 1).
- */
 export function ScrollCarousel({
   children,
   autoPlay = false,
@@ -27,15 +15,10 @@ export function ScrollCarousel({
 }: {
   children: React.ReactNode;
   autoPlay?: boolean;
-  /** Pixels por segundo da rolagem automática (ignorado quando loopToStart). */
   speed?: number;
-  /** Loop infinito: duplica os filhos e sempre avança para a direita, em vez de inverter o sentido. */
   loopToStart?: boolean;
-  /** Espaçamento entre os itens do trilho (ex.: "gap-0" para itens colados, só separados por borda). */
   gapClassName?: string;
-  /** Classes extras no trilho rolável (ex.: fundo/arredondamento de um painel que envolve os itens). */
   trackClassName?: string;
-  /** Esconde as setas e a barra de progresso abaixo do trilho (ex.: quando o carrossel só rola sozinho, sem controle manual). */
   showControls?: boolean;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -53,8 +36,6 @@ export function ScrollCarousel({
     const el = trackRef.current;
     if (!el) return;
     if (loopToStart) {
-      // Trilho tem 2 cópias dos filhos; ao passar da primeira, volta ao
-      // início dela sem animação — como a 2ª cópia é idêntica, não se nota.
       const singleWidth = el.scrollWidth / 2;
       if (singleWidth > 0 && el.scrollLeft >= singleWidth) {
         el.scrollLeft -= singleWidth;

@@ -1,12 +1,3 @@
-/**
- * Sobe as imagens adicionais dos produtos (pasta "C:\Users\Kaique\Desktop\Produtos",
- * uma subpasta por produto, nome iniciando com o código) para o R2, criando um
- * ProductImage por arquivo. A imagem que já está no R2 (product.images[0], em geral
- * "uploads/cover-{codigo}.png") é identificada por hash (MD5 local vs ETag do R2,
- * que é o MD5 pra uploads simples) e excluída — só o restante da pasta é enviado.
- *
- * Uso: npx tsx --env-file=.env scripts/upload-product-gallery.ts [--dry-run]
- */
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import { createHash } from 'crypto';
@@ -21,10 +12,6 @@ const DIR = 'C:/Users/Kaique/Desktop/Produtos';
 const DRY_RUN = process.argv.includes('--dry-run');
 const R2_PUBLIC_URL = (process.env.R2_PUBLIC_URL ?? '').replace(/\/$/, '');
 
-// Arquivos fora do lugar, verificados manualmente (nome não bate com o produto
-// da pasta e não há relação real entre os dois produtos — ver JGL801-1 vs
-// JGL800-1, que são itens completamente diferentes; já JGL600-1/JGL600-2 são
-// a mesma etiqueta com códigos irmãos, esse caso continua liberado).
 const SKIP_FILES: Record<string, string[]> = {
   'JGL052-1 (Cadeados alumínio 38mm)': ['JGL051-1-VD.png'],
   'JGL801-1': [

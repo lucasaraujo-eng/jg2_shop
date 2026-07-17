@@ -1,5 +1,3 @@
-/** Descrições por categoria/subcategoria usadas nos carrosséis agrupados do catálogo ("Todos" e Mãos Seguras). Extraído literalmente do protótipo. */
-
 export const CATEGORY_GROUP_DESCRIPTIONS: Record<string, string> = {
   'Cadeados de Bloqueio': 'Produtos para bloqueio seguro, identificação individual e padronização das intervenções em campo.',
   'Etiquetas e Placas': 'Etiquetas para identificação visual, comunicação de risco e reforço da padronização do bloqueio e etiquetagem.',

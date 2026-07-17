@@ -14,12 +14,6 @@ export type CardProduct = {
   category?: string;
 };
 
-/**
- * Card de produto. `variant="compact"` (padrão) é usado no carrossel da Home e em
- * "Veja também" — código, nome e um único botão. `variant="catalog"` é usado na
- * grade/carrosséis do catálogo — etiqueta de categoria, nome, código e os botões
- * "Detalhes" + "+ Orçamento", replicando o card do protótipo nesse contexto.
- */
 export function ProductCard({ product, variant = 'compact' }: { product: CardProduct; variant?: 'compact' | 'catalog' }) {
   const add = useCart((s) => s.add);
   const image = resolveImageUrl(product.images[0]?.url);

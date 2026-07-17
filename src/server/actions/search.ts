@@ -7,7 +7,6 @@ export type SearchResult = {
   posts: { slug: string; title: string; tag: string | null }[];
 };
 
-/** Busca do header: produtos (nome/código) + posts publicados (título). */
 export async function searchSite(query: string): Promise<SearchResult> {
   const q = query.trim();
   if (q.length < 2) return { products: [], posts: [] };

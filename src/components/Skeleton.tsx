@@ -1,9 +1,7 @@
-/** Bloco base de esqueleto de carregamento — pulsa suavemente enquanto o conteúdo real não chega. */
 export function Skeleton({ className = '', tone = 'light' }: { className?: string; tone?: 'light' | 'dark' }) {
   return <div className={`animate-pulse rounded-lg ${tone === 'dark' ? 'bg-white/10' : 'bg-surface-alt'} ${className}`} />;
 }
 
-/** Card de produto (mesmas proporções do ProductCard) — usado nas grades de catálogo. */
 export function ProductCardSkeleton() {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-soft bg-white">
@@ -21,7 +19,6 @@ export function ProductCardSkeleton() {
   );
 }
 
-/** Artigo do blog — imagem de capa + linhas de texto. */
 export function BlogPostLoading() {
   return (
     <article>
@@ -44,7 +41,6 @@ export function BlogPostLoading() {
   );
 }
 
-/** Lista do admin em formato de tabela (produtos, blog). */
 export function AdminTableLoading() {
   return (
     <div>
@@ -71,7 +67,6 @@ export function AdminTableLoading() {
   );
 }
 
-/** Lista do admin em formato de cartões (orçamentos). */
 export function AdminCardsLoading() {
   return (
     <div>
@@ -94,7 +89,6 @@ export function AdminCardsLoading() {
   );
 }
 
-/** Formulário do admin (novo/editar produto ou matéria). */
 export function AdminFormLoading() {
   return (
     <div>
@@ -113,7 +107,6 @@ export function AdminFormLoading() {
   );
 }
 
-/** Página de produto (galeria + painel de compra + abas). */
 export function ProductPageLoading() {
   return (
     <div>
@@ -140,7 +133,6 @@ export function ProductPageLoading() {
   );
 }
 
-/** Faixa escura do topo (hero) do catálogo. */
 function CatalogHeroSkeleton() {
   return (
     <section className="bg-ink-deep py-14">
@@ -153,7 +145,6 @@ function CatalogHeroSkeleton() {
   );
 }
 
-/** Área de resultados do catálogo (barra de busca + grade) — fallback do Suspense em torno do CatalogClient (useSearchParams) e reutilizada dentro do CatalogLoading abaixo. */
 export function CatalogResultsLoading() {
   return (
     <div className="flex-1">
@@ -167,7 +158,6 @@ export function CatalogResultsLoading() {
   );
 }
 
-/** Catálogo (grade + barra de busca + sidebar) — usado em /produtos/[categoria] (a listagem "Todos" é estática). */
 export function CatalogLoading() {
   return (
     <div>

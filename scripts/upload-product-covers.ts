@@ -1,10 +1,3 @@
-/**
- * Sobe as fotos de capa dos produtos LOTO que ainda não têm imagem (pasta
- * public/Produtos/{CODIGO}[...]/) para o R2, e cria o ProductImage no banco.
- * Produtos que já têm imagem (cadeados, Mãos Seguras) são ignorados.
- *
- * Uso: npx tsx --env-file=.env scripts/upload-product-covers.ts [--dry-run]
- */
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { PrismaClient } from '@prisma/client';
@@ -17,9 +10,6 @@ const prisma = new PrismaClient({ adapter });
 const BASE = join(__dirname, '..', 'public', 'Produtos');
 const DRY_RUN = process.argv.includes('--dry-run');
 
-// Escolhas manuais pra pastas sem um arquivo "{codigo}.png" ou "(logo)" claro
-// (só variações numeradas, ou nomes que não seguem o padrão) — verificado
-// visualmente uma a uma.
 const MANUAL_PICK: Record<string, string> = {
   'JGL150-1': 'JGL150-1 (fechado-logo).png',
   'JGL207-5': 'JGL207-5 (7).png',

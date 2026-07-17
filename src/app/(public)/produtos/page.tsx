@@ -8,11 +8,8 @@ import { CatalogResultsLoading } from '@/components/Skeleton';
 import { buildCategoryGroups, toCardProducts } from '@/lib/catalogGrouping';
 import { r2Url } from '@/lib/utils';
 
-/** "Todos" — mesma casca das páginas de categoria, com o filtro de dispositivos e os carrosséis agrupados por categoria (igual ao protótipo: banner e barra de filtro fixos, independente de a listagem incluir Mãos Seguras também). */
 export default async function AllProductsPage() {
   const [categories, products, taxonomy] = await Promise.all([getCategories(), getAllProducts(), getFilterTaxonomy()]);
-  // Mãos Seguras não entra no agrupamento de "Todos" — no protótipo ela é uma
-  // ramificação à parte, fora da lista de categorias usada para os grupos/sidebar.
   const lotoCategories = categories.filter((c) => c.type === 'LOTO');
   const groups = buildCategoryGroups(lotoCategories, products);
   const cardProducts = toCardProducts(products);
