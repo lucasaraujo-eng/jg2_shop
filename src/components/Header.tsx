@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useTransition } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { CartButton } from '@/components/CartButton';
 import { useCart } from '@/stores/cart';
 import { searchSite, type SearchResult } from '@/server/actions/search';
@@ -38,10 +38,12 @@ type MenuKey = 'produtos' | 'servicos' | 'conteudos' | null;
 
 export function Header({ categories }: { categories: Categories }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [openMenu, setOpenMenu] = useState<MenuKey>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult>({
+    categories: [],
     products: [],
     posts: [],
   });
@@ -75,13 +77,20 @@ export function Header({ categories }: { categories: Categories }) {
   function handleSearchChange(value: string) {
     setQuery(value);
     if (value.trim().length < 2) {
-      setResults({ products: [], posts: [] });
+      setResults({ categories: [], products: [], posts: [] });
       return;
     }
     startSearch(async () => {
       const r = await searchSite(value);
       setResults(r);
     });
+  }
+
+  function handleSearchSubmit() {
+    const q = query.trim();
+    if (q.length < 2) return;
+    setSearchOpen(false);
+    router.push(`/busca?q=${encodeURIComponent(q)}`);
   }
 
   const maosSeguras = categories.filter((c) => c.type === 'MAOS_SEGURAS');
@@ -107,7 +116,18 @@ export function Header({ categories }: { categories: Categories }) {
 
             <div className="relative hidden w-[600px] max-w-full justify-self-center md:block">
               <div className="flex items-center gap-2.5 rounded-full border border-border bg-white px-5 py-3">
-                <input value={query} onChange={(e) => handleSearchChange(e.target.value)} onFocus={() => setSearchOpen(true)} onBlur={() => setTimeout(() => setSearchOpen(false), 150)} placeholder="Busque por produtos, serviços, catálogos, artigos, etc…" aria-label="Buscar" className="flex-1 bg-transparent text-sm text-ink outline-none" />
+                <input
+                  value={query}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  onFocus={() => setSearchOpen(true)}
+                  onBlur={() => setTimeout(() => setSearchOpen(false), 150)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleSearchSubmit();
+                  }}
+                  placeholder="Busque por produtos, serviços, catálogos, artigos, etc…"
+                  aria-label="Buscar"
+                  className="flex-1 bg-transparent text-sm text-ink outline-none"
+                />
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6f6a62" strokeWidth={2} strokeLinecap="round" className="flex-none">
                   <circle cx="11" cy="11" r="7" />
                   <path d="m20 20-3.4-3.4" />

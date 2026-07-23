@@ -46,7 +46,14 @@ export default async function CategoryPage({
   return (
     <div>
       <section className="relative overflow-hidden bg-ink-deep py-14 text-white">
-        <Image src={r2Url('/uploads/banner-produtos-loto.png')} alt="" fill sizes="100vw" priority className="object-cover" />
+        <Image
+          src={r2Url(isMaosSeguras ? '/uploads/banner-maos-seguras-categoria.png' : '/uploads/banner-produtos-loto.png')}
+          alt=""
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-ink-deep from-45% via-ink-deep/80 via-65% to-transparent" />
         <div className="relative mx-auto max-w-[1340px] px-7">
           <p className="text-xs text-white/50">
@@ -55,7 +62,7 @@ export default async function CategoryPage({
             </Link>{' '}
             / Catálogo
           </p>
-          <p className="mt-4 font-mono text-xs uppercase tracking-widest text-brand-soft">{kicker}</p>
+          <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">{kicker}</p>
           <h1 className="mt-2 font-display text-4xl font-black">{bannerTitle}</h1>
           <p className="mt-3 max-w-xl text-[15px] text-white/70">{bannerSubtitle}</p>
         </div>

@@ -26,7 +26,7 @@ export default async function AllProductsPage() {
             </Link>{' '}
             / Catálogo
           </p>
-          <p className="mt-4 font-mono text-xs uppercase tracking-widest text-brand-soft">Loja de bloqueio</p>
+          <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Loja de bloqueio</p>
           <h1 className="mt-2 font-display text-4xl font-black">Catálogo de produtos LOTO</h1>
           <p className="mt-3 max-w-xl text-[15px] text-white/70">
             Adicione os itens ao seu orçamento e envie tudo de uma vez. Sem compromisso — nossa equipe retorna com valores e prazos.

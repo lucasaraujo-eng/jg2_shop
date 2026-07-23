@@ -46,7 +46,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
       <section className="mx-auto max-w-[1340px] px-7 py-14">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-brand">O problema</p>
+            <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">O problema</p>
             <h2 className="mt-2 font-display text-3xl font-black leading-tight text-ink">{data.problemTitle}</h2>
             <div className="mt-4 flex flex-col gap-3.5">
               {data.problemParas.map((p, i) => (
@@ -103,7 +103,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
       </section>
 
       <section className="mx-auto max-w-[1340px] px-7 py-14">
-        <p className="font-mono text-xs uppercase tracking-widest text-brand">Passo a passo</p>
+        <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Passo a passo</p>
         <h2 className="mt-2 font-display text-3xl font-black text-ink">{data.howTitle}</h2>
         <div className="jg-card-grid mt-8 grid gap-5 sm:grid-cols-2">
           {data.steps.map((step) => (
@@ -118,7 +118,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
 
       <section className="bg-surface-alt py-14">
         <div className="mx-auto max-w-[1340px] px-7">
-          <p className="font-mono text-xs uppercase tracking-widest text-brand">Entregáveis</p>
+          <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Entregáveis</p>
           <h2 className="mt-2 font-display text-3xl font-black text-ink">{data.showcaseTitle}</h2>
           <p className="mt-2 max-w-xl text-muted-2">{data.showcaseText}</p>
           <div className="mt-8">
@@ -176,7 +176,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
           <div className="relative grid gap-11 overflow-hidden rounded-3xl bg-ink-deep p-9 sm:p-12 lg:grid-cols-2 lg:items-center">
             <div className="pointer-events-none absolute -bottom-16 -left-16 h-[260px] w-[260px] rounded-full bg-[radial-gradient(circle,rgba(181,32,43,.35),transparent_70%)]" />
             <div className="relative">
-              <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Software de gestão</p>
+              <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Software de gestão</p>
               <h2 className="mt-2 font-display text-2xl font-black leading-tight text-white sm:text-3xl">{data.software.title}</h2>
               <p className="mt-4 leading-relaxed text-white/80">{data.software.text}</p>
               <ProposalRequestButton objective={objective} className="mt-6 inline-block rounded-full bg-brand px-6 py-3 font-bold text-white transition hover:bg-brand-light">
@@ -191,7 +191,7 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
       )}
 
       <section className="mx-auto max-w-[900px] px-7 py-14">
-        <p className="font-mono text-xs uppercase tracking-widest text-brand">Tire suas dúvidas</p>
+        <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Tire suas dúvidas</p>
         <h2 className="mt-2 font-display text-3xl font-black text-ink">Perguntas frequentes</h2>
         <div className="mt-7">
           <FaqAccordion items={data.faqs} />

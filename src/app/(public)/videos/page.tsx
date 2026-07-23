@@ -15,7 +15,7 @@ export default function VideosPage() {
             </Link>{' '}
             / Vídeos
           </p>
-          <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide">Vídeos</p>
+          <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Vídeos</p>
           <h1 className="mt-4 font-display text-4xl font-black">Vídeos sobre segurança e LOTO</h1>
           <p className="mt-3 max-w-xl text-white/70">
             Demonstrações, institucionais e conteúdos técnicos para entender na prática como proteger sua operação.

@@ -19,7 +19,7 @@ export default async function BlogIndexPage() {
             </Link>{' '}
             / Conteúdos
           </p>
-          <p className="mt-4 font-mono text-xs uppercase tracking-widest text-brand-soft">Blog &amp; materiais</p>
+          <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Blog &amp; materiais</p>
           <h1 className="mt-2 font-display text-4xl font-black">Conteúdos sobre segurança e LOTO</h1>
           <p className="mt-3 max-w-xl text-white/70">
             Artigos, guias e boas práticas para implantar e manter o controle de energias perigosas na sua operação.

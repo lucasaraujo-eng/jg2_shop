@@ -109,7 +109,7 @@ export default function DownloadsPage() {
             </Link>{' '}
             / Catálogos
           </p>
-          <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide">Downloads</p>
+          <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Downloads</p>
           <h1 className="mt-4 font-display text-4xl font-black">Catálogos e manuais em PDF</h1>
           <p className="mt-3 max-w-xl text-white/70">
             Baixe nossos catálogos de produtos, fichas técnicas e manuais de uso. Material gratuito para consulta e
