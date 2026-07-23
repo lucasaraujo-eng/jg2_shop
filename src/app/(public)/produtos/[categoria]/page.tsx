@@ -46,7 +46,14 @@ export default async function CategoryPage({
   return (
     <div>
       <section className="relative overflow-hidden bg-ink-deep py-14 text-white">
-        <Image src={r2Url('/uploads/banner-produtos-loto.png')} alt="" fill sizes="100vw" priority className="object-cover" />
+        <Image
+          src={r2Url(isMaosSeguras ? '/uploads/banner-maos-seguras-categoria.png' : '/uploads/banner-produtos-loto.png')}
+          alt=""
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-ink-deep from-45% via-ink-deep/80 via-65% to-transparent" />
         <div className="relative mx-auto max-w-[1340px] px-7">
           <p className="text-xs text-white/50">
