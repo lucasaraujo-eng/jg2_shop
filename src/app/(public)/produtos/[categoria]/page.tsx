@@ -69,7 +69,7 @@ export default async function CategoryPage({
       </section>
 
       <div className="mx-auto max-w-[1340px] gap-10 px-7 py-12 lg:flex">
-        <CategorySidebar categories={categories} activeSlug={category.slug} />
+        <CategorySidebar categories={categories} activeSlug={category.slug} subcategories={isMaosSeguras ? category.subcategories : undefined} />
         <Suspense fallback={<CatalogResultsLoading />}>
           <CatalogClient initialProducts={cardProducts} taxonomy={taxonomy} groups={groups} />
         </Suspense>
