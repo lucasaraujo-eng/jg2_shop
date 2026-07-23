@@ -96,7 +96,7 @@ export default function ServicosPage() {
 
       <section className="bg-surface-alt py-16">
         <div className="mx-auto max-w-[1340px] px-7">
-          <p className="font-mono text-xs uppercase tracking-widest text-brand">Como trabalhamos</p>
+          <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Como trabalhamos</p>
           <h2 className="mt-2 font-display text-3xl font-black text-ink">Um processo em 4 etapas</h2>
           <div className="jg-card-grid mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {PROCESS.map((p) => (

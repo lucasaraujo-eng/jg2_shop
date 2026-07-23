@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { StatsCounter, type Stat } from '@/components/about/StatsCounter';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
-import { ScrollCarousel } from '@/components/ScrollCarousel';
 import { setores } from '@/data/setores';
 import { r2Url } from '@/lib/utils';
 
@@ -53,7 +52,7 @@ export default function SobrePage() {
             </Link>{' '}
             / Sobre nós
           </p>
-          <p className="mt-4 inline-block rounded-full bg-brand px-4 py-2 text-xs font-bold uppercase tracking-wide text-white">
+          <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
             Grupo JG2 · Quem somos
           </p>
           <h1 className="mt-5 max-w-3xl font-display text-4xl font-black leading-tight text-white sm:text-5xl">
@@ -71,7 +70,7 @@ export default function SobrePage() {
       <section className="mx-auto max-w-[1340px] px-7 py-20">
         <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-brand">Quem somos</p>
+            <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Quem somos</p>
             <h2 className="mt-3 font-display text-3xl font-black leading-tight text-ink sm:text-4xl">
               Um parceiro estratégico da indústria, do projeto ao pós-venda
             </h2>
@@ -94,7 +93,7 @@ export default function SobrePage() {
 
       <section className="bg-ink-deeper py-16">
         <div className="mx-auto max-w-[1340px] px-7">
-          <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Nossa trajetória em números</p>
+          <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Nossa trajetória em números</p>
           <h2 className="mt-2 max-w-xl font-display text-2xl font-black leading-tight text-white sm:text-3xl">
             Escala e experiência que sustentam cada entrega
           </h2>
@@ -110,7 +109,7 @@ export default function SobrePage() {
             <Image src={r2Url('/uploads/sobre/p-solda.jpg')} alt="Solda JG2®" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
           </div>
           <div className="order-1 lg:order-2">
-            <p className="font-mono text-xs uppercase tracking-widest text-brand">Nossa especialidade</p>
+            <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Nossa especialidade</p>
             <h2 className="mt-3 font-display text-3xl font-black leading-tight text-ink sm:text-4xl">
               Especialistas em segurança industrial com profundidade técnica
             </h2>
@@ -151,7 +150,7 @@ export default function SobrePage() {
 
       <section className="mx-auto max-w-[1340px] px-7 py-20">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="font-mono text-xs uppercase tracking-widest text-brand">O que fazemos</p>
+          <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">O que fazemos</p>
           <h2 className="mt-3 font-display text-3xl font-black leading-tight text-ink sm:text-4xl">
             Soluções completas para a indústria
           </h2>
@@ -180,12 +179,16 @@ export default function SobrePage() {
             Atendemos algumas das maiores indústrias do país e do mundo — uma diversidade que nos permite
             compreender com profundidade os desafios de cada operação.
           </p>
-          <div className="mt-8">
-            <ScrollCarousel autoPlay speed={65} showControls={false}>
-              {setores.map((s) => (
+          <div className="mt-8 overflow-hidden">
+            <div
+              className="jg-noscroll flex w-max gap-4 hover:[animation-play-state:paused]"
+              style={{ animation: 'jg-marquee 56s linear infinite' }}
+            >
+              {[...setores, ...setores].map((s, i) => (
                 <Link
-                  key={s.id}
+                  key={`${s.id}-${i}`}
                   href={`/setores/${s.id}`}
+                  aria-hidden={i >= setores.length}
                   className="group relative flex h-[180px] w-[240px] flex-none items-end justify-between overflow-hidden rounded-2xl bg-ink p-4 shadow-sm transition hover:shadow-2xl"
                 >
                   <Image src={r2Url(s.img)} alt="" fill sizes="240px" className="object-cover transition duration-300 group-hover:scale-105" />
@@ -194,7 +197,7 @@ export default function SobrePage() {
                   <span className="relative flex h-[30px] w-[30px] flex-none items-center justify-center rounded-full bg-brand text-white">↗</span>
                 </Link>
               ))}
-            </ScrollCarousel>
+            </div>
           </div>
         </div>
       </section>
@@ -202,7 +205,7 @@ export default function SobrePage() {
       <section className="mx-auto max-w-[1340px] px-7 py-20">
         <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-brand">Estrutura e capacidade</p>
+            <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Estrutura e capacidade</p>
             <h2 className="mt-3 font-display text-3xl font-black leading-tight text-ink sm:text-4xl">
               Parque fabril de 8.000 m² para atender com qualidade e escala
             </h2>
@@ -225,21 +228,21 @@ export default function SobrePage() {
         <div className="mx-auto max-w-[1340px] px-7">
           <div className="jg-card-grid grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <div className="rounded-2xl border border-dark-border p-8 transition hover:-translate-y-1 hover:border-brand">
-              <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Missão</p>
+              <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Missão</p>
               <p className="mt-3.5 leading-relaxed text-white/80">
                 Transformar o ambiente industrial em um local mais seguro, reduzindo acidentes e multas, promovendo
                 qualidade de vida para as equipes e gerando melhor gestão e retorno financeiro por meio da prevenção.
               </p>
             </div>
             <div className="rounded-2xl border border-dark-border p-8 transition hover:-translate-y-1 hover:border-brand">
-              <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Visão</p>
+              <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Visão</p>
               <p className="mt-3.5 leading-relaxed text-white/80">
                 Ser referência nacional em segurança industrial, reconhecida pela excelência técnica, confiabilidade,
                 capacidade de entrega e impacto real na prevenção de acidentes e na evolução da cultura de segurança.
               </p>
             </div>
             <div className="rounded-2xl border border-dark-border p-8 transition hover:-translate-y-1 hover:border-brand">
-              <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Compromisso</p>
+              <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Compromisso</p>
               <p className="mt-3.5 leading-relaxed text-white/80">
                 Segurança industrial é uma decisão estratégica que protege pessoas, preserva operações e fortalece
                 empresas. Trabalhamos para transformar a cultura de segurança, com soluções que geram resultado

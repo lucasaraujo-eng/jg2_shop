@@ -146,7 +146,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-ink-deep/80 via-ink-deep/45 to-ink-deep/10" />
         <div className="relative mx-auto w-full max-w-[1340px] px-7 sm:flex sm:flex-col sm:justify-center sm:self-stretch">
           <div className="max-w-3xl">
-            <p className="font-mono text-base uppercase tracking-widest text-brand-soft">Grupo JG2</p>
+            <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Grupo JG2</p>
             <h1 className="mt-4 font-display text-4xl font-black leading-tight tracking-tight sm:text-5xl">
               Adequação Completa em Segurança Industrial
             </h1>
@@ -219,7 +219,7 @@ export default async function HomePage() {
                     <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
                   </svg>
                 </span>
-                <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Filtro inteligente de bloqueio</p>
+                <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Filtro inteligente de bloqueio</p>
               </div>
               <h2 className="mt-4 font-display text-3xl font-black leading-tight">
                 Não sabe qual bloqueio escolher? A gente encontra para você.
@@ -257,7 +257,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-[1340px] px-7">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
             <div>
-              <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Loja de bloqueio</p>
+              <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Loja de bloqueio</p>
               <h2 className="mt-2 font-display text-3xl font-black text-ink sm:text-4xl">Produtos mais vendidos</h2>
             </div>
             <Link href="/produtos" className="font-bold text-brand hover:underline">
@@ -287,7 +287,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-[1340px] px-7">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
             <div>
-              <p className="font-mono text-xs uppercase tracking-widest text-brand">Proteção das mãos</p>
+              <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Proteção das mãos</p>
               <h2 className="mt-2 font-display text-3xl font-black text-ink sm:text-4xl">
                 Dispositivos mãos seguras mais vendidos
               </h2>
@@ -317,7 +317,7 @@ export default async function HomePage() {
       />
 
       <section className="mx-auto max-w-[1340px] px-7 py-16">
-        <p className="font-mono text-xs uppercase tracking-widest text-brand">Onde atuamos</p>
+        <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Onde atuamos</p>
         <h2 className="mt-2 font-display text-3xl font-black text-ink sm:text-4xl">Áreas de atuação</h2>
         <div className="mt-8">
           <ScrollCarousel autoPlay speed={65}>
@@ -344,7 +344,7 @@ export default async function HomePage() {
       <section className="bg-surface-alt py-18">
         <div className="mx-auto grid max-w-[1340px] gap-12 px-7 lg:grid-cols-2 lg:items-stretch">
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-brand">Por que a JG2?</p>
+            <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Por que a JG2?</p>
             <h2 className="mt-2 font-display text-3xl font-black text-ink sm:text-4xl">
               Parceria completa em segurança e conformidade
             </h2>

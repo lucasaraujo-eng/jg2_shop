@@ -40,7 +40,7 @@ export default async function BlogPostPage({
             / <span className="text-white/70">{post.tag}</span>
           </p>
           {post.tag && (
-            <span className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide">
+            <span className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
               {post.tag}
             </span>
           )}

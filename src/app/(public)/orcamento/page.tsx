@@ -89,7 +89,7 @@ export default function OrcamentoPage() {
             </Link>{' '}
             / Orçamento
           </p>
-          <p className="mt-4 font-mono text-xs uppercase tracking-widest text-brand-soft">Sem compromisso</p>
+          <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Sem compromisso</p>
           <h1 className="mt-2 font-display text-4xl font-black">Solicitação de orçamento</h1>
           <p className="mt-3 max-w-lg text-white/70">
             Revise os itens, ajuste as quantidades e envie seus dados. Retornamos com valores e prazos em até 1 dia útil.
