@@ -58,15 +58,15 @@ export function ProductMediaAndPurchase({
         <h1 className="mt-3 font-display text-3xl font-black leading-tight text-ink">{name}</h1>
         {subtitle && <p className="mt-1.5 max-w-2xl text-[14.5px] leading-relaxed text-tertiary">{subtitle}</p>}
 
-        <dl className="mt-6 grid grid-cols-3 gap-y-2 border-y border-border-soft py-4 text-sm">
+        <dl className="mt-6 grid grid-cols-[80px_auto] gap-y-2 border-y border-border-soft py-4 text-sm">
           <dt className="text-tertiary">Marca</dt>
-          <dd className="col-span-2 font-semibold text-ink">JG2®</dd>
+          <dd className="font-semibold text-ink">JG2®</dd>
           <dt className="text-tertiary">SKU</dt>
-          <dd className="col-span-2 font-mono text-ink">{code}</dd>
+          <dd className="font-mono text-ink">{code}</dd>
           {ncm && (
             <>
               <dt className="text-tertiary">NCM</dt>
-              <dd className="col-span-2 font-mono text-ink">{ncm}</dd>
+              <dd className="font-mono text-ink">{ncm}</dd>
             </>
           )}
         </dl>
