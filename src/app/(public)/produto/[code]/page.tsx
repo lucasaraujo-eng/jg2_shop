@@ -118,14 +118,14 @@ export default async function ProductPage({
 
       <ClientsMarquee />
 
-      {product.supportText && (
+      {/* {product.supportText && (
         <section className="mx-auto max-w-[880px] px-7 py-16">
           <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">
             {productSupportTitle(product.name)}
           </h2>
           <div className="mt-5 whitespace-pre-line leading-relaxed text-muted">{product.supportText}</div>
         </section>
-      )}
+      )} */}
     </div>
   );
 }
