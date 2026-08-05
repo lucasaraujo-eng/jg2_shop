@@ -24,6 +24,7 @@ export default async function EditProductPage({
     subcategoryId: product.subcategoryId ?? '',
     description: product.description,
     supportText: product.supportText ?? '',
+    specs: product.specs.map((s) => ({ label: s.label, value: s.value })),
     filterTags: product.filterTags.map((t) => t.tagKey),
     coverUrl: product.images[0]?.url ?? '',
     active: product.active,

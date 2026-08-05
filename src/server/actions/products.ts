@@ -29,6 +29,9 @@ export async function createProduct(input: ProductInput): Promise<Result> {
         categoryId: d.categoryId,
         subcategoryId: d.subcategoryId ?? null,
         images: d.coverUrl ? { create: [{ url: d.coverUrl, order: 0 }] } : undefined,
+        specs: d.specs.length
+          ? { create: d.specs.map((s, i) => ({ label: s.label, value: s.value, order: i })) }
+          : undefined,
         filterTags: d.filterTags.length
           ? { create: d.filterTags.map((tagKey) => ({ tagKey })) }
           : undefined,
@@ -50,6 +53,7 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Re
   const d = parsed.data;
   try {
     await prisma.productFilterTag.deleteMany({ where: { productId: id } });
+    await prisma.productSpec.deleteMany({ where: { productId: id } });
     const product = await prisma.product.update({
       where: { id },
       data: {
@@ -63,6 +67,9 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Re
         active: d.active,
         categoryId: d.categoryId,
         subcategoryId: d.subcategoryId ?? null,
+        specs: d.specs.length
+          ? { create: d.specs.map((s, i) => ({ label: s.label, value: s.value, order: i })) }
+          : undefined,
         filterTags: d.filterTags.length
           ? { create: d.filterTags.map((tagKey) => ({ tagKey })) }
           : undefined,
@@ -117,6 +124,6 @@ export async function getAdminProduct(id: string) {
   await requireAdmin();
   return prisma.product.findUnique({
     where: { id },
-    include: { images: { orderBy: { order: 'asc' }, take: 1 }, filterTags: true },
+    include: { images: { orderBy: { order: 'asc' }, take: 1 }, filterTags: true, specs: { orderBy: { order: 'asc' } } },
   });
 }

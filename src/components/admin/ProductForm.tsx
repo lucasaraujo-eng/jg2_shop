@@ -22,6 +22,7 @@ const EMPTY: ProductInput = {
   subcategoryId: '',
   description: [],
   supportText: '',
+  specs: [],
   filterTags: [],
   coverUrl: '',
   active: true,
@@ -66,6 +67,7 @@ export function ProductForm({
   const router = useRouter();
   const [form, setForm] = useState<ProductInput>(initial ?? EMPTY);
   const [descriptionText, setDescriptionText] = useState((initial?.description ?? []).join('\n'));
+  const [specs, setSpecs] = useState<{ label: string; value: string }[]>(initial?.specs ?? []);
   const [filterTagsText, setFilterTagsText] = useState((initial?.filterTags ?? []).join(', '));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -83,6 +85,9 @@ export function ProductForm({
         .split('\n')
         .map((s) => s.trim())
         .filter(Boolean),
+      specs: specs
+        .map((s) => ({ label: s.label.trim(), value: s.value.trim() }))
+        .filter((s) => s.label && s.value),
       filterTags: filterTagsText
         .split(',')
         .map((s) => s.trim())
@@ -207,6 +212,42 @@ export function ProductForm({
             className={inputClass}
           />
         </label>
+      </FormSection>
+
+      <FormSection title="Especificações técnicas" hint="Exibidas na tabela da página do produto. Deixe vazio se o produto não tiver.">
+        <div className="flex flex-col gap-2.5">
+          {specs.map((s, i) => (
+            <div key={i} className="flex gap-2.5">
+              <input
+                value={s.label}
+                onChange={(e) => setSpecs(specs.map((sp, j) => (j === i ? { ...sp, label: e.target.value } : sp)))}
+                placeholder="Ex.: Material"
+                className={`${inputClass} w-[180px] flex-none`}
+              />
+              <input
+                value={s.value}
+                onChange={(e) => setSpecs(specs.map((sp, j) => (j === i ? { ...sp, value: e.target.value } : sp)))}
+                placeholder="Ex.: Corpo Plástico e Haste em Aço Cromado"
+                className={`${inputClass} flex-1`}
+              />
+              <button
+                type="button"
+                onClick={() => setSpecs(specs.filter((_, j) => j !== i))}
+                aria-label="Remover especificação"
+                className="flex h-9 w-9 flex-none items-center justify-center rounded-lg border border-border text-muted-2 transition hover:border-brand hover:text-brand"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => setSpecs([...specs, { label: '', value: '' }])}
+            className="self-start rounded-lg border border-dashed border-border-strong-2 px-4 py-2 text-sm font-bold text-muted-2 transition hover:border-brand hover:text-brand"
+          >
+            + Adicionar especificação
+          </button>
+        </div>
       </FormSection>
 
       <FormSection title="Publicação">
