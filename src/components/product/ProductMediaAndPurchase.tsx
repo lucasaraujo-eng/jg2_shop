@@ -25,6 +25,7 @@ export function ProductMediaAndPurchase({
   productId,
   code,
   name,
+  subtitle,
   ncm,
   categoryName,
   images,
@@ -34,6 +35,7 @@ export function ProductMediaAndPurchase({
   productId: string;
   code: string;
   name: string;
+  subtitle: string | null;
   ncm: string | null;
   categoryName: string;
   images: { url: string }[];
@@ -54,6 +56,7 @@ export function ProductMediaAndPurchase({
           <span className="rounded-full bg-surface-alt px-3 py-1 text-xs font-bold text-tertiary">JG2®</span>
         </div>
         <h1 className="mt-3 font-display text-3xl font-black leading-tight text-ink">{name}</h1>
+        {subtitle && <p className="mt-1.5 max-w-2xl text-[14.5px] leading-relaxed text-tertiary">{subtitle}</p>}
 
         <dl className="mt-6 grid grid-cols-3 gap-y-2 border-y border-border-soft py-4 text-sm">
           <dt className="text-tertiary">Marca</dt>

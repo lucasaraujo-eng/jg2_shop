@@ -17,6 +17,7 @@ export default async function EditProductPage({
   const initial: ProductInput = {
     code: product.code,
     name: product.name,
+    subtitle: product.subtitle ?? '',
     ncm: product.ncm ?? '',
     isCadeado: product.isCadeado,
     categoryId: product.categoryId,

@@ -15,6 +15,7 @@ const inputClass =
 const EMPTY: ProductInput = {
   code: '',
   name: '',
+  subtitle: '',
   ncm: '',
   isCadeado: false,
   categoryId: '',
@@ -115,6 +116,16 @@ export function ProductForm({
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="font-bold text-ink">Nome*</span>
           <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClass} />
+        </label>
+
+        <label className="flex flex-col gap-1.5 text-sm">
+          <span className="font-bold text-ink">Subtítulo</span>
+          <input
+            value={form.subtitle ?? ''}
+            onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
+            placeholder="Texto curto exibido abaixo do nome na página do produto"
+            className={inputClass}
+          />
         </label>
       </FormSection>
 

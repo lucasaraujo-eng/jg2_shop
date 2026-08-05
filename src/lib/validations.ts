@@ -57,6 +57,7 @@ export type NewsletterSubscribeInput = z.infer<typeof newsletterSubscribeSchema>
 export const productSchema = z.object({
   code: z.string().min(1, 'Informe o SKU').max(50),
   name: z.string().min(2, 'Informe o nome').max(200),
+  subtitle: z.string().max(500).optional().nullable(),
   ncm: z.string().max(20).optional().nullable(),
   isCadeado: z.boolean().default(false),
   categoryId: z.string().min(1, 'Selecione a categoria'),

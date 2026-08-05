@@ -36,6 +36,7 @@ export default async function ProductPage({
           productId={product.id}
           code={product.code}
           name={product.name}
+          subtitle={product.subtitle}
           ncm={product.ncm}
           categoryName={product.category.name}
           images={product.images}

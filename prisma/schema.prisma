@@ -35,6 +35,7 @@ model Product {
   id            String             @id @default(cuid())
   code          String             @unique
   name          String
+  subtitle      String?            @db.Text
   ncm           String?
   isCadeado     Boolean            @default(false)
   description   String[]
