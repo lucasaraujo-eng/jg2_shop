@@ -20,6 +20,7 @@ export async function createProduct(input: ProductInput): Promise<Result> {
       data: {
         code: d.code,
         name: d.name,
+        subtitle: d.subtitle ?? null,
         ncm: d.ncm ?? null,
         isCadeado: d.isCadeado,
         description: d.description,
@@ -54,6 +55,7 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Re
       data: {
         code: d.code,
         name: d.name,
+        subtitle: d.subtitle ?? null,
         ncm: d.ncm ?? null,
         isCadeado: d.isCadeado,
         description: d.description,
