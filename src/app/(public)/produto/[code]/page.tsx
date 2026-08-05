@@ -86,33 +86,23 @@ export default async function ProductPage({
               </section>
             )}
 
-            <section id="prod-sec-especificacoes" className="mt-14 scroll-mt-[160px]">
-              <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">
-                Especificações técnicas
-              </h2>
-              <table className="mt-5 w-full max-w-[620px] text-sm">
-                <tbody>
-                  <tr className="border-b border-border-soft">
-                    <td className="w-[130px] py-2.5 pr-3 font-semibold text-muted-2 sm:w-[200px] sm:pr-4">Marca</td>
-                    <td className="py-2.5">JG2®</td>
-                  </tr>
-                  <tr className="border-b border-border-soft">
-                    <td className="w-[130px] py-2.5 pr-3 font-semibold text-muted-2 sm:w-[200px] sm:pr-4">SKU</td>
-                    <td className="py-2.5">{product.code}</td>
-                  </tr>
-                  <tr className="border-b border-border-soft">
-                    <td className="w-[130px] py-2.5 pr-3 font-semibold text-muted-2 sm:w-[200px] sm:pr-4">Categoria</td>
-                    <td className="py-2.5">{product.category.name}</td>
-                  </tr>
-                  {product.specs.map((s) => (
-                    <tr key={s.id} className="border-b border-border-soft">
-                      <td className="w-[130px] py-2.5 pr-3 font-semibold text-muted-2 sm:w-[200px] sm:pr-4">{s.label}</td>
-                      <td className="py-2.5">{s.value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </section>
+            {product.specs.length > 0 && (
+              <section id="prod-sec-especificacoes" className="mt-14 scroll-mt-[160px]">
+                <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">
+                  Especificações técnicas
+                </h2>
+                <table className="mt-5 w-full max-w-[620px] text-sm">
+                  <tbody>
+                    {product.specs.map((s) => (
+                      <tr key={s.id} className="border-b border-border-soft">
+                        <td className="w-[130px] py-2.5 pr-3 font-semibold text-muted-2 sm:w-[200px] sm:pr-4">{s.label}</td>
+                        <td className="py-2.5">{s.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </section>
+            )}
           </div>
         </div>
 

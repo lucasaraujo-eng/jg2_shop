@@ -64,6 +64,7 @@ export const productSchema = z.object({
   subcategoryId: z.string().optional().nullable(),
   description: z.array(z.string().max(2000)).max(50).default([]),
   supportText: z.string().max(5000).optional().nullable(),
+  specs: z.array(z.object({ label: z.string().min(1).max(100), value: z.string().min(1).max(300) })).max(30).default([]),
   filterTags: z.array(z.string()).max(100).default([]),
   coverUrl: z.string().optional().nullable(),
   active: z.boolean().default(true),
