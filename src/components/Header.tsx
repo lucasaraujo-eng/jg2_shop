@@ -8,7 +8,7 @@ import { CartButton } from '@/components/CartButton';
 import { useCart } from '@/stores/cart';
 import { searchSite, type SearchResult } from '@/server/actions/search';
 import type { getCategories } from '@/server/catalog';
-import { slugify, resolveImageUrl } from '@/lib/utils';
+import { resolveImageUrl } from '@/lib/utils';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 
 type Categories = Awaited<ReturnType<typeof getCategories>>;
@@ -304,7 +304,7 @@ function ProdutosDropdown({ active, open, onToggle, lotoItems, maosSeguras }: { 
                   </Link>
                 ))
               : maosSeguras?.subcategories.map((sub) => (
-                  <Link key={sub.id} href={`${maosHref}#${slugify(sub.name)}`} className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm normal-case text-muted-3 transition hover:bg-surface-alt hover:text-brand">
+                  <Link key={sub.id} href={`${maosHref}/${sub.slug}`} className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm normal-case text-muted-3 transition hover:bg-surface-alt hover:text-brand">
                     <span className="h-1.5 w-1.5 flex-none rounded-full bg-brand" />
                     {sub.name}
                   </Link>
@@ -322,7 +322,7 @@ function ProdutosDropdown({ active, open, onToggle, lotoItems, maosSeguras }: { 
 function MobileMenu({ categories, onClose }: { categories: Categories; onClose: () => void }) {
   const cartCount = useCart((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const openCart = useCart((s) => s.open);
-  const maosSegurasSlug = categories.find((c) => c.type === 'MAOS_SEGURAS')?.slug;
+  const maosSeguras = categories.find((c) => c.type === 'MAOS_SEGURAS');
   return (
     <div className="fixed inset-0 z-[80] md:hidden">
       <button className="absolute inset-0 bg-ink/40" style={{ animation: 'jg-fade .2s ease both' }} onClick={onClose} aria-label="Fechar menu" />
@@ -351,10 +351,22 @@ function MobileMenu({ categories, onClose }: { categories: Categories; onClose: 
           <Link href="/produtos" onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
             Bloqueio e Etiquetagem – LOTO
           </Link>
-          {maosSegurasSlug && (
-            <Link href={`/produtos/${maosSegurasSlug}`} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
-              Mãos Seguras
-            </Link>
+          {maosSeguras && (
+            <>
+              <Link href={`/produtos/${maosSeguras.slug}`} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
+                Mãos Seguras
+              </Link>
+              {maosSeguras.subcategories.map((sub) => (
+                <Link
+                  key={sub.id}
+                  href={`/produtos/${maosSeguras.slug}/${sub.slug}`}
+                  onClick={onClose}
+                  className="rounded-lg px-3 py-2 pl-10 text-sm font-medium text-muted-2 transition hover:bg-surface-alt hover:text-brand"
+                >
+                  {sub.name}
+                </Link>
+              ))}
+            </>
           )}
 
           <p className="mt-3 px-3 font-mono text-xs uppercase tracking-wider text-brand">Serviços</p>

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,13 +9,29 @@ import { CatalogClient } from '@/components/catalog/CatalogClient';
 import { CatalogResultsLoading } from '@/components/Skeleton';
 import { buildSubcategoryGroups, toCardProducts } from '@/lib/catalogGrouping';
 import { categorySupportTitle } from '@/lib/catalogText';
+import { CATEGORY_GROUP_DESCRIPTIONS } from '@/data/catalogGroups';
 import { r2Url } from '@/lib/utils';
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: Promise<{ categoria: string }>;
-}) {
+type PageProps = { params: Promise<{ categoria: string }> };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { categoria } = await params;
+  const category = await getCategoryBySlug(categoria);
+  if (!category) return {};
+  if (category.type === 'MAOS_SEGURAS') {
+    return {
+      title: 'Catálogo Mãos Seguras | JG2',
+      description:
+        'Dispositivos para afastar as mãos da zona de perigo — extensores industriais, proteção de impacto, movimentação, armazenamento e fixação.',
+    };
+  }
+  return {
+    title: `${category.name} | JG2`,
+    description: CATEGORY_GROUP_DESCRIPTIONS[category.name] ?? `Catálogo de ${category.name} para bloqueio e etiquetagem LOTO.`,
+  };
+}
+
+export default async function CategoryPage({ params }: PageProps) {
   const { categoria } = await params;
   const category = await getCategoryBySlug(categoria);
   if (!category) notFound();
@@ -28,19 +45,11 @@ export default async function CategoryPage({
   ]);
 
   const kicker = isMaosSeguras ? 'Proteção das mãos' : 'Loja de bloqueio';
-  const bannerTitle = isMaosSeguras ? (
-    <>
-      Encontre o bloqueio ideal
-      <br />
-      para sua válvula ou dispositivo aqui!
-    </>
-  ) : (
-    'Catálogo de produtos LOTO'
-  );
+  const bannerTitle = isMaosSeguras ? 'Catálogo Mãos Seguras' : 'Catálogo de produtos LOTO';
   const bannerSubtitle = isMaosSeguras
-    ? 'Selecione o tipo de dispositivo de isolamento e encontre com mais rapidez os produtos de bloqueio indicados para a sua aplicação.'
+    ? 'Dispositivos para afastar as mãos da zona de perigo. Escolha a categoria e adicione os itens ao orçamento.'
     : 'Adicione os itens ao seu orçamento e envie tudo de uma vez. Sem compromisso — nossa equipe retorna com valores e prazos.';
-  const groups = isMaosSeguras ? buildSubcategoryGroups(category.subcategories, products) : null;
+  const groups = isMaosSeguras ? buildSubcategoryGroups(category.slug, category.subcategories, products) : null;
   const cardProducts = toCardProducts(products);
 
   return (
@@ -69,7 +78,12 @@ export default async function CategoryPage({
       </section>
 
       <div className="mx-auto max-w-[1340px] gap-10 px-7 py-12 lg:flex">
-        <CategorySidebar categories={categories} activeSlug={category.slug} subcategories={isMaosSeguras ? category.subcategories : undefined} />
+        <CategorySidebar
+          categories={categories}
+          activeSlug={category.slug}
+          subcategories={isMaosSeguras ? category.subcategories : undefined}
+          categoryBasePath={isMaosSeguras ? `/produtos/${category.slug}` : undefined}
+        />
         <Suspense fallback={<CatalogResultsLoading />}>
           <CatalogClient initialProducts={cardProducts} taxonomy={taxonomy} groups={groups} />
         </Suspense>

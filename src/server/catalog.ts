@@ -22,6 +22,25 @@ export async function getProductsByCategory(categorySlug: string) {
   });
 }
 
+export async function getSubcategoryBySlug(categorySlug: string, subcategorySlug: string) {
+  return prisma.subcategory.findFirst({
+    where: { slug: subcategorySlug, category: { slug: categorySlug } },
+    include: { category: { include: { subcategories: { orderBy: { order: 'asc' } } } } },
+  });
+}
+
+export async function getProductsBySubcategory(categorySlug: string, subcategorySlug: string) {
+  return prisma.product.findMany({
+    where: {
+      active: true,
+      category: { slug: categorySlug },
+      subcategory: { slug: subcategorySlug },
+    },
+    orderBy: { order: 'asc' },
+    include: { images: { orderBy: { order: 'asc' }, take: 2 }, subcategory: true, category: { select: { name: true } } },
+  });
+}
+
 export async function getAllProducts() {
   return prisma.product.findMany({
     where: { active: true },

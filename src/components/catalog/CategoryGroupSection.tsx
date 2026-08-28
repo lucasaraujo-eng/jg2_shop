@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ProductCard } from '@/components/ProductCard';
 import type { ProductGroup } from '@/lib/catalogGrouping';
 import { slugify } from '@/lib/utils';
@@ -5,7 +6,15 @@ import { slugify } from '@/lib/utils';
 export function CategoryGroupSection({ group }: { group: ProductGroup }) {
   return (
     <div id={slugify(group.name)} className="scroll-mt-[160px]">
-      <h2 className="font-display text-2xl font-black leading-tight tracking-tight text-ink">{group.name}</h2>
+      <h2 className="font-display text-2xl font-black leading-tight tracking-tight text-ink">
+        {group.href ? (
+          <Link href={group.href} className="transition hover:text-brand">
+            {group.name}
+          </Link>
+        ) : (
+          group.name
+        )}
+      </h2>
       {group.description && <p className="mt-1.5 max-w-2xl text-[14.5px] leading-relaxed text-tertiary">{group.description}</p>}
       <div className="mt-5">
         {group.products.length === 0 ? (
