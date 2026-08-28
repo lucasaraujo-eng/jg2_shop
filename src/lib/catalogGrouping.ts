@@ -1,7 +1,7 @@
 import type { CardProduct } from '@/components/ProductCard';
 import { CATEGORY_GROUP_DESCRIPTIONS, SUBCATEGORY_GROUP_DESCRIPTIONS } from '@/data/catalogGroups';
 
-export type ProductGroup = { name: string; description: string; products: CardProduct[] };
+export type ProductGroup = { name: string; description: string; products: CardProduct[]; href?: string };
 
 type GroupableProduct = {
   id: string;
@@ -29,10 +29,15 @@ export function buildCategoryGroups(categories: { id: string; name: string }[], 
   }));
 }
 
-export function buildSubcategoryGroups(subcategories: { id: string; name: string }[], products: GroupableProduct[]): ProductGroup[] {
+export function buildSubcategoryGroups(
+  categorySlug: string,
+  subcategories: { id: string; name: string; slug: string }[],
+  products: GroupableProduct[],
+): ProductGroup[] {
   return subcategories.map((sc) => ({
     name: sc.name,
     description: SUBCATEGORY_GROUP_DESCRIPTIONS[sc.name] ?? '',
+    href: `/produtos/${categorySlug}/${sc.slug}`,
     products: products.filter((p) => p.subcategoryId === sc.id).map(toCardProduct),
   }));
 }
