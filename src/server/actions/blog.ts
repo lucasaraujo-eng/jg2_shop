@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { postSchema, type PostInput } from '@/lib/validations';
 import { slugify } from '@/lib/utils';
 import { requireAdmin, requireRoleResult } from '@/lib/auth-guards';
+import { invalidateBlogCache } from '@/lib/data-cache';
 
 type Result = { ok: true; id: string } | { ok: false; error: string };
 
@@ -28,8 +29,8 @@ export async function createPost(input: PostInput): Promise<Result> {
         authorId: (session.user as { id?: string }).id ?? null,
       },
     });
+    invalidateBlogCache();
     revalidatePath('/admin/blog');
-    revalidatePath('/blog');
     return { ok: true, id: post.id };
   } catch (e) {
     console.error(e);
@@ -57,8 +58,8 @@ export async function updatePost(id: string, input: PostInput): Promise<Result> 
         publishedAt: d.status === 'PUBLISHED' ? new Date() : null,
       },
     });
+    invalidateBlogCache();
     revalidatePath('/admin/blog');
-    revalidatePath('/blog');
     revalidatePath(`/blog/${post.slug}`);
     return { ok: true, id: post.id };
   } catch (e) {
@@ -72,8 +73,8 @@ export async function deletePost(id: string): Promise<Result> {
   if (!session) return { ok: false, error: 'Apenas administradores podem remover matérias.' };
   try {
     await prisma.blogPost.delete({ where: { id } });
+    invalidateBlogCache();
     revalidatePath('/admin/blog');
-    revalidatePath('/blog');
     return { ok: true, id };
   } catch (e) {
     console.error(e);

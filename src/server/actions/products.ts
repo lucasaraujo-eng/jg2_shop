@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { productSchema, type ProductInput } from '@/lib/validations';
 import { requireAdmin, requireRoleResult } from '@/lib/auth-guards';
+import { invalidateCatalogCache } from '@/lib/data-cache';
 
 type Result = { ok: true; id: string } | { ok: false; error: string };
 
@@ -37,8 +38,8 @@ export async function createProduct(input: ProductInput): Promise<Result> {
           : undefined,
       },
     });
+    invalidateCatalogCache();
     revalidatePath('/admin/produtos');
-    revalidatePath('/produtos');
     return { ok: true, id: product.id };
   } catch (e) {
     console.error(e);
@@ -81,8 +82,8 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Re
         await prisma.productImage.create({ data: { productId: id, url: d.coverUrl, order: 0 } });
       }
     }
+    invalidateCatalogCache();
     revalidatePath('/admin/produtos');
-    revalidatePath('/produtos');
     return { ok: true, id: product.id };
   } catch (e) {
     console.error(e);
@@ -95,8 +96,8 @@ export async function deleteProduct(id: string): Promise<Result> {
   if (!session) return { ok: false, error: 'Apenas administradores podem remover produtos.' };
   try {
     await prisma.product.delete({ where: { id } });
+    invalidateCatalogCache();
     revalidatePath('/admin/produtos');
-    revalidatePath('/produtos');
     return { ok: true, id };
   } catch (e) {
     console.error(e);

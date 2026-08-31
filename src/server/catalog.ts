@@ -1,66 +1,75 @@
 import { prisma } from '@/lib/prisma';
+import { CACHE_TAGS, cachedQuery } from '@/lib/data-cache';
 
-export async function getCategories() {
-  return prisma.category.findMany({
+const tags = [CACHE_TAGS.catalog];
+
+export const getCategories = cachedQuery('catalog:categories', tags, async () =>
+  prisma.category.findMany({
     orderBy: { order: 'asc' },
     include: { subcategories: { orderBy: { order: 'asc' } } },
-  });
-}
+  }),
+);
 
-export async function getCategoryBySlug(slug: string) {
-  return prisma.category.findUnique({
+export const getCategoryBySlug = cachedQuery('catalog:category-by-slug', tags, async (slug: string) =>
+  prisma.category.findUnique({
     where: { slug },
     include: { subcategories: { orderBy: { order: 'asc' } } },
-  });
-}
+  }),
+);
 
-export async function getProductsByCategory(categorySlug: string) {
-  return prisma.product.findMany({
+export const getProductsByCategory = cachedQuery('catalog:products-by-category', tags, async (categorySlug: string) =>
+  prisma.product.findMany({
     where: { active: true, category: { slug: categorySlug } },
     orderBy: { order: 'asc' },
     include: { images: { orderBy: { order: 'asc' }, take: 2 }, subcategory: true, category: { select: { name: true } } },
-  });
-}
+  }),
+);
 
-export async function getSubcategoryBySlug(categorySlug: string, subcategorySlug: string) {
-  return prisma.subcategory.findFirst({
-    where: { slug: subcategorySlug, category: { slug: categorySlug } },
-    include: { category: { include: { subcategories: { orderBy: { order: 'asc' } } } } },
-  });
-}
+export const getSubcategoryBySlug = cachedQuery(
+  'catalog:subcategory-by-slug',
+  tags,
+  async (categorySlug: string, subcategorySlug: string) =>
+    prisma.subcategory.findFirst({
+      where: { slug: subcategorySlug, category: { slug: categorySlug } },
+      include: { category: { include: { subcategories: { orderBy: { order: 'asc' } } } } },
+    }),
+);
 
-export async function getProductsBySubcategory(categorySlug: string, subcategorySlug: string) {
-  return prisma.product.findMany({
-    where: {
-      active: true,
-      category: { slug: categorySlug },
-      subcategory: { slug: subcategorySlug },
-    },
-    orderBy: { order: 'asc' },
-    include: { images: { orderBy: { order: 'asc' }, take: 2 }, subcategory: true, category: { select: { name: true } } },
-  });
-}
+export const getProductsBySubcategory = cachedQuery(
+  'catalog:products-by-subcategory',
+  tags,
+  async (categorySlug: string, subcategorySlug: string) =>
+    prisma.product.findMany({
+      where: {
+        active: true,
+        category: { slug: categorySlug },
+        subcategory: { slug: subcategorySlug },
+      },
+      orderBy: { order: 'asc' },
+      include: { images: { orderBy: { order: 'asc' }, take: 2 }, subcategory: true, category: { select: { name: true } } },
+    }),
+);
 
-export async function getAllProducts() {
-  return prisma.product.findMany({
+export const getAllProducts = cachedQuery('catalog:all-products', tags, async () =>
+  prisma.product.findMany({
     where: { active: true },
     orderBy: { order: 'asc' },
     include: { images: { orderBy: { order: 'asc' }, take: 2 }, category: { select: { name: true } } },
-  });
-}
+  }),
+);
 
-export async function getAllProductCodes() {
+export const getAllProductCodes = cachedQuery('catalog:product-codes', tags, async () => {
   const products = await prisma.product.findMany({ where: { active: true }, select: { code: true } });
   return products.map((p) => p.code);
-}
+});
 
-export async function getAllCategorySlugs() {
+export const getAllCategorySlugs = cachedQuery('catalog:category-slugs', tags, async () => {
   const categories = await prisma.category.findMany({ select: { slug: true } });
   return categories.map((c) => c.slug);
-}
+});
 
-export async function getProductByCode(code: string) {
-  return prisma.product.findUnique({
+export const getProductByCode = cachedQuery('catalog:product-by-code', tags, async (code: string) =>
+  prisma.product.findUnique({
     where: { code },
     include: {
       images: { orderBy: { order: 'asc' } },
@@ -70,28 +79,31 @@ export async function getProductByCode(code: string) {
       subcategory: true,
       filterTags: true,
     },
-  });
-}
+  }),
+);
 
-export async function getRelatedProducts(categoryId: string, excludeProductId: string) {
-  return prisma.product.findMany({
-    where: { active: true, categoryId, id: { not: excludeProductId } },
-    orderBy: { order: 'asc' },
-    take: 10,
-    include: { images: { orderBy: { order: 'asc' }, take: 2 } },
-  });
-}
+export const getRelatedProducts = cachedQuery(
+  'catalog:related-products',
+  tags,
+  async (categoryId: string, excludeProductId: string) =>
+    prisma.product.findMany({
+      where: { active: true, categoryId, id: { not: excludeProductId } },
+      orderBy: { order: 'asc' },
+      take: 10,
+      include: { images: { orderBy: { order: 'asc' }, take: 2 } },
+    }),
+);
 
-export async function getProductsByFilterTag(tagKey: string) {
-  return prisma.product.findMany({
+export const getProductsByFilterTag = cachedQuery('catalog:products-by-filter-tag', tags, async (tagKey: string) =>
+  prisma.product.findMany({
     where: { active: true, filterTags: { some: { tagKey } } },
     orderBy: { order: 'asc' },
     include: { images: { orderBy: { order: 'asc' }, take: 2 }, category: { select: { name: true } } },
-  });
-}
+  }),
+);
 
-export async function getFilterTaxonomy() {
-  return prisma.filterApplication.findMany({
+export const getFilterTaxonomy = cachedQuery('catalog:filter-taxonomy', tags, async () =>
+  prisma.filterApplication.findMany({
     orderBy: { order: 'asc' },
     include: {
       models: {
@@ -99,12 +111,12 @@ export async function getFilterTaxonomy() {
         include: { configs: { orderBy: { order: 'asc' } } },
       },
     },
-  });
-}
+  }),
+);
 
-export async function getFeaturedProducts(codes: string[]) {
-  return prisma.product.findMany({
+export const getFeaturedProducts = cachedQuery('catalog:featured-products', tags, async (codes: string[]) =>
+  prisma.product.findMany({
     where: { code: { in: codes }, active: true },
     include: { images: { orderBy: { order: 'asc' }, take: 2 } },
-  });
-}
+  }),
+);

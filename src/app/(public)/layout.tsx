@@ -9,6 +9,8 @@ import { RecaptchaScript } from '@/components/RecaptchaScript';
 import { RecaptchaNotice } from '@/components/RecaptchaNotice';
 import { getCategories } from '@/server/catalog';
 
+export const revalidate = 3600;
+
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
   const categories = await getCategories();
   const maosSeguras = categories.find((c) => c.type === 'MAOS_SEGURAS');
