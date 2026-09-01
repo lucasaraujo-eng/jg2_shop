@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Figtree, Plus_Jakarta_Sans, Space_Mono } from 'next/font/google';
+import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 import './globals.css';
 
 const figtree = Figtree({
@@ -24,12 +25,18 @@ export const metadata: Metadata = {
   title: 'JG2 Produtos de Segurança',
   description:
     'Catálogo de produtos de segurança industrial — bloqueio e etiquetagem (LOTO) e Mãos Seguras.',
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || '4NILnSX1WpwJbdiTpo5Gk7N7fhOSpeSFIHL7U1eHFwM',
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" className={`${figtree.variable} ${archivo.variable} ${spaceMono.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
+      <body className="flex min-h-full flex-col font-sans">
+        <GoogleAnalytics />
+        {children}
+      </body>
     </html>
   );
 }
