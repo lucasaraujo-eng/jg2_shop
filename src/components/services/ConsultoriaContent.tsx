@@ -5,6 +5,8 @@ import { ScrollCarousel } from '@/components/ScrollCarousel';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 import { r2Url } from '@/lib/utils';
 import type { ConsultoriaData } from '@/data/consultorias';
+import { SupportArticle } from '@/components/SupportArticle';
+import { getPageSeo } from '@/lib/seo';
 
 const OBJECTIVE_BY_SLUG: Record<ConsultoriaData['slug'], string> = {
   lototo: 'Adequação LOTOTO',
@@ -14,6 +16,7 @@ const OBJECTIVE_BY_SLUG: Record<ConsultoriaData['slug'], string> = {
 
 export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
   const objective = OBJECTIVE_BY_SLUG[data.slug];
+  const support = getPageSeo(`/servicos/${data.slug}`)?.support;
   return (
     <div>
       <section className="relative overflow-hidden bg-ink-deeper py-14 text-white">
@@ -213,6 +216,8 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
           </div>
         </div>
       </section>
+
+      {support && <SupportArticle data={support} />}
     </div>
   );
 }
