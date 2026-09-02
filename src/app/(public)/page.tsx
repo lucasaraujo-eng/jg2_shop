@@ -1,6 +1,8 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getFeaturedProducts, getFilterTaxonomy } from '@/server/catalog';
+import { pageMetadata } from '@/lib/seo';
 import { ProductCarousel } from '@/components/ProductCarousel';
 import { ScrollCarousel } from '@/components/ScrollCarousel';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
@@ -9,6 +11,8 @@ import { NewsletterForm } from '@/components/NewsletterForm';
 import { DeviceFilterCard } from '@/components/home/DeviceFilterCard';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 import { r2Url } from '@/lib/utils';
+
+export const metadata: Metadata = pageMetadata('/');
 
 const LOTO_CATALOG_HREF = '/produtos/cadeados-de-bloqueio';
 const MAOS_CATALOG_HREF = '/produtos/maos-seguras';

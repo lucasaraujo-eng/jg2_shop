@@ -1,20 +1,36 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { getProductByCode, getRelatedProducts } from '@/server/catalog';
 import { productSupportTitle } from '@/lib/catalogText';
 import { ProductMediaAndPurchase } from '@/components/product/ProductMediaAndPurchase';
 import { ProductTabs } from '@/components/product/ProductTabs';
 import { ProductCarousel } from '@/components/ProductCarousel';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
+import { SupportArticle } from '@/components/SupportArticle';
+import { getPageSeo, pageMetadata } from '@/lib/seo';
 
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ code: string }>;
-}) {
+type PageProps = { params: Promise<{ code: string }> };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { code } = await params;
-  const product = await getProductByCode(decodeURIComponent(code));
+  const decoded = decodeURIComponent(code);
+  const agency = getPageSeo(`/produto/${decoded}`);
+  if (agency) return pageMetadata(`/produto/${decoded}`);
+  const product = await getProductByCode(decoded);
+  if (!product) return {};
+  return {
+    title: `${product.name} | JG2`,
+    description: product.subtitle || product.description[0] || `Produto ${product.code} da linha JG2®.`,
+  };
+}
+
+export default async function ProductPage({ params }: PageProps) {
+  const { code } = await params;
+  const decoded = decodeURIComponent(code);
+  const product = await getProductByCode(decoded);
   if (!product) notFound();
+  const agencySupport = getPageSeo(`/produto/${product.code}`)?.support;
 
   const related = await getRelatedProducts(product.categoryId, product.id);
 
@@ -118,14 +134,16 @@ export default async function ProductPage({
 
       <ClientsMarquee />
 
-      {product.supportText && (
+      {agencySupport ? (
+        <SupportArticle data={agencySupport} />
+      ) : product.supportText ? (
         <section className="mx-auto max-w-[880px] px-7 py-16">
           <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">
             {productSupportTitle(product.name)}
           </h2>
           <div className="mt-5 whitespace-pre-line leading-relaxed text-muted">{product.supportText}</div>
         </section>
-      )}
+      ) : null}
     </div>
   );
 }

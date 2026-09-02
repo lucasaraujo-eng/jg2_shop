@@ -11,11 +11,15 @@ import { buildSubcategoryGroups, toCardProducts } from '@/lib/catalogGrouping';
 import { categorySupportTitle } from '@/lib/catalogText';
 import { CATEGORY_GROUP_DESCRIPTIONS } from '@/data/catalogGroups';
 import { r2Url } from '@/lib/utils';
+import { SupportArticle } from '@/components/SupportArticle';
+import { getPageSeo, pageMetadata } from '@/lib/seo';
 
 type PageProps = { params: Promise<{ categoria: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { categoria } = await params;
+  const agency = getPageSeo(`/produtos/${categoria}`);
+  if (agency) return pageMetadata(`/produtos/${categoria}`);
   const category = await getCategoryBySlug(categoria);
   if (!category) return {};
   if (category.type === 'MAOS_SEGURAS') {
@@ -51,6 +55,7 @@ export default async function CategoryPage({ params }: PageProps) {
     : 'Adicione os itens ao seu orçamento e envie tudo de uma vez. Sem compromisso — nossa equipe retorna com valores e prazos.';
   const groups = isMaosSeguras ? buildSubcategoryGroups(category.slug, category.subcategories, products) : null;
   const cardProducts = toCardProducts(products);
+  const agencySupport = getPageSeo(`/produtos/${categoria}`)?.support;
 
   return (
     <div>
@@ -89,14 +94,16 @@ export default async function CategoryPage({ params }: PageProps) {
         </Suspense>
       </div>
 
-      {category.supportText && (
+      {agencySupport ? (
+        <SupportArticle data={agencySupport} />
+      ) : category.supportText ? (
         <section className="mx-auto max-w-[880px] px-7 pb-20">
           <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">
             {categorySupportTitle(category.name)}
           </h2>
           <div className="mt-5 whitespace-pre-line leading-relaxed text-muted-2">{category.supportText}</div>
         </section>
-      )}
+      ) : null}
     </div>
   );
 }

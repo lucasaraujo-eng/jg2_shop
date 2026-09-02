@@ -1,8 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { SectionNav } from '@/components/downloads/SectionNav';
 import { r2Url } from '@/lib/utils';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
+import { SupportArticle } from '@/components/SupportArticle';
+import { getPageSeo, pageMetadata } from '@/lib/seo';
 
 type Doc = { tag: string; title: string; desc: string; meta: string; url?: string; cover?: string };
 
@@ -96,7 +99,10 @@ function DocCard({ doc }: { doc: Doc }) {
   );
 }
 
+export const metadata: Metadata = pageMetadata('/downloads');
+
 export default function DownloadsPage() {
+  const support = getPageSeo('/downloads')?.support;
   return (
     <div>
       <section className="relative overflow-hidden bg-ink-deep py-14 text-white">
@@ -155,6 +161,8 @@ export default function DownloadsPage() {
           </div>
         </div>
       </div>
+
+      {support && <SupportArticle data={support} />}
     </div>
   );
 }

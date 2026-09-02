@@ -1,18 +1,24 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getCategories, getAllProducts, getFilterTaxonomy } from '@/server/catalog';
+import { SupportArticle } from '@/components/SupportArticle';
+import { getPageSeo, pageMetadata } from '@/lib/seo';
 import { CategorySidebar } from '@/components/catalog/CategorySidebar';
 import { CatalogClient } from '@/components/catalog/CatalogClient';
 import { CatalogResultsLoading } from '@/components/Skeleton';
 import { buildCategoryGroups, toCardProducts } from '@/lib/catalogGrouping';
 import { r2Url } from '@/lib/utils';
 
+export const metadata: Metadata = pageMetadata('/produtos');
+
 export default async function AllProductsPage() {
   const [categories, products, taxonomy] = await Promise.all([getCategories(), getAllProducts(), getFilterTaxonomy()]);
   const lotoCategories = categories.filter((c) => c.type === 'LOTO');
   const groups = buildCategoryGroups(lotoCategories, products);
   const cardProducts = toCardProducts(products);
+  const support = getPageSeo('/produtos')?.support;
 
   return (
     <div>
@@ -40,6 +46,8 @@ export default async function AllProductsPage() {
           <CatalogClient initialProducts={cardProducts} taxonomy={taxonomy} groups={groups} />
         </Suspense>
       </div>
+
+      {support && <SupportArticle data={support} />}
     </div>
   );
 }
