@@ -23,8 +23,17 @@ export async function generateMetadata({
 export default async function BuscaPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const { q } = await searchParams;
   const query = (q ?? '').trim();
-  const results = query.length >= 2 ? await searchSiteFull(query) : { categories: [], products: [], posts: [] };
-  const total = results.categories.length + results.products.length + results.posts.length;
+  const results =
+    query.length >= 2
+      ? await searchSiteFull(query)
+      : { categories: [], subcategories: [], products: [], posts: [], videos: [], pages: [] };
+  const total =
+    results.categories.length +
+    results.subcategories.length +
+    results.products.length +
+    results.posts.length +
+    results.videos.length +
+    results.pages.length;
 
   return (
     <div>
@@ -62,6 +71,27 @@ export default async function BuscaPage({ searchParams }: { searchParams: Promis
           </p>
         )}
 
+        {results.pages.length > 0 && (
+          <div className="mb-12">
+            <h2 className="mb-5 font-display text-xl font-black text-ink">Páginas e serviços</h2>
+            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+              {results.pages.map((p) => (
+                <Link
+                  key={p.href}
+                  href={p.href}
+                  className="flex items-center justify-between rounded-xl border border-border-soft bg-white px-4 py-3.5 text-sm transition hover:border-brand"
+                >
+                  <span>
+                    <span className="block font-bold text-ink">{p.title}</span>
+                    <span className="font-mono text-xs text-tertiary">{p.kind}</span>
+                  </span>
+                  <span>→</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         {results.categories.length > 0 && (
           <div className="mb-12">
             <h2 className="mb-5 font-display text-xl font-black text-ink">Categorias</h2>
@@ -74,6 +104,24 @@ export default async function BuscaPage({ searchParams }: { searchParams: Promis
                 >
                   {c.name}
                   <span>→</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {results.subcategories.length > 0 && (
+          <div className="mb-12">
+            <h2 className="mb-5 font-display text-xl font-black text-ink">Subcategorias</h2>
+            <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4">
+              {results.subcategories.map((s) => (
+                <Link
+                  key={s.href + s.name}
+                  href={s.href}
+                  className="rounded-xl border border-border-soft bg-white px-4 py-3.5 transition hover:border-brand"
+                >
+                  <span className="block text-sm font-bold text-ink">{s.name}</span>
+                  <span className="font-mono text-xs text-tertiary">{s.categoryName}</span>
                 </Link>
               ))}
             </div>
@@ -119,25 +167,40 @@ export default async function BuscaPage({ searchParams }: { searchParams: Promis
         )}
 
         {results.posts.length > 0 && (
-          <div>
-            <h2 className="mb-5 font-display text-xl font-black text-ink">Blog</h2>
+          <div className="mb-12">
+            <h2 className="mb-5 font-display text-xl font-black text-ink">Conteúdos</h2>
             <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
               {results.posts.map((post) => (
                 <Link
                   key={post.slug}
-                  href={`/blog/${post.slug}`}
+                  href={post.href}
                   className="flex items-center gap-3.5 rounded-xl border border-border-soft bg-white px-4 py-3.5 transition hover:border-brand"
                 >
-                  <span className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-badge text-brand">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-                    </svg>
-                  </span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-sm font-bold text-ink">{post.title}</span>
-                    {post.tag && <span className="block font-mono text-xs text-tertiary">{post.tag}</span>}
+                    <span className="block font-mono text-xs text-tertiary">
+                      {post.kind}
+                      {post.tag ? ` · ${post.tag}` : ''}
+                    </span>
                   </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {results.videos.length > 0 && (
+          <div>
+            <h2 className="mb-5 font-display text-xl font-black text-ink">Vídeos</h2>
+            <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+              {results.videos.map((v) => (
+                <Link
+                  key={v.id}
+                  href={v.href}
+                  className="flex items-center justify-between rounded-xl border border-border-soft bg-white px-4 py-3.5 text-sm font-bold text-ink transition hover:border-brand"
+                >
+                  {v.title}
+                  <span>→</span>
                 </Link>
               ))}
             </div>

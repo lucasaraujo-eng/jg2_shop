@@ -8,7 +8,7 @@ import { CategoryGroupSection } from '@/components/catalog/CategoryGroupSection'
 import { filterProductsByTag } from '@/server/actions/catalog';
 import type { getFilterTaxonomy } from '@/server/catalog';
 import type { ProductGroup } from '@/lib/catalogGrouping';
-import { r2Url } from '@/lib/utils';
+import { r2Url, includesFolded } from '@/lib/utils';
 
 type Taxonomy = Awaited<ReturnType<typeof getFilterTaxonomy>>;
 
@@ -75,9 +75,11 @@ export function CatalogClient({
   }, []);
 
   const baseProducts = filteredProducts ?? initialProducts;
-  const q = query.trim().toLowerCase();
+  const q = query.trim();
   const visibleProducts = q
-    ? baseProducts.filter((p) => p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q))
+    ? baseProducts.filter(
+        (p) => includesFolded(p.name, q) || includesFolded(p.code, q) || includesFolded(p.category ?? '', q),
+      )
     : baseProducts;
 
   const filterActive = filteredProducts !== null;
