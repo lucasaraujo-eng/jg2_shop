@@ -452,12 +452,12 @@ export async function searchSite(query: string): Promise<SearchResult> {
   const q = query.trim();
   if (q.length < 2) return EMPTY;
   return runSearch(q, {
-    categories: 4,
+    categories: 6,
     subcategories: 4,
     products: 6,
     posts: 3,
     videos: 2,
-    pages: 4,
+    pages: 3,
     perCategory: 2,
     deep: false,
   });
@@ -468,7 +468,7 @@ export async function searchSiteFull(query: string): Promise<SearchResult> {
   const q = query.trim();
   if (q.length < 2) return EMPTY;
   return runSearch(q, {
-    categories: 8,
+    categories: 12,
     subcategories: 8,
     products: 24,
     posts: 12,

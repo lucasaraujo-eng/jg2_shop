@@ -161,22 +161,9 @@ export function Header({ categories }: { categories: Categories }) {
                     results.subcategories.length === 0 &&
                     results.videos.length === 0 &&
                     results.pages.length === 0 && <p className="p-5 text-center text-sm text-tertiary">Nenhum resultado para sua busca.</p>}
-                  {results.pages.length > 0 && (
-                    <>
-                      <p className="px-3.5 pb-1.5 pt-2.5 font-mono text-xs font-bold uppercase tracking-wider text-brand">Páginas e serviços</p>
-                      {results.pages.map((r) => (
-                        <Link key={r.href} href={r.href} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
-                          <span className="min-w-0 flex-1">
-                            <span className="block truncate font-semibold text-ink">{r.title}</span>
-                            <span className="block font-mono text-xs text-tertiary">{r.kind}</span>
-                          </span>
-                        </Link>
-                      ))}
-                    </>
-                  )}
                   {results.categories.length > 0 && (
                     <>
-                      <p className="mt-1 border-t border-surface-stripe-a px-3.5 pb-1.5 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Categorias</p>
+                      <p className="px-3.5 pb-1.5 pt-2.5 font-mono text-xs font-bold uppercase tracking-wider text-brand">Categorias</p>
                       {results.categories.map((r) => (
                         <Link key={r.slug} href={`/produtos/${r.slug}`} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
                           <span className="block truncate font-semibold text-ink">{r.name}</span>
@@ -216,6 +203,19 @@ export function Header({ categories }: { categories: Categories }) {
                           </Link>
                         );
                       })}
+                    </>
+                  )}
+                  {results.pages.length > 0 && (
+                    <>
+                      <p className="mt-1 border-t border-surface-stripe-a px-3.5 pb-1.5 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Páginas e serviços</p>
+                      {results.pages.map((r) => (
+                        <Link key={r.href} href={r.href} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate font-semibold text-ink">{r.title}</span>
+                            <span className="block font-mono text-xs text-tertiary">{r.kind}</span>
+                          </span>
+                        </Link>
+                      ))}
                     </>
                   )}
                   {results.posts.length > 0 && (
@@ -470,20 +470,9 @@ function MobileMenu({
               results.pages.length === 0 && (
                 <p className="p-4 text-center text-sm text-tertiary">Nenhum resultado. Toque Enter para buscar em todo o site.</p>
               )}
-            {results.pages.length > 0 && (
-              <>
-                <p className="px-3 pb-1 pt-2 font-mono text-xs font-bold uppercase tracking-wider text-brand">Páginas e serviços</p>
-                {results.pages.map((r) => (
-                  <Link key={r.href} href={r.href} onClick={onClose} className="block rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
-                    <span className="block truncate font-semibold text-ink">{r.title}</span>
-                    <span className="block font-mono text-xs text-tertiary">{r.kind}</span>
-                  </Link>
-                ))}
-              </>
-            )}
             {results.categories.length > 0 && (
               <>
-                <p className="mt-1 border-t border-surface-stripe-a px-3 pb-1 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Categorias</p>
+                <p className="px-3 pb-1 pt-2 font-mono text-xs font-bold uppercase tracking-wider text-brand">Categorias</p>
                 {results.categories.map((r) => (
                   <Link key={r.slug} href={`/produtos/${r.slug}`} onClick={onClose} className="block rounded-lg px-3 py-2.5 text-sm font-semibold text-ink hover:bg-surface-alt">
                     {r.name}
@@ -526,6 +515,17 @@ function MobileMenu({
                     </Link>
                   );
                 })}
+              </>
+            )}
+            {results.pages.length > 0 && (
+              <>
+                <p className="mt-1 border-t border-surface-stripe-a px-3 pb-1 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Páginas e serviços</p>
+                {results.pages.map((r) => (
+                  <Link key={r.href} href={r.href} onClick={onClose} className="block rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
+                    <span className="block truncate font-semibold text-ink">{r.title}</span>
+                    <span className="block font-mono text-xs text-tertiary">{r.kind}</span>
+                  </Link>
+                ))}
               </>
             )}
             {results.posts.length > 0 && (
