@@ -27,10 +27,20 @@ export function readingTime(html: string): string {
 }
 
 export function slugify(s: string): string {
-  return s
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
+  return foldAccents(s)
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
+}
+
+/** Remove diacríticos (plástico → plastico) para busca sem exigir acentos. */
+export function foldAccents(s: string): string {
+  return s
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase();
+}
+
+export function includesFolded(haystack: string, needle: string): boolean {
+  if (!needle) return true;
+  return foldAccents(haystack).includes(foldAccents(needle));
 }

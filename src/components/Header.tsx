@@ -44,12 +44,17 @@ export function Header({ categories }: { categories: Categories }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult>({
     categories: [],
+    subcategories: [],
     products: [],
     posts: [],
+    videos: [],
+    pages: [],
   });
   const [searchOpen, setSearchOpen] = useState(false);
   const [, startSearch] = useTransition();
   const navRef = useRef<HTMLDivElement>(null);
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const searchSeqRef = useRef(0);
 
   const [lastPathname, setLastPathname] = useState(pathname);
   if (pathname !== lastPathname) {
@@ -74,16 +79,30 @@ export function Header({ categories }: { categories: Categories }) {
     };
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
+    };
+  }, []);
+
   function handleSearchChange(value: string) {
     setQuery(value);
-    if (value.trim().length < 2) {
-      setResults({ categories: [], products: [], posts: [] });
+    if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
+
+    const trimmed = value.trim();
+    if (trimmed.length < 2) {
+      searchSeqRef.current += 1;
+      setResults({ categories: [], subcategories: [], products: [], posts: [], videos: [], pages: [] });
       return;
     }
-    startSearch(async () => {
-      const r = await searchSite(value);
-      setResults(r);
-    });
+
+    const seq = ++searchSeqRef.current;
+    searchTimerRef.current = setTimeout(() => {
+      startSearch(async () => {
+        const r = await searchSite(trimmed);
+        if (seq === searchSeqRef.current) setResults(r);
+      });
+    }, 280);
   }
 
   function handleSearchSubmit() {
@@ -136,10 +155,51 @@ export function Header({ categories }: { categories: Categories }) {
 
               {searchOpen && query.trim().length >= 2 && (
                 <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-[90] max-h-[70vh] overflow-y-auto rounded-2xl border border-border-soft bg-white p-2 shadow-[0_18px_44px_rgba(20,18,16,.16)]" style={{ animation: 'jg-fade .14s ease both' }}>
-                  {results.products.length === 0 && results.posts.length === 0 && <p className="p-5 text-center text-sm text-tertiary">Nenhum resultado para sua busca.</p>}
+                  {results.products.length === 0 &&
+                    results.posts.length === 0 &&
+                    results.categories.length === 0 &&
+                    results.subcategories.length === 0 &&
+                    results.videos.length === 0 &&
+                    results.pages.length === 0 && <p className="p-5 text-center text-sm text-tertiary">Nenhum resultado para sua busca.</p>}
+                  {results.pages.length > 0 && (
+                    <>
+                      <p className="px-3.5 pb-1.5 pt-2.5 font-mono text-xs font-bold uppercase tracking-wider text-brand">Páginas e serviços</p>
+                      {results.pages.map((r) => (
+                        <Link key={r.href} href={r.href} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate font-semibold text-ink">{r.title}</span>
+                            <span className="block font-mono text-xs text-tertiary">{r.kind}</span>
+                          </span>
+                        </Link>
+                      ))}
+                    </>
+                  )}
+                  {results.categories.length > 0 && (
+                    <>
+                      <p className="mt-1 border-t border-surface-stripe-a px-3.5 pb-1.5 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Categorias</p>
+                      {results.categories.map((r) => (
+                        <Link key={r.slug} href={`/produtos/${r.slug}`} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
+                          <span className="block truncate font-semibold text-ink">{r.name}</span>
+                        </Link>
+                      ))}
+                    </>
+                  )}
+                  {results.subcategories.length > 0 && (
+                    <>
+                      <p className="mt-1 border-t border-surface-stripe-a px-3.5 pb-1.5 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Subcategorias</p>
+                      {results.subcategories.map((r) => (
+                        <Link key={r.href + r.name} href={r.href} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate font-semibold text-ink">{r.name}</span>
+                            <span className="block font-mono text-xs text-tertiary">{r.categoryName}</span>
+                          </span>
+                        </Link>
+                      ))}
+                    </>
+                  )}
                   {results.products.length > 0 && (
                     <>
-                      <p className="px-3.5 pb-1.5 pt-2.5 font-mono text-xs font-bold uppercase tracking-wider text-brand">Produtos</p>
+                      <p className="mt-1 border-t border-surface-stripe-a px-3.5 pb-1.5 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Produtos</p>
                       {results.products.map((r) => {
                         const image = resolveImageUrl(r.image);
                         return (
@@ -160,19 +220,23 @@ export function Header({ categories }: { categories: Categories }) {
                   )}
                   {results.posts.length > 0 && (
                     <>
-                      <p className="mt-1 border-t border-surface-stripe-a px-3.5 pb-1.5 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Blog</p>
+                      <p className="mt-1 border-t border-surface-stripe-a px-3.5 pb-1.5 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Conteúdos</p>
                       {results.posts.map((r) => (
-                        <Link key={r.slug} href={`/blog/${r.slug}`} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
-                          <span className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-badge text-brand">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-                            </svg>
-                          </span>
+                        <Link key={r.slug} href={r.href} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
                           <span className="min-w-0 flex-1">
                             <span className="block truncate font-semibold text-ink">{r.title}</span>
-                            {r.tag && <span className="block font-mono text-xs text-tertiary">{r.tag}</span>}
+                            <span className="block font-mono text-xs text-tertiary">{r.kind}{r.tag ? ` · ${r.tag}` : ''}</span>
                           </span>
+                        </Link>
+                      ))}
+                    </>
+                  )}
+                  {results.videos.length > 0 && (
+                    <>
+                      <p className="mt-1 border-t border-surface-stripe-a px-3.5 pb-1.5 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Vídeos</p>
+                      {results.videos.map((r) => (
+                        <Link key={r.id} href={r.href} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
+                          <span className="block truncate font-semibold text-ink">{r.title}</span>
                         </Link>
                       ))}
                     </>
@@ -253,7 +317,19 @@ export function Header({ categories }: { categories: Categories }) {
         </div>
       </header>
 
-      {mobileOpen && <MobileMenu categories={categories} onClose={() => setMobileOpen(false)} />}
+      {mobileOpen && (
+        <MobileMenu
+          categories={categories}
+          onClose={() => setMobileOpen(false)}
+          query={query}
+          results={results}
+          onQueryChange={handleSearchChange}
+          onSubmit={() => {
+            handleSearchSubmit();
+            setMobileOpen(false);
+          }}
+        />
+      )}
     </>
   );
 }
@@ -323,10 +399,31 @@ function ProdutosDropdown({ active, open, onToggle, lotoItems, maosSeguras }: { 
   );
 }
 
-function MobileMenu({ categories, onClose }: { categories: Categories; onClose: () => void }) {
+function MobileMenu({
+  categories,
+  onClose,
+  query,
+  results,
+  onQueryChange,
+  onSubmit,
+}: {
+  categories: Categories;
+  onClose: () => void;
+  query: string;
+  results: SearchResult;
+  onQueryChange: (value: string) => void;
+  onSubmit: () => void;
+}) {
   const cartCount = useCart((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const openCart = useCart((s) => s.open);
   const maosSeguras = categories.find((c) => c.type === 'MAOS_SEGURAS');
+  const slugByCategoryName = new Map(categories.map((c) => [c.name, c.slug]));
+  const lotoItems = PROD_LOTO_MENU.map((item) => ({
+    label: item.label,
+    slug: slugByCategoryName.get(item.categoryName),
+  })).filter((item): item is { label: string; slug: string } => !!item.slug);
+  const showResults = query.trim().length >= 2;
+
   return (
     <div className="fixed inset-0 z-[80] md:hidden">
       <button className="absolute inset-0 bg-ink/40" style={{ animation: 'jg-fade .2s ease both' }} onClick={onClose} aria-label="Fechar menu" />
@@ -338,13 +435,132 @@ function MobileMenu({ categories, onClose }: { categories: Categories; onClose: 
           </button>
         </div>
 
-        <Link href="/produtos" onClick={onClose} className="mt-4 flex items-center gap-2.5 rounded-xl border border-border bg-surface-alt px-4 py-3 text-sm text-tertiary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6f6a62" strokeWidth={2} strokeLinecap="round" className="flex-none">
-            <circle cx="11" cy="11" r="7" />
-            <path d="m20 20-3.4-3.4" />
-          </svg>
-          Buscar produtos, serviços…
-        </Link>
+        <form
+          className="mt-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit();
+          }}
+        >
+          <label className="flex items-center gap-2.5 rounded-xl border border-border bg-surface-alt px-4 py-3 focus-within:border-brand focus-within:bg-white">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6f6a62" strokeWidth={2} strokeLinecap="round" className="flex-none">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.4-3.4" />
+            </svg>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => onQueryChange(e.target.value)}
+              placeholder="Buscar produtos, serviços…"
+              aria-label="Buscar"
+              enterKeyHint="search"
+              autoComplete="off"
+              className="min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-tertiary"
+            />
+          </label>
+        </form>
+
+        {showResults && (
+          <div className="mt-3 rounded-2xl border border-border-soft bg-white p-2 shadow-sm">
+            {results.products.length === 0 &&
+              results.posts.length === 0 &&
+              results.categories.length === 0 &&
+              results.subcategories.length === 0 &&
+              results.videos.length === 0 &&
+              results.pages.length === 0 && (
+                <p className="p-4 text-center text-sm text-tertiary">Nenhum resultado. Toque Enter para buscar em todo o site.</p>
+              )}
+            {results.pages.length > 0 && (
+              <>
+                <p className="px-3 pb-1 pt-2 font-mono text-xs font-bold uppercase tracking-wider text-brand">Páginas e serviços</p>
+                {results.pages.map((r) => (
+                  <Link key={r.href} href={r.href} onClick={onClose} className="block rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
+                    <span className="block truncate font-semibold text-ink">{r.title}</span>
+                    <span className="block font-mono text-xs text-tertiary">{r.kind}</span>
+                  </Link>
+                ))}
+              </>
+            )}
+            {results.categories.length > 0 && (
+              <>
+                <p className="mt-1 border-t border-surface-stripe-a px-3 pb-1 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Categorias</p>
+                {results.categories.map((r) => (
+                  <Link key={r.slug} href={`/produtos/${r.slug}`} onClick={onClose} className="block rounded-lg px-3 py-2.5 text-sm font-semibold text-ink hover:bg-surface-alt">
+                    {r.name}
+                  </Link>
+                ))}
+              </>
+            )}
+            {results.subcategories.length > 0 && (
+              <>
+                <p className="mt-1 border-t border-surface-stripe-a px-3 pb-1 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Subcategorias</p>
+                {results.subcategories.map((r) => (
+                  <Link key={r.href + r.name} href={r.href} onClick={onClose} className="block rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
+                    <span className="block truncate font-semibold text-ink">{r.name}</span>
+                    <span className="block font-mono text-xs text-tertiary">{r.categoryName}</span>
+                  </Link>
+                ))}
+              </>
+            )}
+            {results.products.length > 0 && (
+              <>
+                <p className="mt-1 border-t border-surface-stripe-a px-3 pb-1 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Produtos</p>
+                {results.products.map((r) => {
+                  const image = resolveImageUrl(r.image);
+                  return (
+                    <Link
+                      key={r.code}
+                      href={`/produto/${encodeURIComponent(r.code)}`}
+                      onClick={onClose}
+                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt"
+                    >
+                      <span className="relative flex h-10 w-10 flex-none items-center justify-center overflow-hidden rounded-lg border border-border-soft bg-surface-alt">
+                        {image ? <Image src={image} alt="" fill sizes="40px" className="object-contain" /> : null}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate font-semibold text-ink">{r.name}</span>
+                        <span className="block font-mono text-xs text-tertiary">
+                          {r.code} · {r.categoryName}
+                        </span>
+                      </span>
+                    </Link>
+                  );
+                })}
+              </>
+            )}
+            {results.posts.length > 0 && (
+              <>
+                <p className="mt-1 border-t border-surface-stripe-a px-3 pb-1 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Conteúdos</p>
+                {results.posts.map((r) => (
+                  <Link key={r.slug} href={r.href} onClick={onClose} className="block rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
+                    <span className="block truncate font-semibold text-ink">{r.title}</span>
+                    <span className="block font-mono text-xs text-tertiary">
+                      {r.kind}
+                      {r.tag ? ` · ${r.tag}` : ''}
+                    </span>
+                  </Link>
+                ))}
+              </>
+            )}
+            {results.videos.length > 0 && (
+              <>
+                <p className="mt-1 border-t border-surface-stripe-a px-3 pb-1 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Vídeos</p>
+                {results.videos.map((r) => (
+                  <Link key={r.id} href={r.href} onClick={onClose} className="block rounded-lg px-3 py-2.5 text-sm font-semibold text-ink hover:bg-surface-alt">
+                    {r.title}
+                  </Link>
+                ))}
+              </>
+            )}
+            <button
+              type="button"
+              onClick={onSubmit}
+              className="mt-1 w-full rounded-lg px-3 py-2.5 text-left text-sm font-bold text-brand hover:bg-surface-badge"
+            >
+              Ver todos os resultados →
+            </button>
+          </div>
+        )}
 
         <nav className="mt-4 flex flex-col gap-1 text-sm font-semibold">
           <Link href="/" onClick={onClose} className="rounded-lg px-3 py-3 hover:bg-surface-alt">
@@ -355,6 +571,16 @@ function MobileMenu({ categories, onClose }: { categories: Categories; onClose: 
           <Link href="/produtos" onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
             Bloqueio e Etiquetagem – LOTO
           </Link>
+          {lotoItems.map((item) => (
+            <Link
+              key={item.slug}
+              href={`/produtos/${item.slug}`}
+              onClick={onClose}
+              className="rounded-lg px-3 py-2 pl-10 text-sm font-medium text-muted-2 transition hover:bg-surface-alt hover:text-brand"
+            >
+              {item.label}
+            </Link>
+          ))}
           {maosSeguras && (
             <>
               <Link href={`/produtos/${maosSeguras.slug}`} onClick={onClose} className="rounded-lg px-3 py-2.5 pl-6 transition hover:bg-surface-alt hover:text-brand">
