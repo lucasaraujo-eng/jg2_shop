@@ -50,6 +50,7 @@ export default function ContatoPage() {
           <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
             Fale conosco
           </p>
+          <p className="mt-5 font-display text-lg font-black italic text-brand sm:text-xl">NOSSO COMPROMISSO SALVA VIDAS!</p>
           <h1 className="mt-4 max-w-2xl font-display text-4xl font-black leading-tight sm:text-5xl">
             Estamos prontos para atender você
           </h1>
@@ -78,11 +79,11 @@ export default function ContatoPage() {
               </div>
             </a>
 
-            <a href="mailto:comercial@jg2.com.br" className="flex items-center gap-3.5 rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10">
+            <a href="mailto:comercial@jg2ps.com.br" className="flex items-center gap-3.5 rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10">
               <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-brand text-lg">✉️</span>
               <div>
                 <p className="text-sm font-bold text-white">Email</p>
-                <p className="text-[13.5px] text-white/60">comercial@jg2.com.br</p>
+                <p className="text-[13.5px] text-white/60">comercial@jg2ps.com.br</p>
               </div>
             </a>
 
@@ -95,14 +96,14 @@ export default function ContatoPage() {
             </div>
           </div>
 
-          <div className="mt-4 h-40 overflow-hidden rounded-2xl border border-white/10">
+          <div className="mt-4 h-56 overflow-hidden rounded-2xl border border-white/10 sm:h-64">
             <iframe
               title="Localização JG2 no Google Maps"
-              src="https://www.google.com/maps?q=R.+das+Palmeiras%2C+95%2C+Distrito+Industrial%2C+Timóteo+-+MG%2C+35181-672&output=embed"
-              className="h-full w-full"
-              style={{ filter: 'invert(92%) hue-rotate(180deg) grayscale(20%)' }}
+              src="https://www.google.com/maps?q=Rua+das+Palmeiras,+95,+Distrito+Industrial,+Timoteo+-+MG,+35181-672&output=embed"
+              className="h-full w-full border-0"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
             />
           </div>
 

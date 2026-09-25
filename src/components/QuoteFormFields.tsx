@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { isValidBrPhone, isValidCpfCnpj } from '@/lib/cpfCnpj';
-import { formatCpfCnpj, formatPhone } from '@/lib/masks';
+import { formatCep, formatCpfCnpj, formatPhone, isValidCep } from '@/lib/masks';
 
 const EMAIL_RE = /\S+@\S+\.\S+/;
 const errorClass = 'text-xs font-semibold text-brand';
@@ -15,6 +15,8 @@ export type QuoteFormValue = {
   phone: string;
   docType: DocType;
   cnpj: string;
+  address: string;
+  cep: string;
   purpose: string;
   message: string;
 };
@@ -37,11 +39,13 @@ export function QuoteFormFields({
   value: QuoteFormValue;
   onChange: (patch: Partial<QuoteFormValue>) => void;
 }) {
-  const [touched, setTouched] = useState({ email: false, phone: false, cnpj: false });
+  const [touched, setTouched] = useState({ email: false, phone: false, cnpj: false, cep: false });
   const emailValid = EMAIL_RE.test(value.email);
   const phoneValid = isValidBrPhone(value.phone);
   const cnpjValid = isValidCpfCnpj(value.cnpj);
+  const cepValid = isValidCep(value.cep);
   const docLabel = value.docType === 'cpf' ? 'CPF' : 'CNPJ';
+  const isCpf = value.docType === 'cpf';
 
   return (
     <div className="flex flex-col gap-4">
@@ -78,7 +82,12 @@ export function QuoteFormFields({
         <span className="font-bold text-ink">Documento*</span>
         <div className="flex gap-4">
           <label className="flex items-center gap-1.5 text-sm text-ink">
-            <input type="radio" name="docType" checked={value.docType === 'cnpj'} onChange={() => onChange({ docType: 'cnpj', cnpj: '' })} />
+            <input
+              type="radio"
+              name="docType"
+              checked={value.docType === 'cnpj'}
+              onChange={() => onChange({ docType: 'cnpj', cnpj: '', address: '', cep: '' })}
+            />
             CNPJ
           </label>
           <label className="flex items-center gap-1.5 text-sm text-ink">
@@ -96,6 +105,32 @@ export function QuoteFormFields({
         />
         {touched.cnpj && value.cnpj && !cnpjValid && <span className={errorClass}>{docLabel} inválido</span>}
       </div>
+      {isCpf && (
+        <>
+          <label className="flex flex-col gap-1.5 text-sm">
+            <span className="font-bold text-ink">Endereço*</span>
+            <input
+              required
+              value={value.address}
+              onChange={(e) => onChange({ address: e.target.value })}
+              placeholder="Rua, número, bairro"
+              className={inputClass}
+            />
+          </label>
+          <label className="flex flex-col gap-1.5 text-sm">
+            <span className="font-bold text-ink">CEP*</span>
+            <input
+              required
+              value={value.cep}
+              onChange={(e) => onChange({ cep: formatCep(e.target.value) })}
+              onBlur={() => setTouched((t) => ({ ...t, cep: true }))}
+              placeholder="00000-000"
+              className={inputClass}
+            />
+            {touched.cep && value.cep && !cepValid && <span className={errorClass}>CEP inválido</span>}
+          </label>
+        </>
+      )}
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-bold text-ink">Finalidade da Compra*</span>
         <select required value={value.purpose} onChange={(e) => onChange({ purpose: e.target.value })} className={inputClass}>
@@ -122,12 +157,22 @@ export function QuoteFormFields({
 }
 
 export function isQuoteFormValid(value: QuoteFormValue, privacyChecked: boolean): boolean {
+  const cpfOk =
+    value.docType !== 'cpf' || (value.address.trim().length >= 5 && isValidCep(value.cep));
   return (
     value.name.trim().length >= 2 &&
     /\S+@\S+\.\S+/.test(value.email) &&
     isValidBrPhone(value.phone) &&
     isValidCpfCnpj(value.cnpj) &&
     value.purpose.trim().length > 0 &&
+    cpfOk &&
     privacyChecked
   );
+}
+
+export function appendCpfAddressToMessage(value: Pick<QuoteFormValue, 'docType' | 'address' | 'cep' | 'message'>): string | null {
+  if (value.docType !== 'cpf') return value.message || null;
+  const block = `Endereço: ${value.address.trim()}\nCEP: ${value.cep.trim()}`;
+  const msg = value.message.trim();
+  return msg ? `${block}\n\n${msg}` : block;
 }

@@ -19,6 +19,8 @@ export type ConsultoriaData = {
   gains: string[];
   stagesTitle: string;
   stages: string[];
+  /** Banner de ação (meio da página) */
+  actionBannerImg?: string;
   howTitle: string;
   steps: ConsultoriaStep[];
   showcaseTitle: string;
@@ -31,6 +33,8 @@ export type ConsultoriaData = {
   software?: { title: string; text: string; cta: string; img: string };
   ctaTitle: string;
   ctaText: string;
+  /** Destino do botão "Ver catálogo" no CTA final */
+  catalogHref?: string;
   faqs: ConsultoriaFaq[];
 };
 
@@ -69,6 +73,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
       'Auditorias e gestão de mudanças',
       'Software JG2 Smart Loto®',
     ],
+    actionBannerImg: '/assets/correcoes/banner-acao-lototo.png',
     howTitle: 'Como a JG2 conduz a adequação LOTOTO da sua operação',
     steps: [
       { n: '01', title: 'Gemba Day — levantamento técnico', body: 'Mapeamos as fontes de energia perigosa de cada equipamento, avaliamos os procedimentos existentes e identificamos lacunas. Você recebe um documento técnico completo com a leitura real da planta e um plano de ação estruturado.' },
@@ -117,7 +122,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
   nr12: {
     slug: 'nr12',
     pill: 'Consultoria NR-12',
-    heroImg: '/uploads/nr12/banner.jpg',
+    heroImg: '/assets/correcoes/hero-nr12.png',
     heroH1: 'Adequação NR-12 completa para sua operação avançar sem retrabalho',
     heroBtn: 'Conhecer consultoria NR-12 →',
     subtitle: 'Do inventário ao laudo de conformidade: análise, projeto, fabricação, instalação, documentação e capacitação em um só parceiro.',
@@ -148,6 +153,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
       'Treinamento e capacitação',
       'Auditorias e gestão de mudanças',
     ],
+    actionBannerImg: '/assets/correcoes/banner-acao-nr12.jpg',
     howTitle: 'Como a JG2 conduz sua adequação NR-12',
     steps: [
       { n: '01', title: 'Inventário de máquinas', body: 'Levantamento detalhado do parque fabril em planilha e documento técnico, criando a base que sustenta todas as etapas seguintes. Você ganha controle sobre o escopo e melhora o planejamento.' },
@@ -167,12 +173,51 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
       { title: 'Projetos conceituais e detalhados', desc: 'Você visualiza a solução antes de investir e aprova o que faz sentido. Depois avançamos para os projetos mecânicos, elétricos, pneumáticos e hidráulicos.', img: '/uploads/nr12/projeto.png', fit: 'contain' },
       { title: 'Fabricação e instalação das proteções', desc: 'Fabricamos e instalamos as proteções com materiais compatíveis — aço inox ou galvanizado com pintura eletrostática. A proteção certa para o risco certo.', img: '/uploads/nr12/fabricacao.jpg', fit: 'cover' },
       { title: 'Laudo de conformidade NR-12', desc: 'Laudo final sustentado por nova apreciação de riscos e validação técnica da condição final da máquina — respaldo técnico e segurança diante de auditorias.', img: '/uploads/nr12/laudo.png', fit: 'contain' },
-      { title: 'Elaboração de manuais', desc: 'Novos manuais de utilização conforme exigência normativa, com orientações para uso, operação, intervenção e cuidados com o equipamento adequado.', img: '/uploads/nr12/adequacao.png', fit: 'contain' },
+      { title: 'Elaboração de manuais', desc: 'Novos manuais de utilização conforme exigência normativa, com orientações para uso, operação, intervenção e cuidados com o equipamento adequado.', img: '/assets/correcoes/manual-nr12.png', fit: 'contain' },
       { title: 'Treinamento e capacitação de equipes', desc: 'Treinamentos práticos e direcionados à sua operação: seu time entende o que mudou, por quê, e como preservar o desempenho seguro da máquina.', img: '/uploads/nr12/treinamento.png', fit: 'cover' },
       { title: 'Auditorias periódicas e gestão de mudanças', desc: 'Revisamos adequações implantadas, identificamos novos gaps e mantemos a adequação alinhada à realidade da planta à medida que a operação evolui.', img: '/uploads/nr12/auditoria.png', fit: 'cover' },
     ],
-    normsTitle: 'Normas que embasam a adequação',
-    norms: ['NR-12', 'ABNT NBR ISO 12100', 'ABNT NBR ISO 13849', 'NBR 14153'],
+    normsTitle: 'Base Técnica NR-12',
+    norms: [
+      'NR-10 — Segurança em instalações e serviços em eletricidade.',
+      'NR-12 — Segurança no trabalho em máquinas e equipamentos.',
+      'ABNT NBR ISO 14122-1 — Meios de acesso permanentes às máquinas — Parte 1.',
+      'ABNT NBR ISO 14122-2 — Meios de acesso permanentes às máquinas — Parte 2: Plataformas e passarelas.',
+      'ABNT NBR ISO 14122-3 — Meios de acesso permanentes às máquinas — Parte 3: Escadas e guarda-corpos.',
+      'ABNT NBR ISO 14122-4 — Meios de acesso permanentes às máquinas — Parte 4: Escadas fixas.',
+      'ABNT NBR 14120:2023 — Proteções — Requisitos gerais para projeto e construção de proteções fixas e móveis.',
+      'ABNT NBR ISO 14119:2021 — Dispositivos de intertravamento associados a proteções.',
+      'EN ISO 14119 — Dispositivos de intertravamento associados a proteções.',
+      'IEC 60204-1:2016 — Equipamento elétrico de máquinas — Parte 1: Requisitos gerais.',
+      'IEC 60947-5-1:2016 — Dispositivos eletromecânicos para circuitos de comando.',
+      'IEC 60947-5-2:2012 — Sensores de proximidade.',
+      'IEC 60947-5-3:2013 — Dispositivos de detecção com comportamento definido em falha.',
+      'IEC 60947-5-4:2002 — Avaliação do desempenho de contatos para baixas energias.',
+      'IEC 60947-5-5:2016 — Dispositivo de parada de emergência com travamento mecânico.',
+      'IEC 60947-5-6:1999 — Interface NAMUR para sensores de proximidade.',
+      'IEC 60947-5-7:2003 — Dispositivos de detecção de proximidade com saída analógica.',
+      'IEC 60947-5-8:2006 — Dispositivos de comando bimanual.',
+      'IEC 60947-5-9:2006 — Sensores de vazão.',
+      'IEC 61439-1 — Conjuntos de manobra e controle de baixa tensão — Parte 1.',
+      'ABNT NBR 5410:2005 — Instalações elétricas de baixa tensão.',
+      'ISO 10218-1:2018 — Requisitos de segurança para robôs industriais — Parte 1: Robôs.',
+      'ISO 10218-2:2018 — Requisitos de segurança para robôs industriais — Parte 2: Sistemas e integração.',
+      'ISO 12100:2013 — Princípios gerais de projeto — Apreciação e redução de riscos.',
+      'ISO 13849-1:2019 — Partes de sistemas de comando relacionadas à segurança — Parte 1.',
+      'ISO 13849-2:2019 — Partes de sistemas de comando relacionadas à segurança — Parte 2: Validação.',
+      'ABNT NBR 14153:2013 — Partes de sistemas de comando relacionadas à segurança.',
+      'ISO 13850:2006 — Função de parada de emergência — Princípios para projeto.',
+      'ISO 13854:2003 — Folgas mínimas para evitar o esmagamento de partes do corpo.',
+      'ISO 13855:2013 — Posicionamento de equipamentos de proteção.',
+      'NBR ISO 13857 — Distâncias de segurança para impedir acesso a zonas de perigo.',
+      'NBR ISO 13853 — Distâncias de segurança para membros superiores.',
+      'NM ISO 13852:2003 — Distâncias de segurança para membros superiores.',
+      'NBR ISO/TR 14121-2:2018 — Apreciação de riscos — Guia prático e exemplos.',
+      'ABNT NBR 16746:2019 — Manual de instruções — Princípios gerais de elaboração.',
+      'Metodologia HRN — NR-12 — Hazard Rating Number na apreciação de riscos.',
+      'ISO 23125:2013 — Máquinas-ferramenta — Segurança — Tornos.',
+      'ABNT NBR 13862:2017 — Transportadores de correia — Requisitos de segurança.',
+    ],
     diffTitle: 'Por que adequar com a JG2',
     diffs: [
       { title: 'Visão completa do projeto', body: 'Análise, projeto, fabricação, instalação, laudo, manuais e treinamento em uma só estrutura — menos ruído entre etapas.' },
@@ -182,6 +227,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
     ],
     ctaTitle: 'Sua adequação NR-12 conduzida com visão completa',
     ctaText: 'Converse com a JG2 e entenda como estruturar a adequação de forma faseada, sem perder a consistência do projeto.',
+    catalogHref: 'https://pub-c1e6b187e70f4fa69bdd79429ed7c8c2.r2.dev/catalogos/nr12-adequacao.pdf',
     faqs: [
       { q: 'A JG2 faz apenas a documentação ou executa a adequação completa?', a: 'Executamos a adequação de ponta a ponta: inventário, apreciação de riscos, projetos, fabricação, instalação, laudo de conformidade, manuais, treinamento e auditorias.' },
       { q: 'Já tenho parte da adequação feita. A JG2 assume a continuidade?', a: 'Sim. Revisamos o que foi feito, identificamos lacunas e reorganizamos o projeto em uma linha técnica mais segura, coerente e confiável.' },
@@ -223,6 +269,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
       'Fornecimento de dispositivos',
       'Auditorias e gestão de mudanças',
     ],
+    actionBannerImg: '/assets/correcoes/banner-acao-maos-seguras.jpg',
     howTitle: 'Como a JG2 conduz a consultoria em Mãos Seguras',
     steps: [
       { n: '01', title: 'Atendimento especializado', body: 'Entendemos seu cenário com critério técnico: tipo de atividade, risco envolvido, limitações operacionais e objetivo da solução. Você começa com atendimento técnico, não com tentativa e erro.' },
@@ -253,6 +300,7 @@ export const consultorias: Record<ConsultoriaData['slug'], ConsultoriaData> = {
     ],
     ctaTitle: 'Torne suas atividades mais seguras com soluções personalizadas',
     ctaText: 'Se a sua operação convive com tarefas que expõem as mãos ao risco, a JG2 analisa a atividade, desenvolve a solução e apoia do diagnóstico à aplicação final.',
+    catalogHref: '/produtos/maos-seguras',
     faqs: [
       { q: 'A JG2 vende apenas os dispositivos ou também realiza a consultoria completa?', a: 'Fazemos os dois: atendimento especializado, levantamento de atividades, desenvolvimento da solução, fabricação personalizada, fornecimento e acompanhamento contínuo.' },
       { q: 'Os dispositivos são padronizados ou personalizados?', a: 'As soluções são desenvolvidas de acordo com a atividade, o risco e a realidade operacional da planta, para reduzir a exposição das mãos com uma solução aderente à execução real.' },

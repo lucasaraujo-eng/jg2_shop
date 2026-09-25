@@ -1,7 +1,24 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { searchSiteFull } from '@/server/actions/search';
+import { pageMetadata } from '@/lib/seo';
 import { resolveImageUrl } from '@/lib/utils';
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}): Promise<Metadata> {
+  const { q } = await searchParams;
+  const query = (q ?? '').trim();
+  if (!query) return pageMetadata('/busca');
+  return {
+    title: { absolute: `Busca: ${query} | JG2` },
+    description: `Resultados da busca por "${query}" no catálogo e conteúdos da JG2®.`,
+    robots: { index: false, follow: true },
+  };
+}
 
 export default async function BuscaPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const { q } = await searchParams;

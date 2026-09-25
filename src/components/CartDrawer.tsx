@@ -4,12 +4,22 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
-import { QuoteFormFields, isQuoteFormValid, type QuoteFormValue } from '@/components/QuoteFormFields';
+import { QuoteFormFields, isQuoteFormValid, appendCpfAddressToMessage, type QuoteFormValue } from '@/components/QuoteFormFields';
 import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
 import { resolveImageUrl } from '@/lib/utils';
 import { getRecaptchaToken } from '@/lib/recaptcha-client';
 
-const EMPTY_FORM: QuoteFormValue = { name: '', email: '', phone: '', docType: 'cnpj', cnpj: '', purpose: '', message: '' };
+const EMPTY_FORM: QuoteFormValue = {
+  name: '',
+  email: '',
+  phone: '',
+  docType: 'cnpj',
+  cnpj: '',
+  address: '',
+  cep: '',
+  purpose: '',
+  message: '',
+};
 
 type Step = 'cart' | 'form' | 'sent';
 
@@ -45,7 +55,12 @@ export function CartDrawer() {
     const token = await getRecaptchaToken('submit_quote');
     const result = await submitQuote(
       {
-        ...form,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        cnpj: form.cnpj,
+        purpose: form.purpose,
+        message: appendCpfAddressToMessage(form),
         items: items.map((i) => ({
           code: i.code,
           name: i.name,

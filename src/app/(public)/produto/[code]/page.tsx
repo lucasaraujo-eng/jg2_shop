@@ -8,19 +8,27 @@ import { ProductTabs } from '@/components/product/ProductTabs';
 import { ProductCarousel } from '@/components/ProductCarousel';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
 import { SupportArticle } from '@/components/SupportArticle';
+import { ExpandableSupportText } from '@/components/product/ExpandableSupportText';
 import { getPageSeo, pageMetadata } from '@/lib/seo';
+import { productSupportFromDb } from '@/lib/productSupport';
 
 type PageProps = { params: Promise<{ code: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { code } = await params;
   const decoded = decodeURIComponent(code);
+  const product = await getProductByCode(decoded);
+  if (product?.seoTitle || product?.seoDescription) {
+    return {
+      title: { absolute: product.seoTitle || `${product.name} | JG2` },
+      description: product.seoDescription || product.subtitle || product.description[0] || undefined,
+    };
+  }
   const agency = getPageSeo(`/produto/${decoded}`);
   if (agency) return pageMetadata(`/produto/${decoded}`);
-  const product = await getProductByCode(decoded);
   if (!product) return {};
   return {
-    title: `${product.name} | JG2`,
+    title: { absolute: `${product.name} | JG2` },
     description: product.subtitle || product.description[0] || `Produto ${product.code} da linha JG2®.`,
   };
 }
@@ -30,7 +38,9 @@ export default async function ProductPage({ params }: PageProps) {
   const decoded = decodeURIComponent(code);
   const product = await getProductByCode(decoded);
   if (!product) notFound();
+  const dbSupport = productSupportFromDb(product);
   const agencySupport = getPageSeo(`/produto/${product.code}`)?.support;
+  const support = dbSupport ?? agencySupport;
 
   const related = await getRelatedProducts(product.categoryId, product.id);
 
@@ -123,7 +133,7 @@ export default async function ProductPage({ params }: PageProps) {
         </div>
 
         {related.length > 0 && (
-          <section className="mt-20">
+          <section className="mt-20 rounded-2xl bg-[#f0f0f0] px-5 py-8 sm:px-8">
             <h2 className="font-display text-2xl font-black text-ink">Veja também</h2>
             <div className="mt-6">
               <ProductCarousel products={related} />
@@ -134,14 +144,16 @@ export default async function ProductPage({ params }: PageProps) {
 
       <ClientsMarquee />
 
-      {agencySupport ? (
-        <SupportArticle data={agencySupport} />
+      {support ? (
+        <SupportArticle data={support} />
       ) : product.supportText ? (
         <section className="mx-auto max-w-[880px] px-7 py-16">
           <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">
             {productSupportTitle(product.name)}
           </h2>
-          <div className="mt-5 whitespace-pre-line leading-relaxed text-muted">{product.supportText}</div>
+          <div className="mt-5">
+            <ExpandableSupportText text={product.supportText} />
+          </div>
         </section>
       ) : null}
     </div>

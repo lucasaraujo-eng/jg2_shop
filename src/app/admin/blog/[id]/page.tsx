@@ -19,7 +19,9 @@ export default async function EditPostPage({
     excerpt: post.excerpt ?? '',
     content: post.content,
     coverUrl: post.coverUrl ?? '',
+    fileUrl: post.fileUrl ?? '',
     tag: post.tag ?? '',
+    type: post.type,
     status: post.status,
   };
 

@@ -8,8 +8,12 @@ const nextConfig: NextConfig = {
     remotePatterns: r2Hostname ? [{ protocol: "https", hostname: r2Hostname, pathname: "/**" }] : [],
   },
   async redirects() {
-    if (!R2_PUBLIC_URL) return [];
+    const redirects = [
+      { source: "/servicos", destination: "/servicos/lototo", permanent: true },
+    ];
+    if (!R2_PUBLIC_URL) return redirects;
     return [
+      ...redirects,
       // Mídia migrada para o Cloudflare R2 (ver scripts/migrate-media-to-r2.ts).
       // Os logos (assets/jg2-logo*.png) continuam locais/no git, de propósito.
       { source: "/uploads/:path*", destination: `${R2_PUBLIC_URL}/uploads/:path*`, permanent: true },

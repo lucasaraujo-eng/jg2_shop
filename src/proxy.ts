@@ -13,6 +13,9 @@ export default auth((req) => {
     const url = new URL('/admin/login', req.nextUrl.origin);
     return NextResponse.redirect(url);
   }
+  if (isLogin && req.auth) {
+    return NextResponse.redirect(new URL('/admin/produtos', req.nextUrl.origin));
+  }
   return NextResponse.next();
 });
 

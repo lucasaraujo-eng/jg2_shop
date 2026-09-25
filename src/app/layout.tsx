@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Figtree, Plus_Jakarta_Sans, Space_Mono } from 'next/font/google';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
+import { PAGE_SEO } from '@/data/seo';
 import './globals.css';
 
 const figtree = Figtree({
@@ -22,9 +23,11 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'JG2 Produtos de Segurança',
-  description:
-    'Catálogo de produtos de segurança industrial — bloqueio e etiquetagem (LOTO) e Mãos Seguras.',
+  title: {
+    default: PAGE_SEO['/'].title,
+    template: '%s | JG2',
+  },
+  description: PAGE_SEO['/'].description,
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION || '4NILnSX1WpwJbdiTpo5Gk7N7fhOSpeSFIHL7U1eHFwM',
   },

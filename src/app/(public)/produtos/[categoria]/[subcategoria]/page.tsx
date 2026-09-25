@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!sub || sub.category.type !== 'MAOS_SEGURAS') return {};
   const description = SUBCATEGORY_GROUP_DESCRIPTIONS[sub.name] ?? `${sub.name} — catálogo Mãos Seguras JG2.`;
   return {
-    title: `${sub.name} | Mãos Seguras | JG2`,
+    title: { absolute: `${sub.name} | Mãos Seguras | JG2` },
     description,
   };
 }

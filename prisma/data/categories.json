@@ -37,7 +37,6 @@
     "name": "Bloqueio de Válvulas",
     "order": 3,
     "subcategories": [
-      "Bloqueios de Cabo Mutiuso",
       "Bloqueios para Válvulas Gaveta/ Globo/ Volante/ Registro",
       "Bloqueios para Válvulas Esfera",
       "Bloqueio Universal para Válvulas (Aparece como Categoria, mas leva direto para a página do bloqueio) Deve Aparecer nas páginas de bloqueio para válvula esfera, bloqueio para válvula gaveta e bloqueio para válvula Borboleta",
@@ -49,8 +48,16 @@
   },
   {
     "type": "LOTO",
-    "name": "Caixas e Estações",
+    "name": "Bloqueios de Cabo",
     "order": 4,
+    "subcategories": [
+      "Bloqueios de Cabo Multiuso"
+    ]
+  },
+  {
+    "type": "LOTO",
+    "name": "Caixas e Estações",
+    "order": 5,
     "subcategories": [
       "Caixas de Bloqueio",
       "Estações de Bloqueio",
@@ -60,7 +67,7 @@
   {
     "type": "LOTO",
     "name": "Etiquetas e Placas",
-    "order": 5,
+    "order": 6,
     "subcategories": [
       "Etiquetas de Bloqueio"
     ]
@@ -68,7 +75,7 @@
   {
     "type": "LOTO",
     "name": "Malas e Bolsas",
-    "order": 6,
+    "order": 7,
     "subcategories": [
       "Malas e Bolsas LOTO"
     ]
@@ -76,7 +83,7 @@
   {
     "type": "MAOS_SEGURAS",
     "name": "Mãos Seguras",
-    "order": 7,
+    "order": 8,
     "subcategories": [
       "Extensores Industriais",
       "Proteção de Impacto",

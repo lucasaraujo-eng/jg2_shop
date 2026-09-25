@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { DocType } from '@/components/QuoteFormFields';
 import { isValidBrPhone, isValidCpfCnpj } from '@/lib/cpfCnpj';
-import { formatCpfCnpj, formatPhone } from '@/lib/masks';
+import { formatCep, formatCpfCnpj, formatPhone, isValidCep } from '@/lib/masks';
 
 const EMAIL_RE = /\S+@\S+\.\S+/;
 const errorClass = '-mt-1.5 text-xs font-semibold text-brand';
@@ -16,6 +16,8 @@ export type PageQuoteFormValue = {
   city: string;
   docType: DocType;
   cnpj: string;
+  address: string;
+  cep: string;
   message: string;
 };
 
@@ -29,11 +31,13 @@ export function PageQuoteFormFields({
   value: PageQuoteFormValue;
   onChange: (patch: Partial<PageQuoteFormValue>) => void;
 }) {
-  const [touched, setTouched] = useState({ email: false, phone: false, cnpj: false });
+  const [touched, setTouched] = useState({ email: false, phone: false, cnpj: false, cep: false });
   const emailValid = EMAIL_RE.test(value.email);
   const phoneValid = isValidBrPhone(value.phone);
   const cnpjValid = isValidCpfCnpj(value.cnpj);
+  const cepValid = isValidCep(value.cep);
   const docLabel = value.docType === 'cpf' ? 'CPF' : 'CNPJ';
+  const isCpf = value.docType === 'cpf';
 
   return (
     <div className="flex flex-col gap-3">
@@ -84,7 +88,12 @@ export function PageQuoteFormFields({
       {touched.phone && value.phone && !phoneValid && <span className={errorClass}>Telefone inválido</span>}
       <div className="flex gap-4 text-sm text-ink">
         <label className="flex items-center gap-1.5">
-          <input type="radio" name="page-docType" checked={value.docType === 'cnpj'} onChange={() => onChange({ docType: 'cnpj', cnpj: '' })} />
+          <input
+            type="radio"
+            name="page-docType"
+            checked={value.docType === 'cnpj'}
+            onChange={() => onChange({ docType: 'cnpj', cnpj: '', address: '', cep: '' })}
+          />
           CNPJ
         </label>
         <label className="flex items-center gap-1.5">
@@ -102,6 +111,28 @@ export function PageQuoteFormFields({
         className={inputClass}
       />
       {touched.cnpj && value.cnpj && !cnpjValid && <span className={errorClass}>{docLabel} inválido</span>}
+      {isCpf && (
+        <>
+          <input
+            required
+            value={value.address}
+            onChange={(e) => onChange({ address: e.target.value })}
+            placeholder="Endereço *"
+            aria-label="Endereço"
+            className={inputClass}
+          />
+          <input
+            required
+            value={value.cep}
+            onChange={(e) => onChange({ cep: formatCep(e.target.value) })}
+            onBlur={() => setTouched((t) => ({ ...t, cep: true }))}
+            placeholder="CEP *"
+            aria-label="CEP"
+            className={inputClass}
+          />
+          {touched.cep && value.cep && !cepValid && <span className={errorClass}>CEP inválido</span>}
+        </>
+      )}
       <textarea
         value={value.message}
         onChange={(e) => onChange({ message: e.target.value })}
@@ -114,10 +145,13 @@ export function PageQuoteFormFields({
 }
 
 export function isPageQuoteFormValid(value: PageQuoteFormValue): boolean {
+  const cpfOk =
+    value.docType !== 'cpf' || (value.address.trim().length >= 5 && isValidCep(value.cep));
   return (
     value.name.trim().length >= 2 &&
     /\S+@\S+\.\S+/.test(value.email) &&
     value.company.trim().length > 0 &&
-    isValidCpfCnpj(value.cnpj)
+    isValidCpfCnpj(value.cnpj) &&
+    cpfOk
   );
 }

@@ -1,5 +1,9 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
+import { pageMetadata } from '@/lib/seo';
+
+export const metadata: Metadata = pageMetadata('/servicos');
 
 const STRIPE_BG = {
   backgroundImage:

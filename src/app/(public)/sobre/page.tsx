@@ -1,10 +1,14 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { StatsCounter, type Stat } from '@/components/about/StatsCounter';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 import { setores } from '@/data/setores';
+import { pageMetadata } from '@/lib/seo';
 import { r2Url } from '@/lib/utils';
+
+export const metadata: Metadata = pageMetadata('/sobre');
 
 const STATS: Stat[] = [
   { prefix: '+', value: 5000, label: 'clientes atendidos em todo o Brasil' },
@@ -43,7 +47,7 @@ export default function SobrePage() {
   return (
     <div>
       <section className="relative overflow-hidden bg-ink-deeper">
-        <Image src={r2Url('/uploads/sobre/banner-equipe.png')} alt="" fill sizes="100vw" priority className="object-cover object-top opacity-[.42]" />
+        <Image src={r2Url('/uploads/sobre/banner-equipe.png')} alt="" fill sizes="100vw" priority className="object-cover object-[center_18%] opacity-[.42]" />
         <div className="absolute inset-0 bg-gradient-to-b from-ink-deeper/55 to-ink-deeper/80" />
         <div className="relative mx-auto max-w-[1340px] px-7 py-28">
           <p className="text-xs text-white/55">

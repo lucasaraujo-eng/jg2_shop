@@ -3,6 +3,12 @@ import { CACHE_TAGS, cachedQuery } from '@/lib/data-cache';
 
 const tags = [CACHE_TAGS.catalog];
 
+const productCardInclude = {
+  images: { orderBy: { order: 'asc' as const }, take: 2 },
+  subcategory: true,
+  category: { select: { name: true } },
+};
+
 export const getCategories = cachedQuery('catalog:categories', tags, async () =>
   prisma.category.findMany({
     orderBy: { order: 'asc' },
@@ -17,13 +23,27 @@ export const getCategoryBySlug = cachedQuery('catalog:category-by-slug', tags, a
   }),
 );
 
-export const getProductsByCategory = cachedQuery('catalog:products-by-category', tags, async (categorySlug: string) =>
-  prisma.product.findMany({
-    where: { active: true, category: { slug: categorySlug } },
+export const getProductsByCategory = cachedQuery('catalog:products-by-category', tags, async (categorySlug: string) => {
+  const products = await prisma.product.findMany({
+    where: {
+      active: true,
+      OR: [
+        { category: { slug: categorySlug } },
+        { categories: { some: { category: { slug: categorySlug } } } },
+      ],
+    },
     orderBy: { order: 'asc' },
-    include: { images: { orderBy: { order: 'asc' }, take: 2 }, subcategory: true, category: { select: { name: true } } },
-  }),
-);
+    include: productCardInclude,
+  });
+
+  // Deduplicate by id (primary category + N:N can overlap)
+  const seen = new Set<string>();
+  return products.filter((p) => {
+    if (seen.has(p.id)) return false;
+    seen.add(p.id);
+    return true;
+  });
+});
 
 export const getSubcategoryBySlug = cachedQuery(
   'catalog:subcategory-by-slug',
@@ -78,6 +98,7 @@ export const getProductByCode = cachedQuery('catalog:product-by-code', tags, asy
       category: true,
       subcategory: true,
       filterTags: true,
+      categories: true,
     },
   }),
 );
@@ -87,7 +108,11 @@ export const getRelatedProducts = cachedQuery(
   tags,
   async (categoryId: string, excludeProductId: string) =>
     prisma.product.findMany({
-      where: { active: true, categoryId, id: { not: excludeProductId } },
+      where: {
+        active: true,
+        id: { not: excludeProductId },
+        OR: [{ categoryId }, { categories: { some: { categoryId } } }],
+      },
       orderBy: { order: 'asc' },
       take: 10,
       include: { images: { orderBy: { order: 'asc' }, take: 2 } },

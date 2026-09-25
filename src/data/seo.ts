@@ -235,12 +235,54 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     },
   },
 
+  '/servicos': {
+    title: 'Consultorias em Segurança Industrial | LOTOTO, NR-12 e Mãos Seguras | JG2',
+    description:
+      'Consultoria LOTOTO, adequação NR-12 e programa Mãos Seguras. Diagnóstico, projetos com ART, treinamentos e implantação com a JG2®.',
+  },
+
+  '/sobre': {
+    title: 'Sobre a JG2 | Fabricante de Segurança Industrial há +40 Anos',
+    description:
+      'Conheça o Grupo JG2®: fabricante de dispositivos LOTO e Mãos Seguras, com fábrica em Timóteo (MG), consultorias NR-12 e atendimento em toda a América do Sul.',
+  },
+
+  '/contato': {
+    title: 'Fale com a JG2 | Contato Comercial e Suporte Técnico',
+    description:
+      'Entre em contato com a equipe comercial da JG2®. Tire dúvidas sobre produtos LOTO, Mãos Seguras e consultorias. Atendimento ágil em todo o Brasil.',
+  },
+
+  '/orcamento': {
+    title: 'Solicite Orçamento de Produtos LOTO e Mãos Seguras | JG2',
+    description:
+      'Monte sua lista de produtos de bloqueio e etiquetagem e envie o orçamento direto para a JG2®. Sem compromisso, com retorno da equipe comercial.',
+  },
+
+  '/blog': {
+    title: 'Blog de Segurança Industrial e LOTO | JG2',
+    description:
+      'Artigos, guias e boas práticas sobre bloqueio e etiquetagem (LOTO), NR-12 e proteção das mãos. Conteúdo técnico para gestores de segurança do trabalho.',
+  },
+
+  '/videos': {
+    title: 'Vídeos sobre Segurança Industrial e LOTO | JG2',
+    description:
+      'Demonstrações, institucionais e conteúdos técnicos sobre bloqueio LOTO, adequação NR-12 e dispositivos Mãos Seguras da JG2®.',
+  },
+
+  '/busca': {
+    title: 'Busca no Catálogo JG2 | Produtos e Conteúdos',
+    description:
+      'Encontre produtos de bloqueio e etiquetagem LOTO, dispositivos Mãos Seguras e conteúdos da JG2®. Digite o que você procura.',
+  },
+
   '/downloads': {
     title: 'Baixe o Catálogo de Bloqueio e Etiquetagem LOTO | JG2',
     description:
       'Catálogos JG2 em PDF de bloqueio e etiquetagem LOTO, dispositivos mãos seguras e guia de adequação NR-12. Material técnico gratuito. Baixe agora!',
     support: {
-      heading: 'Catálogos e Manuais JG2 em PDF: material técnico gratuito',
+      heading: 'Materiais Técnicos para Consulta e Especificação',
       tldr: 'Central de downloads com catálogo geral de segurança industrial, catálogo de bloqueio e etiquetagem (LOTOTO), catálogo de dispositivos mãos seguras, catálogo de gradil de segurança e guia de adequação à NR-12, todos em PDF gratuito.',
       idealFor:
         'especificar produtos antes de solicitar orçamento; engenheiros de segurança que precisam de material de referência técnica para apresentação interna.',
@@ -431,10 +473,16 @@ export const PAGE_SEO: Record<string, PageSeo> = {
       ],
       tip: 'O erro mais comum é comprar o dispositivo pelo nome do tipo de válvula (esfera, gaveta, borboleta) sem checar a faixa de diâmetro em mm ou polegadas — o mesmo tipo em diâmetros diferentes pode exigir modelos distintos.',
       related: [
-        { label: 'Bloqueio JGL251-1', href: '/produto/JGL251-1' },
+        { label: 'Bloqueios de Cabo', href: '/produtos/bloqueios-de-cabo' },
         { label: 'Bloqueios Elétricos', href: '/produtos/bloqueios-eletricos' },
       ],
     },
+  },
+
+  '/produtos/bloqueios-de-cabo': {
+    title: 'Bloqueios de Cabo para LOTO Industrial | JG2',
+    description:
+      'Dispositivos de cabo para bloqueio de válvulas esfera, gaveta, borboleta e disjuntores em série. Solicite orçamento JG2®.',
   },
 
   '/produtos/caixas-e-estacoes': {

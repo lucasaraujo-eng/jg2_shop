@@ -1,9 +1,13 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getPublishedPosts } from '@/server/blog';
 import { PostCard } from '@/components/blog/PostCard';
 import { NewsletterForm } from '@/components/NewsletterForm';
+import { pageMetadata } from '@/lib/seo';
 
-const SHOW_POSTS = false;
+export const metadata: Metadata = pageMetadata('/blog');
+
+const SHOW_POSTS = true;
 
 export default async function BlogIndexPage() {
   const posts = await getPublishedPosts();

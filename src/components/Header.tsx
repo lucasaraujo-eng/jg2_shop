@@ -264,11 +264,15 @@ function DropdownNav({ label, active = false, open, onToggle, children }: { labe
       <button onClick={onToggle} aria-expanded={open} className={`flex items-center gap-1.5 uppercase hover:text-brand ${active ? 'text-brand' : ''}`}>
         {label} <span className="text-xs">⌄</span>
       </button>
-      {open && (
-        <div className="absolute -left-3 top-[calc(100%+12px)] z-[90] min-w-[280px] rounded-2xl border border-border-soft bg-white shadow-[0_12px_32px_rgba(20,18,16,.10)]" style={{ animation: 'jg-fade .16s ease both' }}>
-          {children}
-        </div>
-      )}
+      {/* Mantém links no DOM (SEO/crawlers) mesmo com o menu fechado */}
+      <div
+        className={`absolute -left-3 top-[calc(100%+12px)] z-[90] min-w-[280px] rounded-2xl border border-border-soft bg-white shadow-[0_12px_32px_rgba(20,18,16,.10)] transition duration-150 ${
+          open ? 'visible opacity-100' : 'invisible pointer-events-none opacity-0'
+        }`}
+        aria-hidden={!open}
+      >
+        {children}
+      </div>
     </div>
   );
 }
