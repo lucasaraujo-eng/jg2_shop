@@ -71,27 +71,6 @@ export default async function BuscaPage({ searchParams }: { searchParams: Promis
           </p>
         )}
 
-        {results.pages.length > 0 && (
-          <div className="mb-12">
-            <h2 className="mb-5 font-display text-xl font-black text-ink">Páginas e serviços</h2>
-            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
-              {results.pages.map((p) => (
-                <Link
-                  key={p.href}
-                  href={p.href}
-                  className="flex items-center justify-between rounded-xl border border-border-soft bg-white px-4 py-3.5 text-sm transition hover:border-brand"
-                >
-                  <span>
-                    <span className="block font-bold text-ink">{p.title}</span>
-                    <span className="font-mono text-xs text-tertiary">{p.kind}</span>
-                  </span>
-                  <span>→</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-
         {results.categories.length > 0 && (
           <div className="mb-12">
             <h2 className="mb-5 font-display text-xl font-black text-ink">Categorias</h2>
@@ -162,6 +141,27 @@ export default async function BuscaPage({ searchParams }: { searchParams: Promis
                   </Link>
                 );
               })}
+            </div>
+          </div>
+        )}
+
+        {results.pages.length > 0 && (
+          <div className="mb-12">
+            <h2 className="mb-5 font-display text-xl font-black text-ink">Páginas e serviços</h2>
+            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+              {results.pages.map((p) => (
+                <Link
+                  key={p.href}
+                  href={p.href}
+                  className="flex items-center justify-between rounded-xl border border-border-soft bg-white px-4 py-3.5 text-sm transition hover:border-brand"
+                >
+                  <span>
+                    <span className="block font-bold text-ink">{p.title}</span>
+                    <span className="font-mono text-xs text-tertiary">{p.kind}</span>
+                  </span>
+                  <span>→</span>
+                </Link>
+              ))}
             </div>
           </div>
         )}
