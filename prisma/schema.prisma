@@ -8,14 +8,15 @@ datasource db {
 
 // ---------- CATÁLOGO ----------
 model Category {
-  id            String        @id @default(cuid())
-  name          String
-  slug          String        @unique
-  type          CategoryType
-  order         Int           @default(0)
-  supportText   String?       @db.Text
-  subcategories Subcategory[]
-  products      Product[]
+  id               String            @id @default(cuid())
+  name             String
+  slug             String            @unique
+  type             CategoryType
+  order            Int               @default(0)
+  supportText      String?           @db.Text
+  subcategories    Subcategory[]
+  products         Product[]
+  productLinks     ProductCategory[]
 }
 
 model Subcategory {
@@ -32,28 +33,48 @@ model Subcategory {
 }
 
 model Product {
-  id            String             @id @default(cuid())
-  code          String             @unique
-  name          String
-  subtitle      String?            @db.Text
-  ncm           String?
-  isCadeado     Boolean            @default(false)
-  description   String[]
-  supportText   String?            @db.Text
-  active        Boolean            @default(true)
-  order         Int                @default(0)
-  datasheetUrl  String?
-  category      Category           @relation(fields: [categoryId], references: [id])
-  categoryId    String
-  subcategory   Subcategory?       @relation(fields: [subcategoryId], references: [id])
-  subcategoryId String?
-  images        ProductImage[]
-  variants      ProductVariant[]
-  specs         ProductSpec[]
-  filterTags    ProductFilterTag[]
-  quoteItems    QuoteItem[]
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
+  id              String             @id @default(cuid())
+  code            String             @unique
+  name            String
+  subtitle        String?            @db.Text
+  ncm             String?
+  isCadeado       Boolean            @default(false)
+  description     String[]
+  supportText     String?            @db.Text
+  seoTitle        String?
+  seoDescription  String?            @db.Text
+  supportHeading  String?
+  supportTldr     String?            @db.Text
+  supportIdealFor String?            @db.Text
+  supportNotFor   String?            @db.Text
+  supportJson     Json?
+  active          Boolean            @default(true)
+  order           Int                @default(0)
+  datasheetUrl    String?
+  category        Category           @relation(fields: [categoryId], references: [id])
+  categoryId      String
+  subcategory     Subcategory?       @relation(fields: [subcategoryId], references: [id])
+  subcategoryId   String?
+  images          ProductImage[]
+  variants        ProductVariant[]
+  specs           ProductSpec[]
+  filterTags      ProductFilterTag[]
+  quoteItems      QuoteItem[]
+  categories      ProductCategory[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
+
+model ProductCategory {
+  id         String   @id @default(cuid())
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId  String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String
+  isPrimary  Boolean  @default(false)
+
+  @@unique([productId, categoryId])
+  @@index([categoryId])
 }
 
 model ProductImage {
@@ -130,13 +151,9 @@ model QuoteRequest {
   name      String
   email     String
   phone     String
-  /// Preenchido só na página /orçamento (protótipo: form.empresa)
   company   String?
-  /// Preenchido só na página /orçamento (protótipo: form.cidade)
   city      String?
-  /// Preenchido só no drawer de orçamento (protótipo: form.cnpj)
   cnpj      String?
-  /// Preenchido só no drawer de orçamento (protótipo: form.finalidade)
   purpose   String?
   message   String?     @db.Text
   status    QuoteStatus @default(NEW)
@@ -156,7 +173,7 @@ model QuoteItem {
   productId    String?
 }
 
-// ---------- BLOG ----------
+// ---------- BLOG / CONTEÚDOS ----------
 model BlogPost {
   id          String     @id @default(cuid())
   title       String
@@ -164,13 +181,29 @@ model BlogPost {
   excerpt     String?
   content     String     @db.Text
   coverUrl    String?
+  fileUrl     String?
   tag         String?
+  type        PostType   @default(BLOG)
   status      PostStatus @default(DRAFT)
   author      AdminUser? @relation(fields: [authorId], references: [id])
   authorId    String?
   publishedAt DateTime?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+
+  @@index([type, status])
+}
+
+// ---------- VÍDEOS ----------
+model Video {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  youtubeUrl  String
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 // ---------- ADMIN / AUTH.js ----------
@@ -188,7 +221,6 @@ model AdminUser {
   createdAt     DateTime   @default(now())
 }
 
-// Modelos exigidos pelo adapter Prisma do Auth.js
 model Account {
   id                String    @id @default(cuid())
   userId            String
@@ -244,6 +276,14 @@ enum QuoteStatus {
 enum PostStatus {
   DRAFT
   PUBLISHED
+}
+
+enum PostType {
+  BLOG
+  NORMA
+  EBOOK
+  ARTIGO
+  SETOR
 }
 
 enum Role {

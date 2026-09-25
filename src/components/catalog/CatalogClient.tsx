@@ -163,7 +163,7 @@ export function CatalogClient({
           {filterActive && (
             <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-border-soft pt-5">
               <p className="text-sm text-muted-2">
-                {loading ? 'Filtrando…' : `Exibindo ${filteredProducts?.length ?? 0} produtos indicados para o dispositivo selecionado.`}
+                {loading ? 'Filtrando…' : `Estes são os ${filteredProducts?.length ?? 0} dispositivos de bloqueio indicados para o dispositivo selecionado`}
               </p>
               <button
                 onClick={clearFilter}

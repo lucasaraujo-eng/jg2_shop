@@ -62,11 +62,29 @@ export const productSchema = z.object({
   isCadeado: z.boolean().default(false),
   categoryId: z.string().min(1, 'Selecione a categoria'),
   subcategoryId: z.string().optional().nullable(),
+  extraCategoryIds: z.array(z.string()).max(20).default([]),
   description: z.array(z.string().max(2000)).max(50).default([]),
   supportText: z.string().max(5000).optional().nullable(),
+  seoTitle: z.string().max(200).optional().nullable(),
+  seoDescription: z.string().max(500).optional().nullable(),
+  supportHeading: z.string().max(300).optional().nullable(),
+  supportTldr: z.string().max(2000).optional().nullable(),
+  supportIdealFor: z.string().max(2000).optional().nullable(),
+  supportNotFor: z.string().max(2000).optional().nullable(),
+  supportJson: z
+    .object({
+      tableHeaders: z.array(z.string()).max(10).default([]),
+      tableRows: z.array(z.array(z.string())).max(30).default([]),
+      faqs: z.array(z.object({ q: z.string().max(500), a: z.string().max(2000) })).max(20).default([]),
+      tip: z.string().max(1000).optional().nullable(),
+      related: z.array(z.object({ label: z.string().max(100), href: z.string().max(300) })).max(10).default([]),
+    })
+    .optional()
+    .nullable(),
   specs: z.array(z.object({ label: z.string().min(1).max(100), value: z.string().min(1).max(300) })).max(30).default([]),
   filterTags: z.array(z.string()).max(100).default([]),
   coverUrl: z.string().optional().nullable(),
+  imageUrls: z.array(z.string().min(1)).max(12).default([]),
   active: z.boolean().default(true),
 });
 export type ProductInput = z.infer<typeof productSchema>;
@@ -75,9 +93,20 @@ export const postSchema = z.object({
   title: z.string().min(2, 'Informe o título').max(200),
   slug: z.string().min(2).max(200),
   excerpt: z.string().max(500).optional().nullable(),
-  content: z.string().min(1, 'Escreva o conteúdo').max(50000),
-  coverUrl: z.string().url().optional().nullable(),
+  content: z.string().min(1, 'Escreva o conteúdo').max(200000),
+  coverUrl: z.string().optional().nullable(),
+  fileUrl: z.string().optional().nullable(),
   tag: z.string().max(50).optional().nullable(),
+  type: z.enum(['BLOG', 'NORMA', 'EBOOK', 'ARTIGO', 'SETOR']).default('BLOG'),
   status: z.enum(['DRAFT', 'PUBLISHED']).default('DRAFT'),
 });
 export type PostInput = z.infer<typeof postSchema>;
+
+export const videoSchema = z.object({
+  title: z.string().min(2, 'Informe o título').max(200),
+  description: z.string().max(2000).optional().nullable(),
+  youtubeUrl: z.string().url('Informe um link válido do YouTube').max(500),
+  order: z.number().int().min(0).max(9999).default(0),
+  active: z.boolean().default(true),
+});
+export type VideoInput = z.infer<typeof videoSchema>;

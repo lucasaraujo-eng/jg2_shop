@@ -150,7 +150,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-ink-deep/80 via-ink-deep/45 to-ink-deep/10" />
         <div className="relative mx-auto w-full max-w-[1340px] px-7 sm:flex sm:flex-col sm:justify-center sm:self-stretch">
           <div className="max-w-3xl">
-            <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Grupo JG2</p>
+            <p className="inline-block rounded-full bg-brand px-3.5 py-2 text-sm font-bold uppercase tracking-wide text-white sm:text-base">Grupo JG2®</p>
             <h1 className="mt-4 font-display text-4xl font-black leading-tight tracking-tight sm:text-5xl">
               Adequação Completa em Segurança Industrial
             </h1>

@@ -31,4 +31,7 @@ export function invalidateCatalogCache() {
 export function invalidateBlogCache() {
   updateTag(CACHE_TAGS.blog);
   revalidatePath('/blog');
+  revalidatePath('/downloads');
+  revalidatePath('/videos');
+  revalidatePath('/setores', 'layout');
 }

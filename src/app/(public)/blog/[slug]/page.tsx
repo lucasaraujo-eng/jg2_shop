@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getRelatedPosts } from '@/server/blog';
@@ -11,18 +12,30 @@ const STRIPE_BG = {
     'repeating-linear-gradient(135deg, var(--color-surface-stripe-a) 0 14px, var(--color-surface-stripe-b) 14px 28px)',
 };
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+type PageProps = { params: Promise<{ slug: string }> };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  if (!post || post.status !== 'PUBLISHED') notFound();
+  if (!post || post.status !== 'PUBLISHED' || post.type !== 'BLOG') return {};
+  return {
+    title: { absolute: `${post.title} | JG2` },
+    description: post.excerpt || `Artigo sobre ${post.tag} — JG2 Produtos de Segurança.`,
+  };
+}
+
+export default async function BlogPostPage({ params }: PageProps) {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  if (!post || post.status !== 'PUBLISHED' || post.type !== 'BLOG') notFound();
 
   const related = await getRelatedPosts(slug);
   const date = post.publishedAt
-    ? new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(post.publishedAt).toUpperCase()
+    ? (() => {
+        const d = post.publishedAt instanceof Date ? post.publishedAt : new Date(post.publishedAt);
+        if (Number.isNaN(d.getTime())) return null;
+        return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(d).toUpperCase();
+      })()
     : null;
 
   return (

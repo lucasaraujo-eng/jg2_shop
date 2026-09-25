@@ -12,12 +12,14 @@ export type PostSummary = {
   excerpt: string | null;
   tag: string | null;
   content: string;
-  publishedAt: Date | null;
+  publishedAt: Date | string | null;
 };
 
-function formatDate(date: Date | null): string | null {
+function formatDate(date: Date | string | null): string | null {
   if (!date) return null;
-  return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(date).toUpperCase();
+  const d = date instanceof Date ? date : new Date(date);
+  if (Number.isNaN(d.getTime())) return null;
+  return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(d).toUpperCase();
 }
 
 export function PostCard({ post, featured = false }: { post: PostSummary; featured?: boolean }) {

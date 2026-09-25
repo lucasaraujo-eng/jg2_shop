@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getCategories } from '@/server/catalog';
 import { getAdminProduct } from '@/server/actions/products';
 import { ProductForm } from '@/components/admin/ProductForm';
+import { parseSupportJson } from '@/lib/productSupport';
 import type { ProductInput } from '@/lib/validations';
 
 export default async function EditProductPage({
@@ -14,6 +15,7 @@ export default async function EditProductPage({
   const [categories, product] = await Promise.all([getCategories(), getAdminProduct(id)]);
   if (!product) notFound();
 
+  const imageUrls = product.images.map((img) => img.url);
   const initial: ProductInput = {
     code: product.code,
     name: product.name,
@@ -22,11 +24,20 @@ export default async function EditProductPage({
     isCadeado: product.isCadeado,
     categoryId: product.categoryId,
     subcategoryId: product.subcategoryId ?? '',
+    extraCategoryIds: product.categories.filter((c) => !c.isPrimary).map((c) => c.categoryId),
     description: product.description,
     supportText: product.supportText ?? '',
+    seoTitle: product.seoTitle ?? '',
+    seoDescription: product.seoDescription ?? '',
+    supportHeading: product.supportHeading ?? '',
+    supportTldr: product.supportTldr ?? '',
+    supportIdealFor: product.supportIdealFor ?? '',
+    supportNotFor: product.supportNotFor ?? '',
+    supportJson: parseSupportJson(product.supportJson),
     specs: product.specs.map((s) => ({ label: s.label, value: s.value })),
     filterTags: product.filterTags.map((t) => t.tagKey),
-    coverUrl: product.images[0]?.url ?? '',
+    coverUrl: imageUrls[0] ?? '',
+    imageUrls,
     active: product.active,
   };
 

@@ -31,7 +31,7 @@ export function ProductGallery({
 
   return (
     <div className="min-w-0 lg:sticky lg:top-[160px]">
-      <div className="group flex h-[440px] items-center justify-center overflow-hidden rounded-2xl border border-border-soft bg-white p-6">
+      <div className="group flex h-[440px] items-center justify-center overflow-hidden rounded-2xl border border-border-soft bg-[#f0f0f0] p-6">
         {current ? (
           <Image
             src={current}

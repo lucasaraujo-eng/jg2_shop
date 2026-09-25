@@ -1,9 +1,11 @@
 export const CATEGORY_GROUP_DESCRIPTIONS: Record<string, string> = {
   'Cadeados de Bloqueio': 'Produtos para bloqueio seguro, identificação individual e padronização das intervenções em campo.',
   'Etiquetas e Placas': 'Etiquetas para identificação visual, comunicação de risco e reforço da padronização do bloqueio e etiquetagem.',
-  'Garras de Bloqueio': 'Dispositivos hasp para bloqueio múltiplo, permitindo vários cadeados em um único ponto de isolamento.',
+  'Garras de Bloqueio': 'Dispositivos para bloqueio múltiplo, permitindo vários cadeados em um único ponto de isolamento.',
   'Caixas e Estações': 'Soluções para guarda de chaves e organização dos dispositivos de bloqueio em grupo.',
   'Bloqueio de Válvulas': 'Dispositivos para isolar válvulas esfera, gaveta e borboleta de diferentes diâmetros.',
+  'Bloqueios de Cabo':
+    'Dispositivos para possibilitar o bloqueio de válvulas esfera, válvulas gaveta, válvulas borboleta e disjuntores em série.',
   'Bloqueios Elétricos': 'Bloqueios para disjuntores, plugues e tomadas, impedindo a reenergização acidental.',
   'Kits de Bloqueio': 'Conjuntos completos para implantação e operação do LOTO no dia a dia da equipe.',
   'Malas e Bolsas': 'Transporte e organização dos dispositivos de bloqueio em campo.',

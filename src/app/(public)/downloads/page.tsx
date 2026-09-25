@@ -6,6 +6,7 @@ import { r2Url } from '@/lib/utils';
 import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 import { SupportArticle } from '@/components/SupportArticle';
 import { getPageSeo, pageMetadata } from '@/lib/seo';
+import { getPublishedPostsByType } from '@/server/blog';
 
 type Doc = { tag: string; title: string; desc: string; meta: string; url?: string; cover?: string };
 
@@ -37,6 +38,14 @@ const DOCS_CATALOGOS: Doc[] = [
     cover: `${R2}/maos-seguras-cover.png`,
   },
   {
+    tag: 'NR-12',
+    title: 'Adequação à NR-12',
+    desc: 'Guia de soluções JG2® para adequação de máquinas e equipamentos à NR-12.',
+    meta: 'PDF · 14 MB',
+    url: `${R2}/nr12-adequacao.pdf`,
+    cover: `${R2}/nr12-adequacao-cover.png`,
+  },
+  {
     tag: 'Catálogo',
     title: 'Gradil de Segurança',
     desc: 'Grades e barreiras modulares para delimitação e proteção de áreas de risco.',
@@ -46,26 +55,19 @@ const DOCS_CATALOGOS: Doc[] = [
   },
 ];
 
-const DOCS_NORMAS: Doc[] = [
-  {
-    tag: 'NR-12',
-    title: 'Adequação à NR-12',
-    desc: 'Guia de soluções JG2® para adequação de máquinas e equipamentos à NR-12.',
-    meta: 'PDF · 14 MB',
-    url: `${R2}/nr12-adequacao.pdf`,
-    cover: `${R2}/nr12-adequacao-cover.png`,
-  },
-];
-
-const DOCS_EBOOKS: Doc[] = [];
-const DOCS_ARTIGOS: Doc[] = [];
-
-const SECTIONS = [
-  { id: 'cat-sec-catalogos', label: 'Catálogos e Portfólios JG2®', docs: DOCS_CATALOGOS },
-  { id: 'cat-sec-normas', label: 'Normas Regulamentadoras', docs: DOCS_NORMAS },
-  { id: 'cat-sec-ebooks', label: 'E-books', docs: DOCS_EBOOKS },
-  { id: 'cat-sec-artigos', label: 'Artigos', docs: DOCS_ARTIGOS },
-];
+function postsToDocs(
+  posts: Awaited<ReturnType<typeof getPublishedPostsByType>>,
+  defaultTag: string,
+): Doc[] {
+  return posts.map((p) => ({
+    tag: p.tag || defaultTag,
+    title: p.title,
+    desc: p.excerpt || '',
+    meta: 'PDF',
+    url: p.fileUrl || undefined,
+    cover: p.coverUrl || undefined,
+  }));
+}
 
 function DocCard({ doc }: { doc: Doc }) {
   return (
@@ -101,8 +103,21 @@ function DocCard({ doc }: { doc: Doc }) {
 
 export const metadata: Metadata = pageMetadata('/downloads');
 
-export default function DownloadsPage() {
+export default async function DownloadsPage() {
   const support = getPageSeo('/downloads')?.support;
+  const [normas, ebooks, artigos] = await Promise.all([
+    getPublishedPostsByType('NORMA'),
+    getPublishedPostsByType('EBOOK'),
+    getPublishedPostsByType('ARTIGO'),
+  ]);
+
+  const SECTIONS = [
+    { id: 'cat-sec-catalogos', label: 'Catálogos e Portfólios JG2®', docs: DOCS_CATALOGOS },
+    { id: 'cat-sec-normas', label: 'Normas Regulamentadoras', docs: postsToDocs(normas, 'Norma') },
+    { id: 'cat-sec-ebooks', label: 'E-books', docs: postsToDocs(ebooks, 'E-book') },
+    { id: 'cat-sec-artigos', label: 'Artigos', docs: postsToDocs(artigos, 'Artigo') },
+  ];
+
   return (
     <div>
       <section className="relative overflow-hidden bg-ink-deep py-14 text-white">
@@ -116,10 +131,10 @@ export default function DownloadsPage() {
             / Catálogos
           </p>
           <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Downloads</p>
-          <h1 className="mt-4 font-display text-4xl font-black">Catálogos e manuais em PDF</h1>
+          <h1 className="mt-4 font-display text-4xl font-black">Materiais Técnicos para Consulta e Especificação</h1>
           <p className="mt-3 max-w-xl text-white/70">
-            Baixe nossos catálogos de produtos, fichas técnicas e manuais de uso. Material gratuito para consulta e
-            especificação.
+            Encontre e baixe gratuitamente catálogos, portfólios, e-books e normas técnicas comentadas para consultar e
+            especificar produtos e serviços.
           </p>
         </div>
       </section>

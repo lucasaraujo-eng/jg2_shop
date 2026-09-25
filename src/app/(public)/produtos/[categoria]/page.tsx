@@ -24,13 +24,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!category) return {};
   if (category.type === 'MAOS_SEGURAS') {
     return {
-      title: 'Catálogo Mãos Seguras | JG2',
+      title: { absolute: 'Catálogo Mãos Seguras | JG2' },
       description:
         'Dispositivos para afastar as mãos da zona de perigo — extensores industriais, proteção de impacto, movimentação, armazenamento e fixação.',
     };
   }
   return {
-    title: `${category.name} | JG2`,
+    title: { absolute: `${category.name} | JG2` },
     description: CATEGORY_GROUP_DESCRIPTIONS[category.name] ?? `Catálogo de ${category.name} para bloqueio e etiquetagem LOTO.`,
   };
 }

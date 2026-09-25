@@ -6,11 +6,23 @@ import Link from 'next/link';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
 import { PageQuoteFormFields, isPageQuoteFormValid, type PageQuoteFormValue } from '@/components/PageQuoteFormFields';
+import { appendCpfAddressToMessage } from '@/components/QuoteFormFields';
 import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
 import { resolveImageUrl } from '@/lib/utils';
 import { getRecaptchaToken } from '@/lib/recaptcha-client';
 
-const EMPTY_FORM: PageQuoteFormValue = { name: '', company: '', email: '', phone: '', city: '', docType: 'cnpj', cnpj: '', message: '' };
+const EMPTY_FORM: PageQuoteFormValue = {
+  name: '',
+  company: '',
+  email: '',
+  phone: '',
+  city: '',
+  docType: 'cnpj',
+  cnpj: '',
+  address: '',
+  cep: '',
+  message: '',
+};
 
 export default function OrcamentoPage() {
   const items = useCart((s) => s.items);
@@ -34,7 +46,13 @@ export default function OrcamentoPage() {
     const token = await getRecaptchaToken('submit_quote');
     const result = await submitQuote(
       {
-        ...form,
+        name: form.name,
+        company: form.company,
+        email: form.email,
+        phone: form.phone,
+        city: form.city,
+        cnpj: form.cnpj,
+        message: appendCpfAddressToMessage(form),
         items: items.map((i) => ({
           code: i.code,
           name: i.name,
