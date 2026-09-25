@@ -50,7 +50,7 @@ export default async function BuscaPage({ searchParams }: { searchParams: Promis
       </section>
 
       <section className="mx-auto max-w-[1340px] px-7 py-14">
-        {query.length < 2 && <p className="text-muted-2">Digite ao menos 2 caracteres na busca do menu ou do topo da página.</p>}
+        {query.length < 2 && <p className="text-muted-2">Digite ao menos 2 caracteres na busca do topo da página.</p>}
 
         {query.length >= 2 && total === 0 && (
           <p className="text-muted-2">

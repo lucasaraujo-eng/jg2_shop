@@ -253,19 +253,7 @@ export function Header({ categories }: { categories: Categories }) {
         </div>
       </header>
 
-      {mobileOpen && (
-        <MobileMenu
-          categories={categories}
-          onClose={() => setMobileOpen(false)}
-          query={query}
-          results={results}
-          onQueryChange={handleSearchChange}
-          onSubmit={() => {
-            handleSearchSubmit();
-            setMobileOpen(false);
-          }}
-        />
-      )}
+      {mobileOpen && <MobileMenu categories={categories} onClose={() => setMobileOpen(false)} />}
     </>
   );
 }
@@ -335,26 +323,10 @@ function ProdutosDropdown({ active, open, onToggle, lotoItems, maosSeguras }: { 
   );
 }
 
-function MobileMenu({
-  categories,
-  onClose,
-  query,
-  results,
-  onQueryChange,
-  onSubmit,
-}: {
-  categories: Categories;
-  onClose: () => void;
-  query: string;
-  results: SearchResult;
-  onQueryChange: (value: string) => void;
-  onSubmit: () => void;
-}) {
+function MobileMenu({ categories, onClose }: { categories: Categories; onClose: () => void }) {
   const cartCount = useCart((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const openCart = useCart((s) => s.open);
   const maosSeguras = categories.find((c) => c.type === 'MAOS_SEGURAS');
-  const showResults = query.trim().length >= 2;
-
   return (
     <div className="fixed inset-0 z-[80] md:hidden">
       <button className="absolute inset-0 bg-ink/40" style={{ animation: 'jg-fade .2s ease both' }} onClick={onClose} aria-label="Fechar menu" />
@@ -366,84 +338,13 @@ function MobileMenu({
           </button>
         </div>
 
-        <form
-          className="mt-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit();
-          }}
-        >
-          <label className="flex items-center gap-2.5 rounded-xl border border-border bg-surface-alt px-4 py-3 focus-within:border-brand focus-within:bg-white">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6f6a62" strokeWidth={2} strokeLinecap="round" className="flex-none">
-              <circle cx="11" cy="11" r="7" />
-              <path d="m20 20-3.4-3.4" />
-            </svg>
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => onQueryChange(e.target.value)}
-              placeholder="Buscar produtos, serviços…"
-              aria-label="Buscar"
-              enterKeyHint="search"
-              autoComplete="off"
-              className="min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-tertiary"
-            />
-          </label>
-        </form>
-
-        {showResults && (
-          <div className="mt-3 rounded-2xl border border-border-soft bg-white p-2 shadow-sm">
-            {results.products.length === 0 && results.posts.length === 0 && (
-              <p className="p-4 text-center text-sm text-tertiary">Nenhum resultado. Toque Enter para buscar em todo o site.</p>
-            )}
-            {results.products.length > 0 && (
-              <>
-                <p className="px-3 pb-1 pt-2 font-mono text-xs font-bold uppercase tracking-wider text-brand">Produtos</p>
-                {results.products.map((r) => {
-                  const image = resolveImageUrl(r.image);
-                  return (
-                    <Link
-                      key={r.code}
-                      href={`/produto/${encodeURIComponent(r.code)}`}
-                      onClick={onClose}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt"
-                    >
-                      <span className="relative flex h-10 w-10 flex-none items-center justify-center overflow-hidden rounded-lg border border-border-soft bg-surface-alt">
-                        {image ? <Image src={image} alt="" fill sizes="40px" className="object-contain" /> : null}
-                      </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate font-semibold text-ink">{r.name}</span>
-                        <span className="block font-mono text-xs text-tertiary">
-                          {r.code} · {r.categoryName}
-                        </span>
-                      </span>
-                    </Link>
-                  );
-                })}
-              </>
-            )}
-            {results.posts.length > 0 && (
-              <>
-                <p className="mt-1 border-t border-surface-stripe-a px-3 pb-1 pt-3 font-mono text-xs font-bold uppercase tracking-wider text-brand">Blog</p>
-                {results.posts.map((r) => (
-                  <Link key={r.slug} href={`/blog/${r.slug}`} onClick={onClose} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-surface-alt">
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate font-semibold text-ink">{r.title}</span>
-                      {r.tag && <span className="block font-mono text-xs text-tertiary">{r.tag}</span>}
-                    </span>
-                  </Link>
-                ))}
-              </>
-            )}
-            <button
-              type="button"
-              onClick={onSubmit}
-              className="mt-1 w-full rounded-lg px-3 py-2.5 text-left text-sm font-bold text-brand hover:bg-surface-badge"
-            >
-              Ver todos os resultados →
-            </button>
-          </div>
-        )}
+        <Link href="/produtos" onClick={onClose} className="mt-4 flex items-center gap-2.5 rounded-xl border border-border bg-surface-alt px-4 py-3 text-sm text-tertiary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6f6a62" strokeWidth={2} strokeLinecap="round" className="flex-none">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.4-3.4" />
+          </svg>
+          Buscar produtos, serviços…
+        </Link>
 
         <nav className="mt-4 flex flex-col gap-1 text-sm font-semibold">
           <Link href="/" onClick={onClose} className="rounded-lg px-3 py-3 hover:bg-surface-alt">
