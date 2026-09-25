@@ -33,10 +33,11 @@ export function CatalogClient({
   const model = application?.models.find((m) => m.key === modelKey) ?? null;
 
   async function runFilter(tagKey: string) {
+    setQuery('');
     setLoading(true);
     try {
       const products = await filterProductsByTag(tagKey);
-      setFilteredProducts(products);
+      setFilteredProducts(Array.isArray(products) ? products : []);
     } finally {
       setLoading(false);
     }
@@ -53,7 +54,10 @@ export function CatalogClient({
     setModelKey(key);
     setConfigKey(null);
     if (!hasConfigs) runFilter(key);
-    else setFilteredProducts(null);
+    else {
+      setQuery('');
+      setFilteredProducts(null);
+    }
   }
 
   function selectConfig(value: string) {
@@ -76,13 +80,17 @@ export function CatalogClient({
 
   const baseProducts = filteredProducts ?? initialProducts;
   const q = query.trim();
-  const visibleProducts = q
-    ? baseProducts.filter(
-        (p) => includesFolded(p.name, q) || includesFolded(p.code, q) || includesFolded(p.category ?? '', q),
-      )
-    : baseProducts;
-
   const filterActive = filteredProducts !== null;
+  // Com filtro de dispositivo ativo, a listagem é só o resultado do filtro
+  // (a busca textual não deve esvaziar a grade em silêncio).
+  const visibleProducts = filterActive
+    ? filteredProducts
+    : q
+      ? baseProducts.filter(
+          (p) => includesFolded(p.name, q) || includesFolded(p.code, q) || includesFolded(p.category ?? '', q),
+        )
+      : baseProducts;
+
   const showGrouped = !!groups && groups.length > 0 && !filterActive && !q;
 
   return (
@@ -98,7 +106,9 @@ export function CatalogClient({
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Buscar por nome, código ou categoria…"
             aria-label="Buscar no catálogo"
-            className="w-full bg-transparent text-sm outline-none"
+            autoComplete="off"
+            disabled={filterActive}
+            className="w-full bg-transparent text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50"
           />
         </div>
       </div>
@@ -165,7 +175,9 @@ export function CatalogClient({
           {filterActive && (
             <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-border-soft pt-5">
               <p className="text-sm text-muted-2">
-                {loading ? 'Filtrando…' : `Estes são os ${filteredProducts?.length ?? 0} dispositivos de bloqueio indicados para o dispositivo selecionado`}
+                {loading
+                  ? 'Filtrando…'
+                  : `Estes são os ${visibleProducts.length} dispositivos de bloqueio indicados para o dispositivo selecionado`}
               </p>
               <button
                 onClick={clearFilter}
