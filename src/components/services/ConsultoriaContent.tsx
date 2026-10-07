@@ -67,20 +67,20 @@ const ACCENT: Record<ConsultoriaData['slug'], Accent> = {
     gainHover: 'group-hover:text-[#C9A227]',
   },
   'maos-seguras': {
-    pill: 'bg-[#0B3D5C]',
-    pillText: 'text-white',
-    btn: 'bg-[#0B3D5C] text-white',
-    btnHover: 'hover:bg-[#0a334d]',
-    border: 'border-[#0B3D5C]',
-    hoverBorder: 'hover:border-[#0B3D5C]',
-    check: 'border-[#0B3D5C] text-[#0B3D5C]',
-    checkHover: 'group-hover:bg-[#0B3D5C] group-hover:text-white',
-    stepTop: 'border-t-[#0B3D5C]',
-    stepNum: 'text-[#0B3D5C]',
-    stageChip: 'bg-[#0B3D5C] text-white hover:bg-ink',
-    ctaBg: 'bg-[#0B3D5C]',
-    normHover: 'hover:border-[#0B3D5C] hover:bg-[#0B3D5C] hover:text-white',
-    gainHover: 'group-hover:text-[#0B3D5C]',
+    pill: 'bg-[#C9A227]',
+    pillText: 'text-ink',
+    btn: 'bg-[#C9A227] text-ink',
+    btnHover: 'hover:bg-[#b8921f]',
+    border: 'border-[#C9A227]',
+    hoverBorder: 'hover:border-[#C9A227]',
+    check: 'border-[#C9A227] text-[#C9A227]',
+    checkHover: 'group-hover:bg-[#C9A227] group-hover:text-ink',
+    stepTop: 'border-t-[#C9A227]',
+    stepNum: 'text-[#C9A227]',
+    stageChip: 'bg-[#C9A227] text-ink hover:bg-ink hover:text-white',
+    ctaBg: 'bg-[#C9A227]',
+    normHover: 'hover:border-[#C9A227] hover:bg-[#C9A227] hover:text-ink',
+    gainHover: 'group-hover:text-[#C9A227]',
   },
 };
 
@@ -329,15 +329,15 @@ export function ConsultoriaContent({ data }: { data: ConsultoriaData }) {
         <div className={`relative overflow-hidden rounded-3xl p-9 text-center sm:p-14 ${accent.ctaBg}`}>
           <div className="absolute -bottom-16 -left-10 h-60 w-60 rounded-full bg-white/6" />
           <h2
-            className={`relative mx-auto max-w-2xl font-display text-2xl font-black sm:text-3xl ${data.slug === 'nr12' ? 'text-ink' : 'text-white'}`}
+            className={`relative mx-auto max-w-2xl font-display text-2xl font-black sm:text-3xl ${data.slug === 'lototo' ? 'text-white' : 'text-ink'}`}
           >
             {data.ctaTitle}
           </h2>
-          <p className={`relative mx-auto mt-3 max-w-xl ${data.slug === 'nr12' ? 'text-ink/80' : 'text-white/85'}`}>{data.ctaText}</p>
+          <p className={`relative mx-auto mt-3 max-w-xl ${data.slug === 'lototo' ? 'text-white/85' : 'text-ink/80'}`}>{data.ctaText}</p>
           <div className="relative mt-7 flex flex-wrap justify-center gap-3">
             <ProposalRequestButton
               objective={objective}
-              className={`rounded-full bg-white px-7 py-3.5 font-extrabold transition hover:bg-ink-deep hover:text-white ${data.slug === 'nr12' ? 'text-ink' : 'text-brand'}`}
+              className={`rounded-full bg-white px-7 py-3.5 font-extrabold transition hover:bg-ink-deep hover:text-white ${data.slug === 'lototo' ? 'text-brand' : 'text-ink'}`}
             >
               Solicitar avaliação técnica →
             </ProposalRequestButton>

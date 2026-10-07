@@ -79,6 +79,11 @@ export default async function PublicLayout({ children }: { children: React.React
                 </Link>
               </li>
               <li>
+                <Link href="/setores" className="hover:text-brand">
+                  Setores
+                </Link>
+              </li>
+              <li>
                 <Link href="/videos" className="hover:text-brand">
                   Vídeos
                 </Link>

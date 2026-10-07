@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { readingTime } from '@/lib/utils';
 
@@ -13,6 +14,8 @@ export type PostSummary = {
   tag: string | null;
   content: string;
   publishedAt: Date | string | null;
+  coverUrl?: string | null;
+  href?: string;
 };
 
 function formatDate(date: Date | string | null): string | null {
@@ -25,15 +28,29 @@ function formatDate(date: Date | string | null): string | null {
 export function PostCard({ post, featured = false }: { post: PostSummary; featured?: boolean }) {
   const date = formatDate(post.publishedAt);
   const read = readingTime(post.content);
+  const href = post.href ?? `/blog/${post.slug}`;
+  const mediaClass = featured ? 'relative h-56 flex-none overflow-hidden lg:h-auto lg:w-1/2' : 'relative h-40 overflow-hidden';
 
   return (
     <Link
-      href={`/blog/${post.slug}`}
+      href={href}
       className={`group flex overflow-hidden rounded-2xl border border-border-soft bg-white transition hover:-translate-y-1 hover:shadow-xl ${
         featured ? 'flex-col lg:flex-row' : 'flex-col'
       }`}
     >
-      <div className={featured ? 'h-56 flex-none lg:h-auto lg:w-1/2' : 'h-40'} style={STRIPE_BG} />
+      {post.coverUrl ? (
+        <div className={mediaClass}>
+          <Image
+            src={post.coverUrl}
+            alt=""
+            fill
+            sizes={featured ? '(max-width: 1024px) 100vw, 50vw' : '(max-width: 640px) 100vw, 33vw'}
+            className="object-cover transition duration-300 group-hover:scale-105"
+          />
+        </div>
+      ) : (
+        <div className={featured ? 'h-56 flex-none lg:h-auto lg:w-1/2' : 'h-40'} style={STRIPE_BG} />
+      )}
       <div className="flex flex-1 flex-col p-6">
         {post.tag &&
           (featured ? (

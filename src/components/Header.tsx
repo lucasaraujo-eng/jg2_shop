@@ -15,6 +15,7 @@ type Categories = Awaited<ReturnType<typeof getCategories>>;
 
 const CONTEUDOS_LINKS = [
   { label: 'Blog', href: '/blog' },
+  { label: 'Setores', href: '/setores' },
   { label: 'Downloads', href: '/downloads' },
   { label: 'Vídeos', href: '/videos' },
 ];
@@ -26,6 +27,7 @@ const PROD_LOTO_MENU = [
   { label: 'Bloqueios Elétricos', categoryName: 'Bloqueios Elétricos' },
   { label: 'Bloqueios de Válvulas', categoryName: 'Bloqueio de Válvulas' },
   { label: 'Caixas e Estações de Bloqueio', categoryName: 'Caixas e Estações' },
+  { label: 'Bloqueios de Cabo', categoryName: 'Bloqueios de Cabo' },
 ];
 
 const SERVICOS_LINKS = [
@@ -120,7 +122,7 @@ export function Header({ categories }: { categories: Categories }) {
   const isServicosActive = pathname === '/servicos' || pathname.startsWith('/servicos/');
   const isCatalogosActive = pathname === '/downloads';
   const isSobreActive = pathname === '/sobre';
-  const isConteudosActive = pathname.startsWith('/blog') || pathname === '/videos';
+  const isConteudosActive = pathname.startsWith('/blog') || pathname === '/videos' || pathname.startsWith('/setores');
   const activeClass = 'text-brand';
   const inactiveClass = 'hover:text-brand';
 

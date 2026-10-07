@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getPublishedPosts } from '@/server/blog';
+import { getPublishedPosts, getSetorArticlesForBlog } from '@/server/blog';
 import { PostCard } from '@/components/blog/PostCard';
 import { NewsletterForm } from '@/components/NewsletterForm';
 import { pageMetadata } from '@/lib/seo';
@@ -11,7 +11,9 @@ const SHOW_POSTS = true;
 
 export default async function BlogIndexPage() {
   const posts = await getPublishedPosts();
+  const setorArticles = await getSetorArticlesForBlog();
   const [featured, ...rest] = posts;
+  const hasContent = posts.length > 0 || setorArticles.length > 0;
 
   return (
     <div>
@@ -26,13 +28,13 @@ export default async function BlogIndexPage() {
           <p className="mt-4 inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Blog &amp; materiais</p>
           <h1 className="mt-2 font-display text-4xl font-black">Conteúdos sobre segurança e LOTO</h1>
           <p className="mt-3 max-w-xl text-white/70">
-            Artigos, guias e boas práticas para implantar e manter o controle de energias perigosas na sua operação.
+            Artigos, guias e matérias por setor para implantar e manter o controle de energias perigosas na sua operação.
           </p>
         </div>
       </section>
 
       <div className="mx-auto max-w-[1340px] px-7 py-12">
-        {!SHOW_POSTS || posts.length === 0 ? (
+        {!SHOW_POSTS || !hasContent ? (
           <div className="py-24 text-center">
             <p className="font-display text-2xl font-black leading-tight text-ink sm:text-3xl">
               Muitos conteúdos relevantes serão lançados em breve, aguarde!
@@ -52,6 +54,21 @@ export default async function BlogIndexPage() {
                   <PostCard key={p.slug} post={p} />
                 ))}
               </div>
+            )}
+
+            {setorArticles.length > 0 && (
+              <section id="setores" className="scroll-mt-28 mt-16">
+                <p className="font-mono text-xs font-bold uppercase tracking-widest text-brand">Áreas de atuação</p>
+                <h2 className="mt-2 font-display text-3xl font-black text-ink">Segurança por setor industrial</h2>
+                <p className="mt-3 max-w-2xl text-muted-2">
+                  Matérias técnicas sobre os riscos e as adequações JG2® em cada tipo de operação.
+                </p>
+                <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {setorArticles.map((p) => (
+                    <PostCard key={p.slug} post={p} />
+                  ))}
+                </div>
+              </section>
             )}
           </>
         )}

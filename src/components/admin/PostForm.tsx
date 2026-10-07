@@ -86,7 +86,7 @@ export function PostForm({ postId, initial }: { postId?: string; initial?: PostI
           </select>
           {form.type === 'SETOR' && (
             <span className="text-xs text-tertiary">
-              Use o slug igual ao id do setor (ex.: alimentos, metalurgia) para sobrescrever a página pública.
+              Use o slug igual ao id do setor (ex.: alimentos, metalurgia). A matéria aparece no blog e em /setores/slug.
             </span>
           )}
         </label>

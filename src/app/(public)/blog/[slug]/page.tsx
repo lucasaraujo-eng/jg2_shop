@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { getPostBySlug, getRelatedPosts } from '@/server/blog';
 import { PostCard } from '@/components/blog/PostCard';
 import { sanitizePostHtml } from '@/lib/sanitize';
@@ -17,7 +17,9 @@ type PageProps = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  if (!post || post.status !== 'PUBLISHED' || post.type !== 'BLOG') return {};
+  if (!post || post.status !== 'PUBLISHED') return {};
+  if (post.type === 'SETOR') return {};
+  if (post.type !== 'BLOG') return {};
   return {
     title: { absolute: `${post.title} | JG2` },
     description: post.excerpt || `Artigo sobre ${post.tag} — JG2 Produtos de Segurança.`,
@@ -27,7 +29,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  if (!post || post.status !== 'PUBLISHED' || post.type !== 'BLOG') notFound();
+  if (!post || post.status !== 'PUBLISHED') notFound();
+  if (post.type === 'SETOR') redirect(`/setores/${post.slug}`);
+  if (post.type !== 'BLOG') notFound();
 
   const related = await getRelatedPosts(slug);
   const date = post.publishedAt

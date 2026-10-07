@@ -44,3 +44,18 @@ export function includesFolded(haystack: string, needle: string): boolean {
   if (!needle) return true;
   return foldAccents(haystack).includes(foldAccents(needle));
 }
+
+export function postPublicHref(type: string, slug: string): string {
+  switch (type) {
+    case 'SETOR':
+      return `/setores/${slug}`;
+    case 'NORMA':
+      return '/downloads#cat-sec-normas';
+    case 'EBOOK':
+      return '/downloads#cat-sec-ebooks';
+    case 'ARTIGO':
+      return '/downloads#cat-sec-artigos';
+    default:
+      return `/blog/${slug}`;
+  }
+}
