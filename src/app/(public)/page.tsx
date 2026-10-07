@@ -194,36 +194,34 @@ export default async function HomePage() {
       </section>
 
       <section className="bg-brand py-16 sm:py-20">
-        <div className="mx-auto max-w-[1100px] px-7">
+        <div className="mx-auto max-w-[1340px] px-7">
           <p className="text-center text-xs font-bold uppercase tracking-[0.22em] text-white/75">Soluções</p>
           <h2 className="mt-3 text-center font-display text-3xl font-black text-white sm:text-4xl">
-            Nossos recursos e serviços
+            Frentes de atuação
           </h2>
-          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {FRENTES.map((f) => (
-              <article
+              <Link
                 key={f.title}
-                className="flex flex-col items-center rounded-[28px] bg-white px-7 pb-8 pt-8 text-center shadow-[0_12px_40px_rgba(0,0,0,.12)]"
+                href={f.href}
+                className="group flex h-full flex-col items-center rounded-[28px] bg-white px-6 pb-7 pt-6 text-center shadow-[0_12px_40px_rgba(0,0,0,.18)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_18px_48px_rgba(0,0,0,.28)]"
               >
-                <div className="relative mb-6 h-40 w-full overflow-hidden rounded-2xl bg-surface-alt">
+                <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden rounded-2xl bg-surface-alt">
                   <Image
                     src={r2Url(f.img)}
                     alt=""
                     fill
-                    sizes="(max-width: 640px) 100vw, 50vw"
-                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover object-top transition duration-500 group-hover:scale-105"
                     unoptimized
                   />
                 </div>
-                <h3 className="font-display text-xl font-black text-brand">{f.title}</h3>
-                <p className="mt-3 max-w-[280px] flex-1 text-sm leading-relaxed text-muted-2">{f.text}</p>
-                <Link
-                  href={f.href}
-                  className="mt-6 rounded-full bg-brand px-8 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white transition hover:bg-brand-dark"
-                >
-                  Mais
-                </Link>
-              </article>
+                <h3 className="font-display text-lg font-black leading-snug text-brand">{f.title}</h3>
+                <p className="mt-2.5 flex-1 text-sm leading-relaxed text-muted-2">{f.text}</p>
+                <span className="mt-6 rounded-full bg-brand px-6 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white transition group-hover:bg-brand-dark">
+                  Saiba mais
+                </span>
+              </Link>
             ))}
           </div>
         </div>
