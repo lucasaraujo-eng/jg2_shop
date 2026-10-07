@@ -17,7 +17,7 @@ export function DeviceFilterCard({ taxonomy }: { taxonomy: Taxonomy }) {
   return (
     <div className="rounded-2xl bg-white p-6 shadow-[0_24px_60px_rgba(0,0,0,.34)]">
       <p className="font-mono text-xs uppercase tracking-widest text-brand">Tipo de aplicação</p>
-      <div className="mt-3 flex gap-2">
+      <div className="mt-3 flex flex-wrap gap-2">
         {taxonomy.map((app) => (
           <button
             key={app.key}
