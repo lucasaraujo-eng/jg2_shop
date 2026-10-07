@@ -143,42 +143,57 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="relative flex min-h-[520px] items-center overflow-hidden bg-ink-deep py-16 text-white">
+      <section className="relative flex min-h-[560px] items-center overflow-hidden bg-ink-deep py-20 text-white sm:min-h-[640px] lg:min-h-[720px]">
         <video autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover">
           <source src="/assets/hero.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-deep/80 via-ink-deep/45 to-ink-deep/10" />
-        <div className="relative mx-auto w-full max-w-[1340px] px-7 sm:flex sm:flex-col sm:justify-center sm:self-stretch">
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-deep via-ink-deep/75 to-ink-deep/25" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink-deep/80 to-transparent" />
+        <div className="relative mx-auto w-full max-w-[1340px] px-7">
           <div className="max-w-3xl">
             <p className="inline-block rounded-full bg-brand px-3.5 py-2 text-sm font-bold uppercase tracking-wide text-white sm:text-base">Grupo JG2®</p>
-            <h1 className="mt-4 font-display text-4xl font-black leading-tight tracking-tight sm:text-5xl">
+            <h1 className="mt-5 font-display text-4xl font-black leading-[1.1] tracking-tight sm:text-5xl lg:text-[56px]">
               Adequação Completa em Segurança Industrial
             </h1>
-            <p className="mt-5 max-w-xl text-lg text-white/70">
-              Adequação NR-12, Consultoria e Dispositivos de Bloqueio e Etiquetagem (LOTO), Soluções
-              para Mãos Seguras, reduzindo acidentes e garantindo conformidade normativa nas
-              operações industriais.
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/80">
+              Adequação NR-12, consultoria e dispositivos de bloqueio e etiquetagem (LOTO) e soluções
+              para Mãos Seguras — reduzindo acidentes e garantindo conformidade nas operações industriais.
             </p>
-          </div>
-
-          <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold sm:absolute sm:inset-x-7 sm:bottom-0 sm:mt-0 sm:justify-end">
-            {[
-              { label: 'Bloqueio e Etiquetagem LOTO', href: LOTO_CATALOG_HREF },
-              { label: 'Consultoria LOTOTO', href: '/servicos/lototo' },
-              { label: 'Consultoria NR-12', href: '/servicos/nr12' },
-              { label: 'Consultoria Mãos Seguras', href: '/servicos/maos-seguras' },
-            ].map((l, i, arr) => (
-              <span key={l.href} className="flex items-center gap-3">
-                <Link href={l.href} className="text-white/90 transition hover:scale-110 hover:text-brand-soft">
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ProposalRequestButton
+                objective="Outro assunto"
+                className="rounded-full bg-brand px-7 py-3.5 text-sm font-extrabold text-white transition hover:bg-brand-light"
+              >
+                Solicitar proposta
+              </ProposalRequestButton>
+              <Link
+                href="/produtos"
+                className="rounded-full border border-white/30 bg-white/10 px-7 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white hover:text-ink"
+              >
+                Ver catálogo
+              </Link>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-2">
+              {[
+                { label: 'Bloqueio e Etiquetagem LOTO', href: LOTO_CATALOG_HREF },
+                { label: 'Consultoria LOTOTO', href: '/servicos/lototo' },
+                { label: 'Consultoria NR-12', href: '/servicos/nr12' },
+                { label: 'Consultoria Mãos Seguras', href: '/servicos/maos-seguras' },
+              ].map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="rounded-full border border-white/15 bg-black/20 px-3.5 py-1.5 text-xs font-semibold text-white/90 backdrop-blur-sm transition hover:border-white/40 hover:bg-white/15"
+                >
                   {l.label}
                 </Link>
-                {i < arr.length - 1 && <span className="text-brand-soft">●</span>}
-              </span>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
+      {false && (
       <section className="mx-auto mt-8 max-w-[1340px] px-7">
         <ScrollCarousel
           autoPlay
@@ -192,23 +207,24 @@ export default async function HomePage() {
               href={f.href}
               className={`group flex w-full flex-none snap-start flex-col sm:w-1/2 lg:w-1/3 ${i % 2 === 0 ? 'bg-brand-dark' : 'bg-brand'}`}
             >
-              <div className="flex flex-1 flex-col justify-between gap-4 px-8 py-10">
+              <div className="flex flex-1 flex-col justify-between gap-5 px-8 py-9">
                 <div>
-                  <div className="mb-4 border-t border-white/30" />
                   <h3 className="font-display text-2xl font-bold leading-snug">{f.title}</h3>
-                  <p className="mt-3 text-[15px] leading-relaxed text-white/85">{f.text}</p>
+                  <p className="mt-3 line-clamp-4 text-[15px] leading-relaxed text-white/85">{f.text}</p>
                 </div>
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 transition group-hover:bg-white group-hover:text-brand">
-                  ↗
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-lg transition group-hover:bg-white group-hover:text-brand">
+                  →
                 </span>
               </div>
-              <div className="relative h-[260px] w-full overflow-hidden">
-                <Image src={r2Url(f.img)} alt="" fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="relative h-[220px] w-full overflow-hidden">
+                <Image src={r2Url(f.img)} alt="" fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
               </div>
             </Link>
           ))}
         </ScrollCarousel>
       </section>
+      )}
 
       <ClientsMarquee />
 
@@ -280,9 +296,9 @@ export default async function HomePage() {
         headingColor="text-white"
         text="Da apreciação de riscos ao laudo técnico com ART — a JG2 entrega cada etapa da adequação NR-12: inventário, apreciação de riscos, projetos conceituais e detalhados, fabricação personalizada, instalação, laudos técnicos, treinamentos e auditorias."
         textColor="text-white/90"
-        panelClassName="bg-[linear-gradient(135deg,#c8121f_0%,#a3101a_100%)]"
+        panelClassName="bg-ink-deep"
         imageSrc="/uploads/banner-nr12.jpg"
-        ctaClassName="bg-white text-brand hover:bg-ink-deep hover:text-white"
+        ctaClassName="bg-white text-ink hover:bg-brand hover:text-white"
         showAccent
         objective="Adequação NR-12"
       />
@@ -329,10 +345,10 @@ export default async function HomePage() {
               <Link
                 key={sec.id}
                 href={`/setores/${sec.id}`}
-                className="group relative flex h-[180px] w-[240px] flex-none items-end justify-between overflow-hidden rounded-2xl bg-ink p-4 shadow-sm transition hover:shadow-2xl"
+                className="group relative flex h-[200px] w-[260px] flex-none items-end justify-between overflow-hidden rounded-2xl bg-ink p-4"
               >
-                <Image src={r2Url(sec.img)} alt="" fill sizes="240px" className="object-cover transition duration-300 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/20 to-transparent" />
+                <Image src={r2Url(sec.img)} alt="" fill sizes="260px" className="object-cover transition duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
                 <span className="relative text-sm font-bold leading-tight text-white [text-shadow:0_1px_6px_rgba(0,0,0,.4)]">
                   {sec.name}
                 </span>
@@ -345,25 +361,25 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-surface-alt py-18">
-        <div className="mx-auto grid max-w-[1340px] gap-12 px-7 lg:grid-cols-2 lg:items-stretch">
+      <section className="bg-surface-alt py-16">
+        <div className="mx-auto grid max-w-[1340px] gap-8 px-7 lg:grid-cols-2 lg:items-start lg:gap-12">
           <div>
             <p className="inline-block rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">Por que a JG2?</p>
             <h2 className="mt-2 font-display text-3xl font-black text-ink sm:text-4xl">
               Parceria completa em segurança e conformidade
             </h2>
-            <div className="mt-6">
-              <FaqAccordion items={FAQS} />
-            </div>
           </div>
-          <div className="relative hidden h-full min-h-[380px] w-full overflow-hidden rounded-2xl shadow-lg lg:block">
+          <div className="relative min-h-[220px] overflow-hidden rounded-2xl shadow-lg sm:min-h-[280px] lg:row-span-2 lg:min-h-full">
             <Image
               src={r2Url('/uploads/why-jg2.jpg')}
-              alt=""
+              alt="Equipe JG2 em operação industrial"
               fill
-              sizes="50vw"
-              className="object-cover transition duration-300 hover:scale-105"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
             />
+          </div>
+          <div>
+            <FaqAccordion items={FAQS} />
           </div>
         </div>
       </section>
@@ -372,10 +388,10 @@ export default async function HomePage() {
         <div className="relative grid gap-8 overflow-hidden rounded-3xl bg-brand p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
           <div className="absolute -right-10 -top-10 h-80 w-80 rounded-full bg-white/6" />
           <div className="relative">
-            <h2 className="font-display text-3xl font-black text-white sm:text-4xl">Catálogo online</h2>
+            <p className="text-xs font-bold uppercase tracking-wide text-white/80">Catálogo JG2®</p>
+            <h2 className="mt-2 font-display text-3xl font-black text-white sm:text-4xl">Monte seu orçamento em minutos</h2>
             <p className="mt-3 max-w-md text-white/85">
-              Conheça nossas soluções completas para o controle de energias perigosas. Monte sua
-              lista e solicite um orçamento em minutos.
+              Cadeados, garras, bloqueios elétricos e de válvulas — adicione os itens e envie tudo de uma vez para a equipe comercial.
             </p>
             <Link href="/produtos" className="mt-6 inline-block rounded-full bg-white px-7 py-3.5 font-extrabold text-brand transition hover:bg-ink-deep hover:text-white">
               Explorar catálogo →
@@ -393,40 +409,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {false && (
-      <section className="bg-ink-deeper py-18">
-        <div className="mx-auto max-w-[1340px] px-7">
-          <p className="font-mono text-xs uppercase tracking-widest text-brand-soft">Com a palavra, o cliente</p>
-          <h2 className="mt-2 font-display text-3xl font-black text-white sm:text-4xl">Qualidade que gera confiança</h2>
-          <div className="jg-card-grid mt-8 grid gap-6 md:grid-cols-2">
-            {[
-              {
-                quote:
-                  'Somos clientes da JG2® pela qualidade. Nunca tivemos nenhuma reclamação dos nossos clientes — não há porque buscar outra marca.',
-                name: 'Carla Feil',
-                company: 'Protemar',
-              },
-              {
-                quote:
-                  'O suporte técnico e a agilidade na entrega dos dispositivos de bloqueio fizeram toda a diferença na nossa adequação à NR-12.',
-                name: 'Marcos Andrade',
-                company: 'Indústria Automotiva',
-              },
-            ].map((t) => (
-              <div key={t.name} className="rounded-2xl border border-dark-border bg-dark-card p-7 transition hover:-translate-y-1 hover:border-brand hover:shadow-[0_18px_44px_rgba(181,32,43,.28)]">
-                <p className="text-[17px] leading-relaxed text-white/90">&ldquo;{t.quote}&rdquo;</p>
-                <p className="mt-5 text-sm font-bold text-white">{t.name}</p>
-                <p className="text-sm text-white/50">{t.company}</p>
-              </div>
-            ))}
+      <section className="mx-auto max-w-[1340px] px-7 pb-16">
+        <div className="grid gap-6 rounded-3xl border border-border-soft bg-surface-alt p-8 sm:p-10 lg:grid-cols-[1fr_1.5fr] lg:items-center lg:gap-10">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide text-brand">Newsletter</p>
+            <h2 className="mt-1 font-display text-2xl font-black text-ink sm:text-3xl">Conteúdo técnico no seu e-mail</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-2">Novidades de produtos, normas e materiais para o time de segurança.</p>
           </div>
-        </div>
-      </section>
-      )}
-
-      <section className="mx-auto max-w-[1340px] px-7 py-16">
-        <div className="grid gap-6 rounded-2xl border border-border-soft bg-surface-card p-8 sm:p-10 lg:grid-cols-[1fr_1.4fr] lg:items-center lg:gap-8">
-          <h2 className="font-display text-2xl font-black text-ink">Assine nossa newsletter</h2>
           <NewsletterForm />
         </div>
       </section>
@@ -464,33 +453,34 @@ function ActionBanner({
   objective: string;
 }) {
   return (
-    <section className="mx-auto max-w-[1340px] px-7 py-6">
-      <p className="mb-6 text-center font-display text-xl font-black text-ink">{title}</p>
-      <div
-        className={`group grid overflow-hidden rounded-2xl border border-border-soft shadow-xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl lg:grid-cols-[1fr_1.15fr] ${panelClassName}`}
-      >
-        <div className="relative min-h-[260px] overflow-hidden">
+    <section className="mx-auto max-w-[1340px] px-7 py-8">
+      {title && <p className="mb-5 text-center font-display text-lg font-black text-ink sm:text-xl">{title}</p>}
+      <div className={`grid overflow-hidden rounded-3xl shadow-lg lg:grid-cols-[1fr_1.15fr] ${panelClassName}`}>
+        <div className="relative min-h-[240px] overflow-hidden sm:min-h-[300px]">
           <Image
             src={r2Url(imageSrc)}
             alt=""
             fill
             sizes="(max-width: 1024px) 100vw, 45vw"
-            className={`object-cover transition-transform duration-500 group-hover:scale-105 ${imagePosition}`}
+            className={`object-cover ${imagePosition}`}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/15 lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-black/20" />
         </div>
-        <div className="relative flex flex-col justify-center overflow-hidden p-9 sm:p-11">
+        <div className="relative flex flex-col justify-center overflow-hidden p-8 sm:p-11">
           {showAccent && (
             <div className="pointer-events-none absolute -right-14 -top-14 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,.12)_0%,transparent_70%)]" />
           )}
-          {kicker && <span className={`relative mb-2 text-lg font-black uppercase tracking-wide ${kickerColor}`}>{kicker}</span>}
-          <h3 className={`relative text-2xl font-black leading-tight sm:text-[27px] ${headingColor}`}>{heading}</h3>
-          <p className={`relative mt-4 text-sm leading-relaxed sm:text-[14.5px] ${textColor}`}>{text}</p>
+          {kicker && (
+            <span className={`relative mb-3 inline-flex self-start rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-wide ${kickerColor}`}>
+              {kicker}
+            </span>
+          )}
+          <h3 className={`relative text-2xl font-black leading-tight sm:text-[28px] ${headingColor}`}>{heading}</h3>
+          <p className={`relative mt-4 text-sm leading-relaxed sm:text-[15px] ${textColor}`}>{text}</p>
           <ProposalRequestButton
             objective={objective}
-            className={`relative mt-7 inline-flex items-center gap-2.5 self-end rounded-full px-6 py-3 text-sm font-bold transition hover:gap-3.5 ${ctaClassName}`}
+            className={`relative mt-7 inline-flex items-center gap-2 self-start rounded-full px-6 py-3 text-sm font-bold transition ${ctaClassName}`}
           >
-            Solicitar Proposta <span className="text-lg">→</span>
+            Solicitar proposta <span aria-hidden>→</span>
           </ProposalRequestButton>
         </div>
       </div>

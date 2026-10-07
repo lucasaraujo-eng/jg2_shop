@@ -23,11 +23,11 @@ export function ClientsMarquee() {
   return (
     <section className="bg-white py-10">
       <div className="mx-auto max-w-[1340px] px-7">
-        <p className="mb-7 text-center font-display text-lg font-bold text-ink">
-          Empresas Sérias Confiam na Experiência da JG2® Para Adequar Máquinas e Procedimentos
+        <p className="mx-auto mb-7 max-w-2xl text-center font-display text-lg font-bold leading-snug text-ink">
+          Empresas sérias confiam na JG2® para adequar máquinas e procedimentos
         </p>
       </div>
-      <div className="jg-noscroll overflow-hidden">
+      <div className="jg-noscroll overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
         <div className="flex w-max items-center gap-10 hover:[animation-play-state:paused]" style={{ animation: 'jg-marquee 44s linear infinite' }}>
           {[...CLIENTS, ...CLIENTS].map((c, i) => (
             <div key={`${c.name}-${i}`} className="flex h-14 flex-none items-center justify-center px-4">
