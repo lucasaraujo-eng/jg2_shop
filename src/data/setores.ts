@@ -1,3 +1,5 @@
+import { r2Url } from '@/lib/utils';
+
 export type SetorData = {
   id: string;
   name: string;
@@ -253,4 +255,43 @@ export const setores: SetorData[] = [
 
 export function getSetorById(id: string): SetorData | undefined {
   return setores.find((s) => s.id === id);
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+export function setorPageTitle(sector: SetorData): string {
+  return `Segurança e adequação para ${sector.name}`;
+}
+
+export function setorContentHtml(sector: SetorData): string {
+  const paragraphs = (items: string[]) => items.map((p) => `<p>${escapeHtml(p)}</p>`).join('\n');
+  const risks = sector.riscos.map((r) => `<li>${escapeHtml(r)}</li>`).join('\n');
+  return [
+    '<h2>O setor</h2>',
+    paragraphs(sector.intro),
+    '<h2>Como a indústria opera — e onde estão os riscos</h2>',
+    paragraphs(sector.comoAtua),
+    '<h2>Principais riscos do setor</h2>',
+    `<ul>\n${risks}\n</ul>`,
+  ].join('\n');
+}
+
+export function setorAsPostInput(sector: SetorData) {
+  return {
+    title: setorPageTitle(sector),
+    slug: sector.id,
+    excerpt: sector.lead,
+    content: setorContentHtml(sector),
+    coverUrl: r2Url(sector.img),
+    fileUrl: '',
+    tag: 'Setor industrial',
+    type: 'SETOR' as const,
+    status: 'PUBLISHED' as const,
+  };
 }

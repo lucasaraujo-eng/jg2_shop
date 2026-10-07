@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAdminPost } from '@/server/actions/blog';
 import { PostForm } from '@/components/admin/PostForm';
+import { postPublicHref } from '@/lib/utils';
 import type { PostInput } from '@/lib/validations';
 
 export default async function EditPostPage({
@@ -34,6 +35,11 @@ export default async function EditPostPage({
         Blog
       </Link>
       <h1 className="mt-3 font-display text-2xl font-black text-ink">Editar matéria</h1>
+      {post.status === 'PUBLISHED' && (
+        <Link href={postPublicHref(post.type, post.slug)} target="_blank" className="mt-1 inline-block text-sm font-bold text-brand hover:text-brand-dark">
+          Ver no site →
+        </Link>
+      )}
       <div className="mt-6 rounded-2xl border border-border-soft bg-white p-6 shadow-sm sm:p-8">
         <PostForm postId={post.id} initial={initial} />
       </div>

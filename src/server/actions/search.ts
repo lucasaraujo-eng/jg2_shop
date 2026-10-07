@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { foldAccents, includesFolded } from '@/lib/utils';
+import { foldAccents, includesFolded, postPublicHref } from '@/lib/utils';
 import { setores } from '@/data/setores';
 import { consultorias } from '@/data/consultorias';
 
@@ -132,17 +132,18 @@ const STATIC_PAGES: { href: string; title: string; kind: string; text: string }[
 ];
 
 function postHref(type: string, slug: string): { href: string; kind: string } {
+  const href = postPublicHref(type, slug);
   switch (type) {
     case 'SETOR':
-      return { href: `/setores/${slug}`, kind: 'Setor' };
+      return { href, kind: 'Setor' };
     case 'NORMA':
-      return { href: '/downloads#cat-sec-normas', kind: 'Norma' };
+      return { href, kind: 'Norma' };
     case 'EBOOK':
-      return { href: '/downloads#cat-sec-ebooks', kind: 'E-book' };
+      return { href, kind: 'E-book' };
     case 'ARTIGO':
-      return { href: '/downloads#cat-sec-artigos', kind: 'Artigo' };
+      return { href, kind: 'Artigo' };
     default:
-      return { href: `/blog/${slug}`, kind: 'Blog' };
+      return { href, kind: 'Blog' };
   }
 }
 

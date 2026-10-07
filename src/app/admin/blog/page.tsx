@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { listAdminPosts } from '@/server/actions/blog';
 import { DeletePostButton } from '@/components/admin/DeletePostButton';
+import { setores, setorPageTitle } from '@/data/setores';
+import { postPublicHref } from '@/lib/utils';
 import type { PostType } from '@prisma/client';
 
 const TYPE_FILTERS: { value: PostType | 'ALL'; label: string }[] = [
@@ -20,6 +22,19 @@ const TYPE_LABEL: Record<PostType, string> = {
   SETOR: 'Setor',
 };
 
+type AdminRow = {
+  key: string;
+  title: string;
+  type: PostType;
+  tag: string | null;
+  statusLabel: string;
+  published: boolean;
+  editHref: string;
+  viewHref: string;
+  deleteId?: string;
+  deleteTitle?: string;
+};
+
 export default async function AdminBlogPage({
   searchParams,
 }: {
@@ -31,13 +46,43 @@ export default async function AdminBlogPage({
       ? (typeParam as PostType | 'ALL')
       : 'ALL';
   const posts = await listAdminPosts(typeFilter);
+  const cmsSetorSlugs = new Set(posts.filter((p) => p.type === 'SETOR').map((p) => p.slug));
+
+  const rows: AdminRow[] = posts.map((p) => ({
+    key: p.id,
+    title: p.title,
+    type: p.type,
+    tag: p.tag,
+    statusLabel: p.status === 'PUBLISHED' ? 'Publicado' : 'Rascunho',
+    published: p.status === 'PUBLISHED',
+    editHref: `/admin/blog/${p.id}`,
+    viewHref: postPublicHref(p.type, p.slug),
+    deleteId: p.id,
+    deleteTitle: p.title,
+  }));
+
+  if (typeFilter === 'ALL' || typeFilter === 'SETOR') {
+    for (const sector of setores) {
+      if (cmsSetorSlugs.has(sector.id)) continue;
+      rows.push({
+        key: `static-${sector.id}`,
+        title: setorPageTitle(sector),
+        type: 'SETOR',
+        tag: 'Setor industrial',
+        statusLabel: 'No site',
+        published: true,
+        editHref: `/admin/blog/novo?fromSetor=${sector.id}`,
+          viewHref: `/setores/${sector.id}`,
+      });
+    }
+  }
 
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-black text-ink">Conteúdos</h1>
-          <p className="mt-1 text-sm text-tertiary">{posts.length} matérias listadas.</p>
+          <p className="mt-1 text-sm text-tertiary">{rows.length} matérias listadas.</p>
         </div>
         <Link
           href="/admin/blog/novo"
@@ -81,8 +126,8 @@ export default async function AdminBlogPage({
               </tr>
             </thead>
             <tbody>
-              {posts.map((p) => (
-                <tr key={p.id} className="border-t border-border-soft transition hover:bg-surface-card">
+              {rows.map((p) => (
+                <tr key={p.key} className="border-t border-border-soft transition hover:bg-surface-card">
                   <td className="px-5 py-3.5 font-semibold text-ink">{p.title}</td>
                   <td className="px-5 py-3.5">
                     <span className="rounded-full bg-surface-alt px-2.5 py-1 text-xs font-semibold text-muted-2">
@@ -99,18 +144,21 @@ export default async function AdminBlogPage({
                   <td className="px-5 py-3.5">
                     <span
                       className={`rounded-full px-2.5 py-1 text-xs font-bold ${
-                        p.status === 'PUBLISHED' ? 'bg-success/10 text-success' : 'bg-surface-alt text-tertiary'
+                        p.published ? 'bg-success/10 text-success' : 'bg-surface-alt text-tertiary'
                       }`}
                     >
-                      {p.status === 'PUBLISHED' ? 'Publicado' : 'Rascunho'}
+                      {p.statusLabel}
                     </span>
                   </td>
                   <td className="px-5 py-3.5 text-right">
                     <div className="flex justify-end gap-4">
-                      <Link href={`/admin/blog/${p.id}`} className="text-xs font-bold text-ink hover:text-brand">
+                      <Link href={p.viewHref} target="_blank" className="text-xs font-bold text-muted-2 hover:text-brand">
+                        Ver
+                      </Link>
+                      <Link href={p.editHref} className="text-xs font-bold text-ink hover:text-brand">
                         Editar
                       </Link>
-                      <DeletePostButton id={p.id} title={p.title} />
+                      {p.deleteId && p.deleteTitle && <DeletePostButton id={p.deleteId} title={p.deleteTitle} />}
                     </div>
                   </td>
                 </tr>
@@ -119,7 +167,7 @@ export default async function AdminBlogPage({
           </table>
         </div>
 
-        {posts.length === 0 && (
+        {rows.length === 0 && (
           <div className="flex flex-col items-center gap-2 px-6 py-14 text-center">
             <p className="text-sm font-semibold text-ink">Nenhuma matéria neste filtro</p>
             <p className="text-sm text-tertiary">Crie uma nova matéria ou troque o tipo.</p>

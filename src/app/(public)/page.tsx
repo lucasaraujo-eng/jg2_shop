@@ -20,25 +20,25 @@ const MAOS_CATALOG_HREF = '/produtos/maos-seguras';
 const FRENTES = [
   {
     title: 'Bloqueio e Etiquetagem',
-    text: 'O kit certo para cada bloqueio. Cadeados, garras, kits de bloqueio e etiquetas para todos os tipos de energia. Encontre o dispositivo ideal para o seu programa LOTO com a qualidade que sua indústria exige.',
+    text: 'Cadeados, garras, kits e etiquetas para todos os tipos de energia da sua planta.',
     href: LOTO_CATALOG_HREF,
     img: '/uploads/banner-lototo.jpg',
   },
   {
-    title: 'Adequação Completa LOTOTO',
-    text: 'Seu programa LOTO do zero à excelência. Diagnóstico, documentação, treinamento e implantação completa. Adeque sua empresa com um programa sob medida que traz agilidade e segurança para seus colaboradores.',
+    title: 'Consultoria LOTOTO',
+    text: 'Diagnóstico, documentação, treinamento e implantação completa do programa LOTO.',
     href: '/servicos/lototo',
     img: '/uploads/cards/lototo.png',
   },
   {
-    title: 'Adequação Completa NR-12',
-    text: 'Máquinas seguras, operação protegida. Adequação completa de máquinas e equipamentos à NR-12. Das apreciações de riscos aos dispositivos de segurança — sua produção protegida do início ao fim.',
+    title: 'Adequação NR-12',
+    text: 'Apreciação de riscos, proteções e dispositivos para adequar o parque fabril.',
     href: '/servicos/nr12',
     img: '/uploads/cards/nr12.jpg',
   },
   {
-    title: 'Adequação Completa Mãos Seguras',
-    text: 'Mãos seguras, zero acidentes. Dispositivos e soluções que eliminam o risco de acidentes com as mãos na indústria. Uma camada extra de proteção que salva vidas e evita paradas na produção.',
+    title: 'Mãos Seguras',
+    text: 'Dispositivos que afastam as mãos da zona de risco sem perder produtividade.',
     href: '/servicos/maos-seguras',
     img: '/uploads/cards/maos.png',
   },
@@ -193,38 +193,41 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {false && (
-      <section className="mx-auto mt-8 max-w-[1340px] px-7">
-        <ScrollCarousel
-          autoPlay
-          loopToStart
-          gapClassName="gap-0"
-          trackClassName="snap-x snap-mandatory divide-x divide-white/15 rounded-[20px] text-white"
-        >
-          {FRENTES.map((f, i) => (
-            <Link
-              key={f.title}
-              href={f.href}
-              className={`group flex w-full flex-none snap-start flex-col sm:w-1/2 lg:w-1/3 ${i % 2 === 0 ? 'bg-brand-dark' : 'bg-brand'}`}
-            >
-              <div className="flex flex-1 flex-col justify-between gap-5 px-8 py-9">
-                <div>
-                  <h3 className="font-display text-2xl font-bold leading-snug">{f.title}</h3>
-                  <p className="mt-3 line-clamp-4 text-[15px] leading-relaxed text-white/85">{f.text}</p>
+      <section className="bg-brand py-16 sm:py-20">
+        <div className="mx-auto max-w-[1100px] px-7">
+          <p className="text-center text-xs font-bold uppercase tracking-[0.22em] text-white/75">Soluções</p>
+          <h2 className="mt-3 text-center font-display text-3xl font-black text-white sm:text-4xl">
+            Nossos recursos e serviços
+          </h2>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            {FRENTES.map((f) => (
+              <article
+                key={f.title}
+                className="flex flex-col items-center rounded-[28px] bg-white px-7 pb-8 pt-8 text-center shadow-[0_12px_40px_rgba(0,0,0,.12)]"
+              >
+                <div className="relative mb-6 h-40 w-full overflow-hidden rounded-2xl bg-surface-alt">
+                  <Image
+                    src={r2Url(f.img)}
+                    alt=""
+                    fill
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                    className="object-cover"
+                    unoptimized
+                  />
                 </div>
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-lg transition group-hover:bg-white group-hover:text-brand">
-                  →
-                </span>
-              </div>
-              <div className="relative h-[220px] w-full overflow-hidden">
-                <Image src={r2Url(f.img)} alt="" fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
-              </div>
-            </Link>
-          ))}
-        </ScrollCarousel>
+                <h3 className="font-display text-xl font-black text-brand">{f.title}</h3>
+                <p className="mt-3 max-w-[280px] flex-1 text-sm leading-relaxed text-muted-2">{f.text}</p>
+                <Link
+                  href={f.href}
+                  className="mt-6 rounded-full bg-brand px-8 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white transition hover:bg-brand-dark"
+                >
+                  Mais
+                </Link>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
-      )}
 
       <ClientsMarquee />
 
