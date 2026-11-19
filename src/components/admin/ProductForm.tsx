@@ -21,6 +21,7 @@ const EMPTY: ProductInput = {
   isCadeado: false,
   categoryId: '',
   subcategoryId: '',
+  subcategoryIds: [],
   extraCategoryIds: [],
   description: [],
   supportText: '',
@@ -200,12 +201,28 @@ export function ProductForm({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  const subcategories = categories.find((c) => c.id === form.categoryId)?.subcategories ?? [];
+  // Subcategorias disponíveis: as da categoria principal e das categorias adicionais.
+  const selectedCategoryIds = [form.categoryId, ...(form.extraCategoryIds ?? [])].filter(Boolean);
+  const subcategoryGroups = categories
+    .filter((c) => selectedCategoryIds.includes(c.id) && c.subcategories.length > 0)
+    .map((c) => ({ id: c.id, name: c.name, subcategories: c.subcategories }));
+
+  function keepSubcategoriesOf(categoryIds: string[], subcategoryIds: string[]) {
+    const allowed = new Set(categories.filter((c) => categoryIds.includes(c.id)).flatMap((c) => c.subcategories.map((s) => s.id)));
+    return subcategoryIds.filter((id) => allowed.has(id));
+  }
 
   function toggleExtraCategory(id: string) {
     const current = form.extraCategoryIds ?? [];
     const next = current.includes(id) ? current.filter((x) => x !== id) : [...current, id];
-    setForm({ ...form, extraCategoryIds: next });
+    const subcategoryIds = keepSubcategoriesOf([form.categoryId, ...next], form.subcategoryIds ?? []);
+    setForm({ ...form, extraCategoryIds: next, subcategoryIds, subcategoryId: subcategoryIds[0] ?? '' });
+  }
+
+  function toggleSubcategory(id: string) {
+    const current = form.subcategoryIds ?? [];
+    const next = current.includes(id) ? current.filter((x) => x !== id) : [...current, id];
+    setForm({ ...form, subcategoryIds: next, subcategoryId: next[0] ?? '' });
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -308,42 +325,29 @@ export function ProductForm({
       </FormSection>
 
       <FormSection title="Categorização" hint="A categoria principal define breadcrumb e URL padrão. Extras aparecem nas listagens adicionais.">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4">
           <label className="flex flex-col gap-1.5 text-sm">
             <span className="font-bold text-ink">Categoria principal*</span>
             <select
               required
               value={form.categoryId}
-              onChange={(e) =>
+              onChange={(e) => {
+                const extraCategoryIds = (form.extraCategoryIds ?? []).filter((id) => id !== e.target.value);
+                const subcategoryIds = keepSubcategoriesOf([e.target.value, ...extraCategoryIds], form.subcategoryIds ?? []);
                 setForm({
                   ...form,
                   categoryId: e.target.value,
-                  subcategoryId: '',
-                  extraCategoryIds: (form.extraCategoryIds ?? []).filter((id) => id !== e.target.value),
-                })
-              }
+                  extraCategoryIds,
+                  subcategoryIds,
+                  subcategoryId: subcategoryIds[0] ?? '',
+                });
+              }}
               className={inputClass}
             >
               <option value="">Selecione...</option>
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm">
-            <span className="font-bold text-ink">Subcategoria</span>
-            <select
-              value={form.subcategoryId ?? ''}
-              onChange={(e) => setForm({ ...form, subcategoryId: e.target.value })}
-              disabled={subcategories.length === 0}
-              className={`${inputClass} disabled:opacity-50`}
-            >
-              <option value="">Nenhuma</option>
-              {subcategories.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
                 </option>
               ))}
             </select>
@@ -370,6 +374,32 @@ export function ProductForm({
               <p className="text-xs text-tertiary">Selecione a categoria principal primeiro.</p>
             )}
           </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-bold text-ink">Subcategorias</span>
+          <div className="flex flex-col gap-3 rounded-xl border border-border-soft bg-surface-card p-3">
+            {subcategoryGroups.map((g) => (
+              <div key={g.id} className="flex flex-col gap-1.5">
+                <p className="text-xs font-bold uppercase tracking-wide text-tertiary">{g.name}</p>
+                {g.subcategories.map((sc) => (
+                  <label key={sc.id} className="flex items-center gap-2 text-sm text-ink">
+                    <input
+                      type="checkbox"
+                      checked={(form.subcategoryIds ?? []).includes(sc.id)}
+                      onChange={() => toggleSubcategory(sc.id)}
+                      className="accent-brand"
+                    />
+                    {sc.name}
+                  </label>
+                ))}
+              </div>
+            ))}
+            {subcategoryGroups.length === 0 && (
+              <p className="text-xs text-tertiary">As categorias selecionadas não possuem subcategorias.</p>
+            )}
+          </div>
+          <span className="text-xs text-tertiary">A primeira subcategoria marcada é a principal do produto.</span>
         </div>
 
         <ToggleRow

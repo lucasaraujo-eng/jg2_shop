@@ -41,9 +41,17 @@ function FormSection({ title, hint, children }: { title: string; hint?: string; 
   );
 }
 
-export function PostForm({ postId, initial }: { postId?: string; initial?: PostInput }) {
+export function PostForm({
+  postId,
+  initial,
+  defaultType,
+}: {
+  postId?: string;
+  initial?: PostInput;
+  defaultType?: PostInput['type'];
+}) {
   const router = useRouter();
-  const [form, setForm] = useState<PostInput>(initial ?? EMPTY);
+  const [form, setForm] = useState<PostInput>(initial ?? { ...EMPTY, type: defaultType ?? EMPTY.type });
   const [slugTouched, setSlugTouched] = useState(!!initial?.slug);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -59,7 +67,7 @@ export function PostForm({ postId, initial }: { postId?: string; initial?: PostI
     const result = postId ? await updatePost(postId, form) : await createPost(form);
     setSaving(false);
     if (result.ok) {
-      router.push('/admin/blog');
+      router.push(form.type === 'BLOG' ? '/admin/blog' : `/admin/blog?type=${form.type}`);
       router.refresh();
     } else {
       setError(result.error);

@@ -6,6 +6,7 @@ const tags = [CACHE_TAGS.catalog];
 const productCardInclude = {
   images: { orderBy: { order: 'asc' as const }, take: 2 },
   subcategory: true,
+  subcategoryLinks: { select: { subcategoryId: true } },
   category: { select: { name: true } },
 };
 
@@ -62,11 +63,13 @@ export const getProductsBySubcategory = cachedQuery(
     prisma.product.findMany({
       where: {
         active: true,
-        category: { slug: categorySlug },
-        subcategory: { slug: subcategorySlug },
+        OR: [
+          { category: { slug: categorySlug }, subcategory: { slug: subcategorySlug } },
+          { subcategoryLinks: { some: { subcategory: { slug: subcategorySlug, category: { slug: categorySlug } } } } },
+        ],
       },
       orderBy: { order: 'asc' },
-      include: { images: { orderBy: { order: 'asc' }, take: 2 }, subcategory: true, category: { select: { name: true } } },
+      include: productCardInclude,
     }),
 );
 

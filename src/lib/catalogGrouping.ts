@@ -10,6 +10,7 @@ type GroupableProduct = {
   images: { url: string }[];
   categoryId: string;
   subcategoryId?: string | null;
+  subcategoryLinks?: { subcategoryId: string }[];
   category?: { name: string } | null;
 };
 
@@ -38,6 +39,6 @@ export function buildSubcategoryGroups(
     name: sc.name,
     description: SUBCATEGORY_GROUP_DESCRIPTIONS[sc.name] ?? '',
     href: `/produtos/${categorySlug}/${sc.slug}`,
-    products: products.filter((p) => p.subcategoryId === sc.id).map(toCardProduct),
+    products: products.filter((p) => p.subcategoryId === sc.id || p.subcategoryLinks?.some((l) => l.subcategoryId === sc.id)).map(toCardProduct),
   }));
 }

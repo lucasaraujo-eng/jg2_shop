@@ -62,6 +62,7 @@ export const productSchema = z.object({
   isCadeado: z.boolean().default(false),
   categoryId: z.string().min(1, 'Selecione a categoria'),
   subcategoryId: z.string().optional().nullable(),
+  subcategoryIds: z.array(z.string()).max(30).default([]),
   extraCategoryIds: z.array(z.string()).max(20).default([]),
   description: z.array(z.string().max(2000)).max(50).default([]),
   supportText: z.string().max(5000).optional().nullable(),
@@ -89,6 +90,8 @@ export const productSchema = z.object({
 });
 export type ProductInput = z.infer<typeof productSchema>;
 
+export const POST_TYPES = ['BLOG', 'NORMA', 'EBOOK', 'ARTIGO', 'SETOR'] as const;
+
 export const postSchema = z.object({
   title: z.string().min(2, 'Informe o título').max(200),
   slug: z.string().min(2).max(200),
@@ -97,7 +100,7 @@ export const postSchema = z.object({
   coverUrl: z.string().optional().nullable(),
   fileUrl: z.string().optional().nullable(),
   tag: z.string().max(50).optional().nullable(),
-  type: z.enum(['BLOG', 'NORMA', 'EBOOK', 'ARTIGO', 'SETOR']).default('BLOG'),
+  type: z.enum(POST_TYPES).default('BLOG'),
   status: z.enum(['DRAFT', 'PUBLISHED']).default('DRAFT'),
 });
 export type PostInput = z.infer<typeof postSchema>;

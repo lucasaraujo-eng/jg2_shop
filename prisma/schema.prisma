@@ -8,61 +8,63 @@ datasource db {
 
 // ---------- CATÁLOGO ----------
 model Category {
-  id               String            @id @default(cuid())
-  name             String
-  slug             String            @unique
-  type             CategoryType
-  order            Int               @default(0)
-  supportText      String?           @db.Text
-  subcategories    Subcategory[]
-  products         Product[]
-  productLinks     ProductCategory[]
+  id            String            @id @default(cuid())
+  name          String
+  slug          String            @unique
+  type          CategoryType
+  order         Int               @default(0)
+  supportText   String?           @db.Text
+  subcategories Subcategory[]
+  products      Product[]
+  productLinks  ProductCategory[]
 }
 
 model Subcategory {
-  id          String    @id @default(cuid())
-  name        String
-  slug        String
-  order       Int       @default(0)
-  supportText String?   @db.Text
-  category    Category  @relation(fields: [categoryId], references: [id])
-  categoryId  String
-  products    Product[]
+  id           String               @id @default(cuid())
+  name         String
+  slug         String
+  order        Int                  @default(0)
+  supportText  String?              @db.Text
+  category     Category             @relation(fields: [categoryId], references: [id])
+  categoryId   String
+  products     Product[]
+  productLinks ProductSubcategory[]
 
   @@unique([categoryId, slug])
 }
 
 model Product {
-  id              String             @id @default(cuid())
-  code            String             @unique
-  name            String
-  subtitle        String?            @db.Text
-  ncm             String?
-  isCadeado       Boolean            @default(false)
-  description     String[]
-  supportText     String?            @db.Text
-  seoTitle        String?
-  seoDescription  String?            @db.Text
-  supportHeading  String?
-  supportTldr     String?            @db.Text
-  supportIdealFor String?            @db.Text
-  supportNotFor   String?            @db.Text
-  supportJson     Json?
-  active          Boolean            @default(true)
-  order           Int                @default(0)
-  datasheetUrl    String?
-  category        Category           @relation(fields: [categoryId], references: [id])
-  categoryId      String
-  subcategory     Subcategory?       @relation(fields: [subcategoryId], references: [id])
-  subcategoryId   String?
-  images          ProductImage[]
-  variants        ProductVariant[]
-  specs           ProductSpec[]
-  filterTags      ProductFilterTag[]
-  quoteItems      QuoteItem[]
-  categories      ProductCategory[]
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  id               String               @id @default(cuid())
+  code             String               @unique
+  name             String
+  subtitle         String?              @db.Text
+  ncm              String?
+  isCadeado        Boolean              @default(false)
+  description      String[]
+  supportText      String?              @db.Text
+  seoTitle         String?
+  seoDescription   String?              @db.Text
+  supportHeading   String?
+  supportTldr      String?              @db.Text
+  supportIdealFor  String?              @db.Text
+  supportNotFor    String?              @db.Text
+  supportJson      Json?
+  active           Boolean              @default(true)
+  order            Int                  @default(0)
+  datasheetUrl     String?
+  category         Category             @relation(fields: [categoryId], references: [id])
+  categoryId       String
+  subcategory      Subcategory?         @relation(fields: [subcategoryId], references: [id])
+  subcategoryId    String?
+  images           ProductImage[]
+  variants         ProductVariant[]
+  specs            ProductSpec[]
+  filterTags       ProductFilterTag[]
+  quoteItems       QuoteItem[]
+  categories       ProductCategory[]
+  subcategoryLinks ProductSubcategory[]
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
 }
 
 model ProductCategory {
@@ -75,6 +77,18 @@ model ProductCategory {
 
   @@unique([productId, categoryId])
   @@index([categoryId])
+}
+
+model ProductSubcategory {
+  id            String      @id @default(cuid())
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId     String
+  subcategory   Subcategory @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
+  subcategoryId String
+  isPrimary     Boolean     @default(false)
+
+  @@unique([productId, subcategoryId])
+  @@index([subcategoryId])
 }
 
 model ProductImage {

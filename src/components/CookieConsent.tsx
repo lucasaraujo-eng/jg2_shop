@@ -1,21 +1,35 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { PrivacyPolicyModal } from '@/components/PrivacyPolicyModal';
 
 const STORAGE_KEY = 'jg2-cookies-accepted';
 
-export function CookieConsent() {
-  const [visible, setVisible] = useState(false);
-  const [privacyOpen, setPrivacyOpen] = useState(false);
+const CONSENT_EVENT = 'jg2-cookies-change';
 
-  useEffect(() => {
-    try {
-      if (localStorage.getItem(STORAGE_KEY) !== '1') setVisible(true);
-    } catch {
-      setVisible(true);
-    }
-  }, []);
+function subscribe(callback: () => void) {
+  window.addEventListener('storage', callback);
+  window.addEventListener(CONSENT_EVENT, callback);
+  return () => {
+    window.removeEventListener('storage', callback);
+    window.removeEventListener(CONSENT_EVENT, callback);
+  };
+}
+
+function getAccepted(): boolean {
+  try {
+    return localStorage.getItem(STORAGE_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export function CookieConsent() {
+  // No servidor assume "aceito" (banner oculto) para evitar descompasso de hidratação.
+  const accepted = useSyncExternalStore(subscribe, getAccepted, () => true);
+  const [dismissed, setDismissed] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+  const visible = !accepted && !dismissed;
 
   function accept() {
     try {
@@ -23,7 +37,8 @@ export function CookieConsent() {
     } catch {
       /* ignore */
     }
-    setVisible(false);
+    setDismissed(true);
+    window.dispatchEvent(new Event(CONSENT_EVENT));
   }
 
   if (!visible) return null;
