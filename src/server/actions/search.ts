@@ -172,19 +172,41 @@ type ProductHit = {
   image: string | null;
 };
 
-/** Quebra a busca em termos já sem acento, minúsculos e prontos para `LIKE ALL`. */
-function searchTerms(folded: string): string[] {
-  const escape = (t: string) => t.replace(/[\\%_]/g, (c) => `\\${c}`);
-  return folded
+/** Radical simples (pt-BR): "cromada"/"cromado" -> "cromad", "etiquetas" -> "etiquet". Só para palavras longas e sem dígitos. */
+function stemTerm(word: string): string {
+  if (!/^[a-z]{5,}$/.test(word)) return word;
+  const singular = word
+    .replace(/([aeou])is$/, '$1') // industriais -> industria, papeis -> pape
+    .replace(/^(.{6,}[aeiou])l$/, '$1') // industrial -> industria (casa singular e plural)
+    .replace(/ns$/, 'm'); // itens -> item
+  const stem = singular.replace(/s$/, '').replace(/[aeo]$/, '');
+  return stem.length >= 4 ? stem : word;
+}
+
+/** Termos da busca (sem acento, minúsculos). Letras soltas são ignoradas. */
+function searchWords(folded: string): string[] {
+  const words = folded
     .split(/\s+/)
     .map((t) => t.trim())
     .filter(Boolean)
-    .slice(0, 8)
-    .map((t) => `%${escape(t)}%`);
+    .slice(0, 8);
+  const meaningful = words.filter((w) => w.length > 1);
+  return meaningful.map(stemTerm);
+}
+
+/** Termos prontos para `LIKE ALL` (com escape de %, _ e \). */
+function searchTerms(folded: string): string[] {
+  const escape = (t: string) => t.replace(/[\\%_]/g, (c) => `\\${c}`);
+  return searchWords(folded).map((t) => `%${escape(t)}%`);
+}
+
+/** Termos como regex de início de palavra (`\y`), para o fallback em campos longos. */
+function searchWordRegexes(folded: string): string[] {
+  return searchWords(folded).map((t) => `\\y${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`);
 }
 
 /**
- * Produtos: TODOS os termos precisam aparecer em nome + código + categoria
+ * Produtos: TODOS os termos precisam aparecer em nome + código + categoria + subcategoria
  * ("etiqueta jgl601-1" encontra "Etiqueta de Bloqueio … JGL601-1"). Os campos
  * longos (descrição, suporte, specs) só entram como fallback quando quase nada
  * casa no nome — assim "cadeado" não traz produtos que só citam a palavra.
@@ -209,8 +231,9 @@ async function searchProducts(folded: string, limits: Limits): Promise<ProductHi
       ) AS image
     FROM "Product" p
     JOIN "Category" c ON c.id = p."categoryId"
+    LEFT JOIN "Subcategory" sc ON sc.id = p."subcategoryId"
     WHERE p.active = true
-      AND unaccent(lower(p.name || ' ' || p.code || ' ' || c.name)) LIKE ALL (${terms}::text[])
+      AND unaccent(lower(p.name || ' ' || p.code || ' ' || c.name || ' ' || coalesce(sc.name, ''))) LIKE ALL (${terms}::text[])
     ORDER BY
       CASE
         WHEN lower(p.code) = ${folded} THEN 100
@@ -227,6 +250,7 @@ async function searchProducts(folded: string, limits: Limits): Promise<ProductHi
 
   if (primary.length >= 3 || !limits.deep) return primary;
 
+  const wordRegexes = searchWordRegexes(folded);
   const seen = new Set(primary.map((p) => p.id));
   const fallback = await prisma.$queryRaw<ProductHit[]>`
     SELECT
@@ -249,7 +273,7 @@ async function searchProducts(folded: string, limits: Limits): Promise<ProductHi
         array_to_string(p.description, ' '),
         (SELECT string_agg(ps.label || ' ' || ps.value, ' ') FROM "ProductSpec" ps WHERE ps."productId" = p.id),
         (SELECT string_agg(ft."tagKey", ' ') FROM "ProductFilterTag" ft WHERE ft."productId" = p.id)
-      ))) LIKE ALL (${terms}::text[])
+      ))) ~ ALL (${wordRegexes}::text[])
     ORDER BY p."order" ASC, p.name ASC
     LIMIT ${limits.products}
   `;
@@ -261,6 +285,8 @@ async function runSearch(q: string, limits: Limits): Promise<SearchResult> {
   const pattern = `%${folded}%`;
   const prefix = `${folded}%`;
   const terms = searchTerms(folded);
+  // Sem termos úteis, `LIKE ALL` de lista vazia casaria tudo.
+  if (terms.length === 0) return EMPTY;
 
   const [categoryRows, subcategoryRows, products, postRows, videoRows] = await Promise.all([
     prisma.$queryRaw<{ id: string; slug: string; name: string; type: 'LOTO' | 'MAOS_SEGURAS' }[]>`
