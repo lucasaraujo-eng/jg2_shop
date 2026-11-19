@@ -24,6 +24,10 @@ export default async function EditProductPage({
     isCadeado: product.isCadeado,
     categoryId: product.categoryId,
     subcategoryId: product.subcategoryId ?? '',
+    subcategoryIds: [
+      ...product.subcategoryLinks.filter((l) => l.isPrimary).map((l) => l.subcategoryId),
+      ...product.subcategoryLinks.filter((l) => !l.isPrimary).map((l) => l.subcategoryId),
+    ],
     extraCategoryIds: product.categories.filter((c) => !c.isPrimary).map((c) => c.categoryId),
     description: product.description,
     supportText: product.supportText ?? '',
@@ -38,6 +42,7 @@ export default async function EditProductPage({
     filterTags: product.filterTags.map((t) => t.tagKey),
     coverUrl: imageUrls[0] ?? '',
     imageUrls,
+    datasheetUrl: product.datasheetUrl ?? '',
     active: product.active,
   };
 

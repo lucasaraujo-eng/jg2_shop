@@ -4,7 +4,6 @@ import { Header } from '@/components/Header';
 import { CartDrawer } from '@/components/CartDrawer';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { WhatsAppFloat } from '@/components/WhatsAppFloat';
-import { ProposalRequestButton } from '@/components/ProposalRequestButton';
 import { RecaptchaScript } from '@/components/RecaptchaScript';
 import { RecaptchaNotice } from '@/components/RecaptchaNotice';
 import { CookieConsent } from '@/components/CookieConsent';
@@ -40,9 +39,9 @@ export default async function PublicLayout({ children }: { children: React.React
             <p className="mt-4 max-w-xs text-sm text-white/70">
               Nosso time de especialistas está pronto para te atender e entregar a solução ideal para o seu projeto!
             </p>
-            <ProposalRequestButton objective="Outro assunto" className="mt-4 inline-block text-sm font-bold text-brand hover:underline">
+            <Link href="/contato" className="mt-4 inline-block text-sm font-bold text-brand hover:underline">
               Fale com nosso time →
-            </ProposalRequestButton>
+            </Link>
           </div>
 
           <div>
@@ -171,6 +170,11 @@ export default async function PublicLayout({ children }: { children: React.React
               <li>+55 31 9 9669-0692</li>
               <li>comercial@jg2ps.com.br</li>
               <li>R. das Palmeiras, 95 - Distrito Industrial, Timóteo - MG, 35181-672</li>
+              <li>
+                <Link href="/contato" className="font-bold text-brand hover:underline">
+                  Fale conosco →
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

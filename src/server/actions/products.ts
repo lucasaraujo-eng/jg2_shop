@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import { productSchema, type ProductInput } from '@/lib/validations';
+import { productSchema, MAX_PRODUCT_IMAGES, type ProductInput } from '@/lib/validations';
 import { requireAdmin, requireRoleResult } from '@/lib/auth-guards';
 import { invalidateCatalogCache } from '@/lib/data-cache';
 
@@ -16,7 +16,7 @@ function emptyToNull(v: string | null | undefined) {
 
 function galleryUrls(d: ProductInput): string[] {
   const fromList = (d.imageUrls ?? []).map((u) => u.trim()).filter(Boolean);
-  if (fromList.length > 0) return fromList.slice(0, 12);
+  if (fromList.length > 0) return fromList.slice(0, MAX_PRODUCT_IMAGES);
   if (d.coverUrl) return [d.coverUrl];
   return [];
 }
@@ -28,6 +28,15 @@ function categoryLinks(d: ProductInput) {
     { categoryId: d.categoryId, isPrimary: true },
     ...uniqueExtras.map((categoryId) => ({ categoryId, isPrimary: false })),
   ];
+}
+
+/** Subcategorias do produto: a primeira da lista é a principal (espelhada em Product.subcategoryId). */
+function subcategoryIdsOf(d: ProductInput): string[] {
+  return [...new Set((d.subcategoryIds ?? []).filter(Boolean))];
+}
+
+function subcategoryLinks(d: ProductInput) {
+  return subcategoryIdsOf(d).map((subcategoryId, i) => ({ subcategoryId, isPrimary: i === 0 }));
 }
 
 function supportJsonValue(d: ProductInput): Prisma.InputJsonValue | typeof Prisma.JsonNull {
@@ -61,9 +70,10 @@ export async function createProduct(input: ProductInput): Promise<Result> {
         supportIdealFor: emptyToNull(d.supportIdealFor),
         supportNotFor: emptyToNull(d.supportNotFor),
         supportJson: supportJsonValue(d),
+        datasheetUrl: emptyToNull(d.datasheetUrl?.trim()),
         active: d.active,
         categoryId: d.categoryId,
-        subcategoryId: emptyToNull(d.subcategoryId),
+        subcategoryId: subcategoryIdsOf(d)[0] ?? null,
         images: images.length
           ? { create: images.map((url, i) => ({ url, order: i })) }
           : undefined,
@@ -74,6 +84,7 @@ export async function createProduct(input: ProductInput): Promise<Result> {
           ? { create: d.filterTags.map((tagKey) => ({ tagKey })) }
           : undefined,
         categories: { create: categoryLinks(d) },
+        subcategoryLinks: { create: subcategoryLinks(d) },
       },
     });
     invalidateCatalogCache();
@@ -96,6 +107,7 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Re
     await prisma.productSpec.deleteMany({ where: { productId: id } });
     await prisma.productImage.deleteMany({ where: { productId: id } });
     await prisma.productCategory.deleteMany({ where: { productId: id } });
+    await prisma.productSubcategory.deleteMany({ where: { productId: id } });
 
     const product = await prisma.product.update({
       where: { id },
@@ -114,9 +126,10 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Re
         supportIdealFor: emptyToNull(d.supportIdealFor),
         supportNotFor: emptyToNull(d.supportNotFor),
         supportJson: supportJsonValue(d),
+        datasheetUrl: emptyToNull(d.datasheetUrl?.trim()),
         active: d.active,
         categoryId: d.categoryId,
-        subcategoryId: emptyToNull(d.subcategoryId),
+        subcategoryId: subcategoryIdsOf(d)[0] ?? null,
         images: images.length
           ? { create: images.map((url, i) => ({ url, order: i })) }
           : undefined,
@@ -127,6 +140,7 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Re
           ? { create: d.filterTags.map((tagKey) => ({ tagKey })) }
           : undefined,
         categories: { create: categoryLinks(d) },
+        subcategoryLinks: { create: subcategoryLinks(d) },
       },
     });
     invalidateCatalogCache();
@@ -178,6 +192,7 @@ export async function getAdminProduct(id: string) {
       filterTags: true,
       specs: { orderBy: { order: 'asc' } },
       categories: true,
+      subcategoryLinks: true,
     },
   });
 }

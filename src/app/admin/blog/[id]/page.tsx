@@ -28,11 +28,11 @@ export default async function EditPostPage({
 
   return (
     <div>
-      <Link href="/admin/blog" className="inline-flex items-center gap-1.5 text-sm font-bold text-muted-2 hover:text-brand">
+      <Link href={post.type === 'BLOG' ? '/admin/blog' : `/admin/blog?type=${post.type}`} className="inline-flex items-center gap-1.5 text-sm font-bold text-muted-2 hover:text-brand">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <path d="M15 18l-6-6 6-6" />
         </svg>
-        Blog
+        Voltar
       </Link>
       <h1 className="mt-3 font-display text-2xl font-black text-ink">Editar matéria</h1>
       {post.status === 'PUBLISHED' && (

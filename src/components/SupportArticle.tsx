@@ -15,7 +15,6 @@ export function SupportArticle({ data }: { data: SupportArticleData }) {
       <h2 className="border-b border-border-soft pb-4 font-display text-2xl font-black text-ink">{data.heading}</h2>
 
       <p className="mt-6 rounded-xl border border-border-soft bg-surface-alt px-5 py-4 text-sm leading-relaxed text-muted">
-        <span className="font-bold text-ink">TL;DR: </span>
         {data.tldr}
       </p>
 

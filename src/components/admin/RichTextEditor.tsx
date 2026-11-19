@@ -5,10 +5,14 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
+import { TextStyle, FontFamily, FontSize } from '@tiptap/extension-text-style';
+import { FONT_FAMILIES, FONT_SIZES } from '@/lib/rich-text-fonts';
 
 const btn =
   'rounded border border-border px-2 py-1 text-xs font-bold text-muted-2 transition hover:border-brand hover:text-brand disabled:opacity-40';
 const btnActive = 'border-brand bg-surface-badge text-brand';
+const selectClass =
+  'rounded border border-border bg-white px-1.5 py-1 text-xs font-bold text-muted-2 outline-none transition hover:border-brand focus:border-brand';
 
 async function uploadInlineImage(file: File, folder: string): Promise<string> {
   const fd = new FormData();
@@ -42,6 +46,9 @@ export function RichTextEditor({
         HTMLAttributes: { rel: 'noopener noreferrer', target: '_blank' },
       }),
       Image.configure({ allowBase64: false }),
+      TextStyle,
+      FontFamily,
+      FontSize,
     ],
     content: value || '',
     immediatelyRender: false,
@@ -75,7 +82,41 @@ export function RichTextEditor({
 
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-white">
-      <div className="flex flex-wrap gap-1.5 border-b border-border-soft bg-surface-card px-2 py-2">
+      <div className="flex flex-wrap items-center gap-1.5 border-b border-border-soft bg-surface-card px-2 py-2">
+        <select
+          aria-label="Fonte"
+          className={selectClass}
+          value={(editor.getAttributes('textStyle').fontFamily as string | undefined) ?? ''}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v) editor.chain().focus().setFontFamily(v).run();
+            else editor.chain().focus().unsetFontFamily().run();
+          }}
+        >
+          <option value="">Fonte padrão</option>
+          {FONT_FAMILIES.map((f) => (
+            <option key={f.label} value={f.value}>
+              {f.label}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label="Tamanho da fonte"
+          className={selectClass}
+          value={(editor.getAttributes('textStyle').fontSize as string | undefined) ?? ''}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v) editor.chain().focus().setFontSize(v).run();
+            else editor.chain().focus().unsetFontSize().run();
+          }}
+        >
+          <option value="">Tamanho</option>
+          {FONT_SIZES.map((size) => (
+            <option key={size} value={size}>
+              {size.replace('px', '')}
+            </option>
+          ))}
+        </select>
         <button
           type="button"
           className={`${btn} ${editor.isActive('bold') ? btnActive : ''}`}

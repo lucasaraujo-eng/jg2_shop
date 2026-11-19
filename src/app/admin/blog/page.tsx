@@ -55,7 +55,7 @@ export default async function AdminBlogPage({
     tag: p.tag,
     statusLabel: p.status === 'PUBLISHED' ? 'Publicado' : 'Rascunho',
     published: p.status === 'PUBLISHED',
-    editHref: `/admin/blog/${p.id}`,
+    editHref: `/admin/blog/${p.id}?type=${p.type}`,
     viewHref: postPublicHref(p.type, p.slug),
     deleteId: p.id,
     deleteTitle: p.title,
@@ -71,8 +71,8 @@ export default async function AdminBlogPage({
         tag: 'Setor industrial',
         statusLabel: 'No site',
         published: true,
-        editHref: `/admin/blog/novo?fromSetor=${sector.id}`,
-          viewHref: `/setores/${sector.id}`,
+        editHref: `/admin/blog/novo?fromSetor=${sector.id}&type=SETOR`,
+        viewHref: `/setores/${sector.id}`,
       });
     }
   }
@@ -81,11 +81,13 @@ export default async function AdminBlogPage({
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl font-black text-ink">Conteúdos</h1>
+          <h1 className="font-display text-2xl font-black text-ink">
+            {TYPE_FILTERS.find((t) => t.value === typeFilter)?.label ?? 'Conteúdos'}
+          </h1>
           <p className="mt-1 text-sm text-tertiary">{rows.length} matérias listadas.</p>
         </div>
         <Link
-          href="/admin/blog/novo"
+          href={typeFilter === 'ALL' ? '/admin/blog/novo' : `/admin/blog/novo?type=${typeFilter}`}
           className="flex flex-none items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand-dark"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round">
