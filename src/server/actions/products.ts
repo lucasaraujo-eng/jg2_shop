@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import { productSchema, type ProductInput } from '@/lib/validations';
+import { productSchema, MAX_PRODUCT_IMAGES, type ProductInput } from '@/lib/validations';
 import { requireAdmin, requireRoleResult } from '@/lib/auth-guards';
 import { invalidateCatalogCache } from '@/lib/data-cache';
 
@@ -16,7 +16,7 @@ function emptyToNull(v: string | null | undefined) {
 
 function galleryUrls(d: ProductInput): string[] {
   const fromList = (d.imageUrls ?? []).map((u) => u.trim()).filter(Boolean);
-  if (fromList.length > 0) return fromList.slice(0, 12);
+  if (fromList.length > 0) return fromList.slice(0, MAX_PRODUCT_IMAGES);
   if (d.coverUrl) return [d.coverUrl];
   return [];
 }
@@ -70,6 +70,7 @@ export async function createProduct(input: ProductInput): Promise<Result> {
         supportIdealFor: emptyToNull(d.supportIdealFor),
         supportNotFor: emptyToNull(d.supportNotFor),
         supportJson: supportJsonValue(d),
+        datasheetUrl: emptyToNull(d.datasheetUrl?.trim()),
         active: d.active,
         categoryId: d.categoryId,
         subcategoryId: subcategoryIdsOf(d)[0] ?? null,
@@ -125,6 +126,7 @@ export async function updateProduct(id: string, input: ProductInput): Promise<Re
         supportIdealFor: emptyToNull(d.supportIdealFor),
         supportNotFor: emptyToNull(d.supportNotFor),
         supportJson: supportJsonValue(d),
+        datasheetUrl: emptyToNull(d.datasheetUrl?.trim()),
         active: d.active,
         categoryId: d.categoryId,
         subcategoryId: subcategoryIdsOf(d)[0] ?? null,

@@ -5,7 +5,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createProduct, updateProduct } from '@/server/actions/products';
 import { ImageUpload } from '@/components/ImageUpload';
-import type { ProductInput } from '@/lib/validations';
+import { SupportSeoFields, supportSeoStateFrom, supportSeoToPayload } from '@/components/admin/SupportSeoFields';
+import { MAX_PRODUCT_IMAGES, type ProductInput } from '@/lib/validations';
+import { resolveImageUrl } from '@/lib/utils';
 import type { getCategories } from '@/server/catalog';
 
 type Categories = Awaited<ReturnType<typeof getCategories>>;
@@ -36,6 +38,7 @@ const EMPTY: ProductInput = {
   filterTags: [],
   coverUrl: '',
   imageUrls: [],
+  datasheetUrl: '',
   active: true,
 };
 
@@ -84,7 +87,7 @@ function GalleryField({
     try {
       const next = [...urls];
       for (const file of Array.from(files)) {
-        if (next.length >= 12) break;
+        if (next.length >= MAX_PRODUCT_IMAGES) break;
         const fd = new FormData();
         fd.append('file', file);
         fd.append('folder', 'produtos');
@@ -101,6 +104,14 @@ function GalleryField({
     }
   }
 
+  function makeCover(i: number) {
+    if (i <= 0) return;
+    const next = [...urls];
+    const [item] = next.splice(i, 1);
+    next.unshift(item);
+    onChange(next);
+  }
+
   function move(i: number, dir: -1 | 1) {
     const j = i + dir;
     if (j < 0 || j >= urls.length) return;
@@ -112,10 +123,10 @@ function GalleryField({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="text-sm font-bold text-ink">Galeria ({urls.length}/12)</span>
+        <span className="text-sm font-bold text-ink">Galeria ({urls.length}/{MAX_PRODUCT_IMAGES})</span>
         <button
           type="button"
-          disabled={busy || urls.length >= 12}
+          disabled={busy || urls.length >= MAX_PRODUCT_IMAGES}
           onClick={() => inputRef.current?.click()}
           className="rounded-lg border border-dashed border-border-strong-2 px-3 py-1.5 text-xs font-bold text-muted-2 transition hover:border-brand hover:text-brand disabled:opacity-50"
         >
@@ -134,7 +145,7 @@ function GalleryField({
         />
       </div>
       {urls.length < 5 && (
-        <p className="text-xs text-tertiary">Recomendado: pelo menos 5 fotos (máx. 12). A primeira é a capa.</p>
+        <p className="text-xs text-tertiary">Recomendado: pelo menos 5 fotos (máx. {MAX_PRODUCT_IMAGES}). A primeira é a capa.</p>
       )}
       {urls.length === 0 ? (
         <p className="rounded-xl border border-dashed border-border px-4 py-8 text-center text-sm text-tertiary">
@@ -145,13 +156,18 @@ function GalleryField({
           {urls.map((url, i) => (
             <li key={`${url}-${i}`} className="flex items-center gap-3 rounded-xl border border-border-soft bg-surface-card p-2">
               <div className="relative h-14 w-14 flex-none overflow-hidden rounded-lg border border-border bg-white">
-                <Image src={url} alt="" fill sizes="56px" className="object-contain" />
+                <Image src={resolveImageUrl(url) ?? url} alt="" fill sizes="56px" className="object-contain" unoptimized />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-xs text-tertiary">{url}</p>
                 {i === 0 && <p className="text-[11px] font-bold uppercase tracking-wide text-brand">Capa</p>}
               </div>
-              <div className="flex flex-none gap-1">
+ <div className="flex flex-none gap-1">
+                {i > 0 && (
+                  <button type="button" onClick={() => makeCover(i)} className="rounded border border-border px-2 py-1 text-xs font-bold text-muted-2 hover:border-brand hover:text-brand">
+                    Capa
+                  </button>
+                )}
                 <button type="button" aria-label="Subir" disabled={i === 0} onClick={() => move(i, -1)} className="rounded border border-border px-2 py-1 text-xs disabled:opacity-30">
                   ↑
                 </button>
@@ -176,6 +192,76 @@ function GalleryField({
   );
 }
 
+function DatasheetField({ value, onChange }: { value: string; onChange: (url: string) => void }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+
+  async function upload(file: File | undefined) {
+    if (!file) return;
+    setBusy(true);
+    setError('');
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('kind', 'pdf');
+      fd.append('folder', 'datasheets');
+      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Falha no upload');
+      onChange(json.url as string);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Falha no upload');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-sm font-bold text-ink">Ficha técnica (PDF)</span>
+      <div className="flex flex-wrap items-center gap-2">
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="Cole a URL do PDF ou envie um arquivo"
+          className={`${inputClass} min-w-0 flex-1`}
+        />
+        <button
+          type="button"
+          disabled={busy}
+          onClick={() => inputRef.current?.click()}
+          className="rounded-lg border border-dashed border-border-strong-2 px-3 py-2.5 text-xs font-bold text-muted-2 transition hover:border-brand hover:text-brand disabled:opacity-50"
+        >
+          {busy ? 'Enviando…' : 'Enviar PDF'}
+        </button>
+        {value && (
+          <>
+            <a href={resolveImageUrl(value) ?? value} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-brand hover:underline">
+              Ver
+            </a>
+            <button type="button" onClick={() => onChange('')} className="text-xs font-bold text-muted-2 hover:text-brand">
+              Remover
+            </button>
+          </>
+        )}
+        <input
+          ref={inputRef}
+          type="file"
+          accept="application/pdf"
+          className="hidden"
+          onChange={(e) => {
+            upload(e.target.files?.[0]);
+            e.target.value = '';
+          }}
+        />
+      </div>
+      {error && <p className="text-xs font-semibold text-brand">{error}</p>}
+    </div>
+  );
+}
+
 export function ProductForm({
   categories,
   productId,
@@ -190,14 +276,7 @@ export function ProductForm({
   const [descriptionText, setDescriptionText] = useState((initial?.description ?? []).join('\n'));
   const [specs, setSpecs] = useState<{ label: string; value: string }[]>(initial?.specs ?? []);
   const [filterTagsText, setFilterTagsText] = useState((initial?.filterTags ?? []).join(', '));
-  const [tableHeadersText, setTableHeadersText] = useState((initial?.supportJson?.tableHeaders ?? []).join(' | '));
-  const [tableRowsText, setTableRowsText] = useState(
-    (initial?.supportJson?.tableRows ?? []).map((r) => r.join(' | ')).join('\n'),
-  );
-  const [faqs, setFaqs] = useState<{ q: string; a: string }[]>(initial?.supportJson?.faqs ?? []);
-  const [relatedText, setRelatedText] = useState(
-    (initial?.supportJson?.related ?? []).map((r) => `${r.label}|${r.href}`).join('\n'),
-  );
+  const [support, setSupport] = useState(() => supportSeoStateFrom(initial));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -251,30 +330,7 @@ export function ProductForm({
         .split(',')
         .map((s) => s.trim())
         .filter(Boolean),
-      supportJson: {
-        tableHeaders: tableHeadersText
-          .split('|')
-          .map((s) => s.trim())
-          .filter(Boolean),
-        tableRows: tableRowsText
-          .split('\n')
-          .map((line) =>
-            line
-              .split('|')
-              .map((s) => s.trim())
-              .filter(Boolean),
-          )
-          .filter((row) => row.length > 0),
-        faqs: faqs.map((f) => ({ q: f.q.trim(), a: f.a.trim() })).filter((f) => f.q && f.a),
-        tip: form.supportJson?.tip ?? '',
-        related: relatedText
-          .split('\n')
-          .map((line) => {
-            const [label, href] = line.split('|').map((s) => s.trim());
-            return label && href ? { label, href } : null;
-          })
-          .filter((x): x is { label: string; href: string } => !!x),
-      },
+      ...supportSeoToPayload(support),
     };
 
     const result = productId ? await updateProduct(productId, payload) : await createProduct(payload);
@@ -457,131 +513,6 @@ export function ProductForm({
         </label>
       </FormSection>
 
-      <FormSection title="SEO e Texto de apoio" hint="Se preenchido, substitui o SEO estático da agência na PDP.">
-        <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-bold text-ink">SEO Title</span>
-          <input value={form.seoTitle ?? ''} onChange={(e) => setForm({ ...form, seoTitle: e.target.value })} className={inputClass} />
-        </label>
-        <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-bold text-ink">SEO Description</span>
-          <textarea
-            value={form.seoDescription ?? ''}
-            onChange={(e) => setForm({ ...form, seoDescription: e.target.value })}
-            rows={2}
-            className={`${inputClass} resize-y`}
-          />
-        </label>
-        <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-bold text-ink">Heading do artigo de apoio</span>
-          <input
-            value={form.supportHeading ?? ''}
-            onChange={(e) => setForm({ ...form, supportHeading: e.target.value })}
-            className={inputClass}
-          />
-        </label>
-        <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-bold text-ink">TL;DR</span>
-          <textarea
-            value={form.supportTldr ?? ''}
-            onChange={(e) => setForm({ ...form, supportTldr: e.target.value })}
-            rows={3}
-            className={`${inputClass} resize-y`}
-          />
-        </label>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="flex flex-col gap-1.5 text-sm">
-            <span className="font-bold text-ink">Ideal para</span>
-            <textarea
-              value={form.supportIdealFor ?? ''}
-              onChange={(e) => setForm({ ...form, supportIdealFor: e.target.value })}
-              rows={3}
-              className={`${inputClass} resize-y`}
-            />
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm">
-            <span className="font-bold text-ink">Não recomendado para</span>
-            <textarea
-              value={form.supportNotFor ?? ''}
-              onChange={(e) => setForm({ ...form, supportNotFor: e.target.value })}
-              rows={3}
-              className={`${inputClass} resize-y`}
-            />
-          </label>
-        </div>
-        <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-bold text-ink">Cabeçalhos da tabela (separados por |)</span>
-          <input
-            value={tableHeadersText}
-            onChange={(e) => setTableHeadersText(e.target.value)}
-            placeholder="Coluna A | Coluna B"
-            className={inputClass}
-          />
-        </label>
-        <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-bold text-ink">Linhas da tabela (uma por linha, células com |)</span>
-          <textarea
-            value={tableRowsText}
-            onChange={(e) => setTableRowsText(e.target.value)}
-            rows={4}
-            className={`${inputClass} resize-y font-mono text-xs`}
-          />
-        </label>
-        <div className="flex flex-col gap-2.5">
-          <span className="text-sm font-bold text-ink">FAQs</span>
-          {faqs.map((f, i) => (
-            <div key={i} className="flex flex-col gap-2 rounded-xl border border-border-soft p-3">
-              <input
-                value={f.q}
-                onChange={(e) => setFaqs(faqs.map((x, j) => (j === i ? { ...x, q: e.target.value } : x)))}
-                placeholder="Pergunta"
-                className={inputClass}
-              />
-              <textarea
-                value={f.a}
-                onChange={(e) => setFaqs(faqs.map((x, j) => (j === i ? { ...x, a: e.target.value } : x)))}
-                placeholder="Resposta"
-                rows={2}
-                className={`${inputClass} resize-y`}
-              />
-              <button type="button" onClick={() => setFaqs(faqs.filter((_, j) => j !== i))} className="self-start text-xs font-bold text-brand">
-                Remover FAQ
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => setFaqs([...faqs, { q: '', a: '' }])}
-            className="self-start rounded-lg border border-dashed border-border-strong-2 px-4 py-2 text-sm font-bold text-muted-2 transition hover:border-brand hover:text-brand"
-          >
-            + Adicionar FAQ
-          </button>
-        </div>
-        <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-bold text-ink">Dica de especialista</span>
-          <textarea
-            value={form.supportJson?.tip ?? ''}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                supportJson: { ...(form.supportJson ?? { tableHeaders: [], tableRows: [], faqs: [], related: [] }), tip: e.target.value },
-              })
-            }
-            rows={2}
-            className={`${inputClass} resize-y`}
-          />
-        </label>
-        <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-bold text-ink">Links relacionados (label|href, um por linha)</span>
-          <textarea
-            value={relatedText}
-            onChange={(e) => setRelatedText(e.target.value)}
-            rows={3}
-            placeholder="Cadeados|/produtos/cadeados"
-            className={`${inputClass} resize-y font-mono text-xs`}
-          />
-        </label>
-      </FormSection>
-
       <FormSection title="Especificações técnicas" hint="Exibidas na tabela da página do produto. Deixe vazio se o produto não tiver.">
         <div className="flex flex-col gap-2.5">
           {specs.map((s, i) => (
@@ -616,6 +547,14 @@ export function ProductForm({
             + Adicionar especificação
           </button>
         </div>
+      </FormSection>
+
+      <FormSection title="Ficha técnica" hint="PDF exibido na aba DataSheet da página do produto.">
+        <DatasheetField value={form.datasheetUrl ?? ''} onChange={(url) => setForm({ ...form, datasheetUrl: url })} />
+      </FormSection>
+
+      <FormSection title="SEO e Texto de apoio" hint="Se preenchido, substitui o SEO estático da agência na PDP.">
+        <SupportSeoFields value={support} onChange={setSupport} />
       </FormSection>
 
       <FormSection title="Publicação">

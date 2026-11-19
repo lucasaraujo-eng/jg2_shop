@@ -36,8 +36,6 @@ type Limits = {
   posts: number;
   videos: number;
   pages: number;
-  /** Máx. de produtos por categoria (diversifica o ranking). */
-  perCategory: number;
   /** Inclui campos longos (suporte, descrição, conteúdo de posts). */
   deep: boolean;
 };
@@ -149,8 +147,9 @@ function postHref(type: string, slug: string): { href: string; kind: string } {
 
 function searchStaticPages(foldedQuery: string, limit: number): SearchPageHit[] {
   return STATIC_PAGES.map((p) => {
-    const titleHit = includesFolded(p.title, foldedQuery);
-    const textHit = includesFolded(p.text, foldedQuery);
+    const words = foldedQuery.split(/\s+/).filter(Boolean);
+    const titleHit = words.every((w) => includesFolded(p.title, w));
+    const textHit = words.every((w) => includesFolded(`${p.title} ${p.text}`, w));
     if (!titleHit && !textHit) return null;
     return {
       href: p.href,
@@ -173,169 +172,101 @@ type ProductHit = {
   image: string | null;
 };
 
+/** Quebra a busca em termos já sem acento, minúsculos e prontos para `LIKE ALL`. */
+function searchTerms(folded: string): string[] {
+  const escape = (t: string) => t.replace(/[\\%_]/g, (c) => `\\${c}`);
+  return folded
+    .split(/\s+/)
+    .map((t) => t.trim())
+    .filter(Boolean)
+    .slice(0, 8)
+    .map((t) => `%${escape(t)}%`);
+}
+
+/**
+ * Produtos: TODOS os termos precisam aparecer em nome + código + categoria
+ * ("etiqueta jgl601-1" encontra "Etiqueta de Bloqueio … JGL601-1"). Os campos
+ * longos (descrição, suporte, specs) só entram como fallback quando quase nada
+ * casa no nome — assim "cadeado" não traz produtos que só citam a palavra.
+ */
 async function searchProducts(folded: string, limits: Limits): Promise<ProductHit[]> {
+  const terms = searchTerms(folded);
+  if (terms.length === 0) return [];
   const pattern = `%${folded}%`;
   const prefix = `${folded}%`;
 
-  if (limits.deep) {
-    return prisma.$queryRaw<ProductHit[]>`
-      WITH scored AS (
-        SELECT
-          p.id,
-          p.code,
-          p.name,
-          p."order",
-          p."categoryId",
-          c.name AS "categoryName",
-          CASE
-            WHEN lower(p.code) = ${folded} THEN 100
-            WHEN lower(p.code) LIKE ${prefix} THEN 90
-            WHEN unaccent(lower(p.name)) LIKE ${prefix} THEN 80
-            WHEN unaccent(lower(p.name)) LIKE ${pattern} THEN 70
-            WHEN unaccent(lower(c.name)) LIKE ${pattern} THEN 55
-            WHEN unaccent(lower(coalesce(p.subtitle, ''))) LIKE ${pattern} THEN 45
-            WHEN unaccent(lower(coalesce(p."seoTitle", ''))) LIKE ${pattern} THEN 25
-            WHEN unaccent(lower(coalesce(p."supportHeading", ''))) LIKE ${pattern} THEN 22
-            WHEN unaccent(lower(coalesce(p."supportTldr", ''))) LIKE ${pattern} THEN 18
-            WHEN unaccent(lower(coalesce(p."supportText", ''))) LIKE ${pattern} THEN 12
-            WHEN unaccent(lower(array_to_string(p.description, ' '))) LIKE ${pattern} THEN 10
-            WHEN unaccent(lower(coalesce(p."seoDescription", ''))) LIKE ${pattern} THEN 8
-            WHEN unaccent(lower(coalesce(p."supportIdealFor", ''))) LIKE ${pattern} THEN 6
-            WHEN unaccent(lower(coalesce(p."supportNotFor", ''))) LIKE ${pattern} THEN 5
-            WHEN EXISTS (
-              SELECT 1 FROM "ProductFilterTag" ft
-              WHERE ft."productId" = p.id AND unaccent(lower(ft."tagKey")) LIKE ${pattern}
-            ) THEN 15
-            WHEN EXISTS (
-              SELECT 1 FROM "ProductSpec" ps
-              WHERE ps."productId" = p.id
-                AND (
-                  unaccent(lower(ps.label)) LIKE ${pattern}
-                  OR unaccent(lower(ps.value)) LIKE ${pattern}
-                )
-            ) THEN 14
-            ELSE 1
-          END AS score
-        FROM "Product" p
-        JOIN "Category" c ON c.id = p."categoryId"
-        WHERE p.active = true
-          AND (
-            unaccent(lower(p.name)) LIKE ${pattern}
-            OR lower(p.code) LIKE ${pattern}
-            OR unaccent(lower(c.name)) LIKE ${pattern}
-            OR unaccent(lower(coalesce(p.subtitle, ''))) LIKE ${pattern}
-            OR unaccent(lower(coalesce(p."seoTitle", ''))) LIKE ${pattern}
-            OR unaccent(lower(coalesce(p."seoDescription", ''))) LIKE ${pattern}
-            OR unaccent(lower(coalesce(p."supportHeading", ''))) LIKE ${pattern}
-            OR unaccent(lower(coalesce(p."supportTldr", ''))) LIKE ${pattern}
-            OR unaccent(lower(coalesce(p."supportText", ''))) LIKE ${pattern}
-            OR unaccent(lower(coalesce(p."supportIdealFor", ''))) LIKE ${pattern}
-            OR unaccent(lower(coalesce(p."supportNotFor", ''))) LIKE ${pattern}
-            OR unaccent(lower(array_to_string(p.description, ' '))) LIKE ${pattern}
-            OR EXISTS (
-              SELECT 1 FROM "ProductSpec" ps
-              WHERE ps."productId" = p.id
-                AND (
-                  unaccent(lower(ps.label)) LIKE ${pattern}
-                  OR unaccent(lower(ps.value)) LIKE ${pattern}
-                )
-            )
-            OR EXISTS (
-              SELECT 1 FROM "ProductFilterTag" ft
-              WHERE ft."productId" = p.id AND unaccent(lower(ft."tagKey")) LIKE ${pattern}
-            )
-          )
-      ),
-      ranked AS (
-        SELECT
-          scored.*,
-          ROW_NUMBER() OVER (PARTITION BY scored."categoryId" ORDER BY scored.score DESC, scored."order" ASC) AS rn
-        FROM scored
-      )
-      SELECT
-        ranked.id,
-        ranked.code,
-        ranked.name,
-        ranked."categoryName",
-        (
-          SELECT pi.url
-          FROM "ProductImage" pi
-          WHERE pi."productId" = ranked.id
-          ORDER BY pi."order" ASC
-          LIMIT 1
-        ) AS image
-      FROM ranked
-      WHERE ranked.rn <= ${limits.perCategory}
-      ORDER BY ranked.score DESC, ranked."order" ASC
-      LIMIT ${limits.products}
-    `;
-  }
-
-  // Autocomplete: só nome/código/categoria/subtítulo — rápido e sem falso positivo de suporte.
-  return prisma.$queryRaw<ProductHit[]>`
-    WITH scored AS (
-      SELECT
-        p.id,
-        p.code,
-        p.name,
-        p."order",
-        p."categoryId",
-        c.name AS "categoryName",
-        CASE
-          WHEN lower(p.code) = ${folded} THEN 100
-          WHEN lower(p.code) LIKE ${prefix} THEN 90
-          WHEN unaccent(lower(p.name)) LIKE ${prefix} THEN 80
-          WHEN unaccent(lower(p.name)) LIKE ${pattern} THEN 70
-          WHEN unaccent(lower(c.name)) LIKE ${pattern} THEN 55
-          WHEN unaccent(lower(coalesce(p.subtitle, ''))) LIKE ${pattern} THEN 45
-          ELSE 1
-        END AS score
-      FROM "Product" p
-      JOIN "Category" c ON c.id = p."categoryId"
-      WHERE p.active = true
-        AND (
-          unaccent(lower(p.name)) LIKE ${pattern}
-          OR lower(p.code) LIKE ${pattern}
-          OR unaccent(lower(c.name)) LIKE ${pattern}
-          OR unaccent(lower(coalesce(p.subtitle, ''))) LIKE ${pattern}
-        )
-    ),
-    ranked AS (
-      SELECT
-        scored.*,
-        ROW_NUMBER() OVER (PARTITION BY scored."categoryId" ORDER BY scored.score DESC, scored."order" ASC) AS rn
-      FROM scored
-    )
+  const primary = await prisma.$queryRaw<ProductHit[]>`
     SELECT
-      ranked.id,
-      ranked.code,
-      ranked.name,
-      ranked."categoryName",
+      p.id,
+      p.code,
+      p.name,
+      c.name AS "categoryName",
       (
-        SELECT pi.url
-        FROM "ProductImage" pi
-        WHERE pi."productId" = ranked.id
+        SELECT pi.url FROM "ProductImage" pi
+        WHERE pi."productId" = p.id
         ORDER BY pi."order" ASC
         LIMIT 1
       ) AS image
-    FROM ranked
-    WHERE ranked.rn <= ${limits.perCategory}
-    ORDER BY ranked.score DESC, ranked."order" ASC
+    FROM "Product" p
+    JOIN "Category" c ON c.id = p."categoryId"
+    WHERE p.active = true
+      AND unaccent(lower(p.name || ' ' || p.code || ' ' || c.name)) LIKE ALL (${terms}::text[])
+    ORDER BY
+      CASE
+        WHEN lower(p.code) = ${folded} THEN 100
+        WHEN lower(p.code) LIKE ${prefix} THEN 90
+        WHEN unaccent(lower(p.name)) LIKE ${prefix} THEN 80
+        WHEN unaccent(lower(p.name)) LIKE ${pattern} THEN 70
+        WHEN unaccent(lower(p.name || ' ' || p.code)) LIKE ALL (${terms}::text[]) THEN 60
+        ELSE 40
+      END DESC,
+      p."order" ASC,
+      p.name ASC
     LIMIT ${limits.products}
   `;
+
+  if (primary.length >= 3 || !limits.deep) return primary;
+
+  const seen = new Set(primary.map((p) => p.id));
+  const fallback = await prisma.$queryRaw<ProductHit[]>`
+    SELECT
+      p.id,
+      p.code,
+      p.name,
+      c.name AS "categoryName",
+      (
+        SELECT pi.url FROM "ProductImage" pi
+        WHERE pi."productId" = p.id
+        ORDER BY pi."order" ASC
+        LIMIT 1
+      ) AS image
+    FROM "Product" p
+    JOIN "Category" c ON c.id = p."categoryId"
+    WHERE p.active = true
+      AND unaccent(lower(concat_ws(' ',
+        p.name, p.code, c.name, p.subtitle, p."seoTitle", p."seoDescription",
+        p."supportHeading", p."supportTldr", p."supportText", p."supportIdealFor", p."supportNotFor",
+        array_to_string(p.description, ' '),
+        (SELECT string_agg(ps.label || ' ' || ps.value, ' ') FROM "ProductSpec" ps WHERE ps."productId" = p.id),
+        (SELECT string_agg(ft."tagKey", ' ') FROM "ProductFilterTag" ft WHERE ft."productId" = p.id)
+      ))) LIKE ALL (${terms}::text[])
+    ORDER BY p."order" ASC, p.name ASC
+    LIMIT ${limits.products}
+  `;
+  return [...primary, ...fallback.filter((p) => !seen.has(p.id))].slice(0, limits.products);
 }
 
 async function runSearch(q: string, limits: Limits): Promise<SearchResult> {
   const folded = foldAccents(q);
   const pattern = `%${folded}%`;
   const prefix = `${folded}%`;
+  const terms = searchTerms(folded);
 
   const [categoryRows, subcategoryRows, products, postRows, videoRows] = await Promise.all([
     prisma.$queryRaw<{ id: string; slug: string; name: string; type: 'LOTO' | 'MAOS_SEGURAS' }[]>`
       SELECT c.id, c.slug, c.name, c.type
       FROM "Category" c
-      WHERE unaccent(lower(c.name)) LIKE ${pattern}
-         OR unaccent(lower(c.slug)) LIKE ${pattern}
+      WHERE unaccent(lower(c.name || ' ' || c.slug)) LIKE ALL (${terms}::text[])
       ORDER BY
         CASE
           WHEN unaccent(lower(c.name)) LIKE ${prefix} THEN 2
@@ -357,8 +288,7 @@ async function runSearch(q: string, limits: Limits): Promise<SearchResult> {
         c.type AS "categoryType"
       FROM "Subcategory" s
       JOIN "Category" c ON c.id = s."categoryId"
-      WHERE unaccent(lower(s.name)) LIKE ${pattern}
-         OR unaccent(lower(s.slug)) LIKE ${pattern}
+      WHERE unaccent(lower(s.name || ' ' || s.slug || ' ' || c.name)) LIKE ALL (${terms}::text[])
       ORDER BY
         CASE
           WHEN unaccent(lower(s.name)) LIKE ${prefix} THEN 2
@@ -373,13 +303,7 @@ async function runSearch(q: string, limits: Limits): Promise<SearchResult> {
           SELECT b.id, b.slug, b.title, b.tag, b.type::text AS type
           FROM "BlogPost" b
           WHERE b.status = CAST('PUBLISHED' AS "PostStatus")
-            AND (
-              unaccent(lower(b.title)) LIKE ${pattern}
-              OR unaccent(lower(b.slug)) LIKE ${pattern}
-              OR unaccent(lower(coalesce(b.tag, ''))) LIKE ${pattern}
-              OR unaccent(lower(coalesce(b.excerpt, ''))) LIKE ${pattern}
-              OR unaccent(lower(b.content)) LIKE ${pattern}
-            )
+            AND unaccent(lower(concat_ws(' ', b.title, b.slug, b.tag, b.excerpt, b.content))) LIKE ALL (${terms}::text[])
           ORDER BY
             CASE
               WHEN unaccent(lower(b.title)) LIKE ${prefix} THEN 3
@@ -393,12 +317,7 @@ async function runSearch(q: string, limits: Limits): Promise<SearchResult> {
           SELECT b.id, b.slug, b.title, b.tag, b.type::text AS type
           FROM "BlogPost" b
           WHERE b.status = CAST('PUBLISHED' AS "PostStatus")
-            AND (
-              unaccent(lower(b.title)) LIKE ${pattern}
-              OR unaccent(lower(b.slug)) LIKE ${pattern}
-              OR unaccent(lower(coalesce(b.tag, ''))) LIKE ${pattern}
-              OR unaccent(lower(coalesce(b.excerpt, ''))) LIKE ${pattern}
-            )
+            AND unaccent(lower(concat_ws(' ', b.title, b.slug, b.tag, b.excerpt))) LIKE ALL (${terms}::text[])
           ORDER BY
             CASE
               WHEN unaccent(lower(b.title)) LIKE ${prefix} THEN 3
@@ -412,10 +331,7 @@ async function runSearch(q: string, limits: Limits): Promise<SearchResult> {
       SELECT v.id, v.title
       FROM "Video" v
       WHERE v.active = true
-        AND (
-          unaccent(lower(v.title)) LIKE ${pattern}
-          OR unaccent(lower(coalesce(v.description, ''))) LIKE ${pattern}
-        )
+        AND unaccent(lower(concat_ws(' ', v.title, v.description))) LIKE ALL (${terms}::text[])
       ORDER BY
         CASE WHEN unaccent(lower(v.title)) LIKE ${pattern} THEN 1 ELSE 0 END DESC,
         v."order" ASC
@@ -455,11 +371,10 @@ export async function searchSite(query: string): Promise<SearchResult> {
   return runSearch(q, {
     categories: 6,
     subcategories: 4,
-    products: 6,
+    products: 8,
     posts: 3,
     videos: 2,
     pages: 3,
-    perCategory: 2,
     deep: false,
   });
 }
@@ -471,11 +386,10 @@ export async function searchSiteFull(query: string): Promise<SearchResult> {
   return runSearch(q, {
     categories: 12,
     subcategories: 8,
-    products: 24,
+    products: 60,
     posts: 12,
     videos: 8,
     pages: 12,
-    perCategory: 3,
     deep: true,
   });
 }

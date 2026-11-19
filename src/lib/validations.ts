@@ -54,10 +54,23 @@ export const newsletterSubscribeSchema = z.object({
 });
 export type NewsletterSubscribeInput = z.infer<typeof newsletterSubscribeSchema>;
 
+export const supportJsonSchema = z
+  .object({
+    tableHeaders: z.array(z.string()).max(10).default([]),
+    tableRows: z.array(z.array(z.string())).max(30).default([]),
+    faqs: z.array(z.object({ q: z.string().max(500), a: z.string().max(2000) })).max(20).default([]),
+    tip: z.string().max(1000).optional().nullable(),
+    related: z.array(z.object({ label: z.string().max(100), href: z.string().max(300) })).max(10).default([]),
+  })
+  .optional()
+  .nullable();
+
+export const MAX_PRODUCT_IMAGES = 30;
+
 export const productSchema = z.object({
   code: z.string().min(1, 'Informe o SKU').max(50),
   name: z.string().min(2, 'Informe o nome').max(200),
-  subtitle: z.string().max(500).optional().nullable(),
+  subtitle: z.string().max(2000).optional().nullable(),
   ncm: z.string().max(20).optional().nullable(),
   isCadeado: z.boolean().default(false),
   categoryId: z.string().min(1, 'Selecione a categoria'),
@@ -72,20 +85,12 @@ export const productSchema = z.object({
   supportTldr: z.string().max(2000).optional().nullable(),
   supportIdealFor: z.string().max(2000).optional().nullable(),
   supportNotFor: z.string().max(2000).optional().nullable(),
-  supportJson: z
-    .object({
-      tableHeaders: z.array(z.string()).max(10).default([]),
-      tableRows: z.array(z.array(z.string())).max(30).default([]),
-      faqs: z.array(z.object({ q: z.string().max(500), a: z.string().max(2000) })).max(20).default([]),
-      tip: z.string().max(1000).optional().nullable(),
-      related: z.array(z.object({ label: z.string().max(100), href: z.string().max(300) })).max(10).default([]),
-    })
-    .optional()
-    .nullable(),
+  supportJson: supportJsonSchema,
   specs: z.array(z.object({ label: z.string().min(1).max(100), value: z.string().min(1).max(300) })).max(30).default([]),
   filterTags: z.array(z.string()).max(100).default([]),
   coverUrl: z.string().optional().nullable(),
-  imageUrls: z.array(z.string().min(1)).max(12).default([]),
+  imageUrls: z.array(z.string().min(1)).max(MAX_PRODUCT_IMAGES).default([]),
+  datasheetUrl: z.string().max(500).optional().nullable(),
   active: z.boolean().default(true),
 });
 export type ProductInput = z.infer<typeof productSchema>;
@@ -113,3 +118,27 @@ export const videoSchema = z.object({
   active: z.boolean().default(true),
 });
 export type VideoInput = z.infer<typeof videoSchema>;
+
+
+export const categorySchema = z.object({
+  supportText: z.string().max(5000).optional().nullable(),
+  seoTitle: z.string().max(200).optional().nullable(),
+  seoDescription: z.string().max(500).optional().nullable(),
+  supportHeading: z.string().max(300).optional().nullable(),
+  supportTldr: z.string().max(2000).optional().nullable(),
+  supportIdealFor: z.string().max(2000).optional().nullable(),
+  supportNotFor: z.string().max(2000).optional().nullable(),
+  supportJson: supportJsonSchema,
+  subcategories: z
+    .array(
+      z.object({
+        id: z.string().min(1),
+        supportText: z.string().max(5000).optional().nullable(),
+        seoTitle: z.string().max(200).optional().nullable(),
+        seoDescription: z.string().max(500).optional().nullable(),
+      }),
+    )
+    .max(50)
+    .default([]),
+});
+export type CategoryInput = z.infer<typeof categorySchema>;

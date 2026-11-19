@@ -42,6 +42,7 @@ export default async function EditProductPage({
     filterTags: product.filterTags.map((t) => t.tagKey),
     coverUrl: imageUrls[0] ?? '',
     imageUrls,
+    datasheetUrl: product.datasheetUrl ?? '',
     active: product.active,
   };
 

@@ -8,27 +8,36 @@ datasource db {
 
 // ---------- CATÁLOGO ----------
 model Category {
-  id            String            @id @default(cuid())
-  name          String
-  slug          String            @unique
-  type          CategoryType
-  order         Int               @default(0)
-  supportText   String?           @db.Text
-  subcategories Subcategory[]
-  products      Product[]
-  productLinks  ProductCategory[]
+  id              String            @id @default(cuid())
+  name            String
+  slug            String            @unique
+  type            CategoryType
+  order           Int               @default(0)
+  supportText     String?           @db.Text
+  seoTitle        String?
+  seoDescription  String?           @db.Text
+  supportHeading  String?
+  supportTldr     String?           @db.Text
+  supportIdealFor String?           @db.Text
+  supportNotFor   String?           @db.Text
+  supportJson     Json?
+  subcategories   Subcategory[]
+  products        Product[]
+  productLinks    ProductCategory[]
 }
 
 model Subcategory {
-  id           String               @id @default(cuid())
-  name         String
-  slug         String
-  order        Int                  @default(0)
-  supportText  String?              @db.Text
-  category     Category             @relation(fields: [categoryId], references: [id])
-  categoryId   String
-  products     Product[]
-  productLinks ProductSubcategory[]
+  id             String               @id @default(cuid())
+  name           String
+  slug           String
+  order          Int                  @default(0)
+  supportText    String?              @db.Text
+  seoTitle       String?
+  seoDescription String?              @db.Text
+  category       Category             @relation(fields: [categoryId], references: [id])
+  categoryId     String
+  products       Product[]
+  productLinks   ProductSubcategory[]
 
   @@unique([categoryId, slug])
 }

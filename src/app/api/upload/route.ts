@@ -16,6 +16,24 @@ export async function POST(req: Request) {
   const folder = ((form.get('folder') as string) || 'uploads').replace(/[^a-z0-9/_-]/gi, '');
 
   if (!file) return NextResponse.json({ error: 'Arquivo ausente' }, { status: 400 });
+
+  if (form.get('kind') === 'pdf') {
+    if (file.size > 20 * 1024 * 1024) {
+      return NextResponse.json({ error: 'PDF acima de 20 MB' }, { status: 400 });
+    }
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const isPdf = bytes.length > 5 && String.fromCharCode(...bytes.slice(0, 5)) === '%PDF-';
+      if (!isPdf) return NextResponse.json({ error: 'Envie um arquivo PDF válido' }, { status: 400 });
+      const pdfFolder = folder || 'datasheets';
+      const key = `${pdfFolder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.pdf`;
+      const url = await uploadImage(key, bytes, 'application/pdf');
+      return NextResponse.json({ url });
+    } catch (e) {
+      console.error('upload pdf', e);
+      return NextResponse.json({ error: 'Falha no upload do PDF' }, { status: 500 });
+    }
+  }
   if (file.size > 8 * 1024 * 1024) {
     return NextResponse.json({ error: 'Imagem acima de 8 MB' }, { status: 400 });
   }

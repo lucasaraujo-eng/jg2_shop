@@ -13,15 +13,25 @@ import { CATEGORY_GROUP_DESCRIPTIONS } from '@/data/catalogGroups';
 import { r2Url } from '@/lib/utils';
 import { SupportArticle } from '@/components/SupportArticle';
 import { getPageSeo, pageMetadata } from '@/lib/seo';
+import { productSupportFromDb } from '@/lib/productSupport';
 
 type PageProps = { params: Promise<{ categoria: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { categoria } = await params;
-  const agency = getPageSeo(`/produtos/${categoria}`);
-  if (agency) return pageMetadata(`/produtos/${categoria}`);
   const category = await getCategoryBySlug(categoria);
   if (!category) return {};
+  // SEO preenchido no admin tem prioridade sobre o SEO estático e o padrão.
+  if (category.seoTitle?.trim() || category.seoDescription?.trim()) {
+    const fallback = getPageSeo(`/produtos/${categoria}`) ? await pageMetadata(`/produtos/${categoria}`) : {};
+    return {
+      ...fallback,
+      ...(category.seoTitle?.trim() ? { title: { absolute: category.seoTitle.trim() } } : {}),
+      ...(category.seoDescription?.trim() ? { description: category.seoDescription.trim() } : {}),
+    };
+  }
+  const agency = getPageSeo(`/produtos/${categoria}`);
+  if (agency) return pageMetadata(`/produtos/${categoria}`);
   if (category.type === 'MAOS_SEGURAS') {
     return {
       title: { absolute: 'Catálogo Mãos Seguras | JG2' },
@@ -55,7 +65,7 @@ export default async function CategoryPage({ params }: PageProps) {
     : 'Adicione os itens ao seu orçamento e envie tudo de uma vez. Sem compromisso — nossa equipe retorna com valores e prazos.';
   const groups = isMaosSeguras ? buildSubcategoryGroups(category.slug, category.subcategories, products) : null;
   const cardProducts = toCardProducts(products);
-  const agencySupport = getPageSeo(`/produtos/${categoria}`)?.support;
+  const agencySupport = productSupportFromDb(category) ?? getPageSeo(`/produtos/${categoria}`)?.support;
 
   return (
     <div>

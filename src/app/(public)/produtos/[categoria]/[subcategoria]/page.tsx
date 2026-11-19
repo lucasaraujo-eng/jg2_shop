@@ -18,9 +18,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { categoria, subcategoria } = await params;
   const sub = await getSubcategoryBySlug(categoria, subcategoria);
   if (!sub || sub.category.type !== 'MAOS_SEGURAS') return {};
-  const description = SUBCATEGORY_GROUP_DESCRIPTIONS[sub.name] ?? `${sub.name} — catálogo Mãos Seguras JG2.`;
+  const description =
+    sub.seoDescription?.trim() || SUBCATEGORY_GROUP_DESCRIPTIONS[sub.name] || `${sub.name} — catálogo Mãos Seguras JG2.`;
   return {
-    title: { absolute: `${sub.name} | Mãos Seguras | JG2` },
+    title: { absolute: sub.seoTitle?.trim() || `${sub.name} | Mãos Seguras | JG2` },
     description,
   };
 }
