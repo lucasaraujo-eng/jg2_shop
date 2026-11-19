@@ -169,7 +169,7 @@ export default async function BuscaPage({ searchParams }: { searchParams: Promis
         {results.posts.length > 0 && (
           <div className="mb-12">
             <h2 className="mb-5 font-display text-xl font-black text-ink">Conteúdos</h2>
-            <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
               {results.posts.map((post) => (
                 <Link
                   key={post.slug}
@@ -192,7 +192,7 @@ export default async function BuscaPage({ searchParams }: { searchParams: Promis
         {results.videos.length > 0 && (
           <div>
             <h2 className="mb-5 font-display text-xl font-black text-ink">Vídeos</h2>
-            <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
               {results.videos.map((v) => (
                 <Link
                   key={v.id}

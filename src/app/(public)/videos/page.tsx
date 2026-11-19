@@ -39,7 +39,7 @@ export default async function VideosPage() {
         </section>
       ) : (
         <section className="mx-auto max-w-[1340px] px-7 py-12">
-          <div className="grid gap-8 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
             {videos.map((v) => {
               const embed = youtubeEmbedUrl(v.youtubeUrl);
               return (

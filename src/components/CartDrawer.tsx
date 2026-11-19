@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useCart } from '@/stores/cart';
 import { submitQuote } from '@/server/actions/quote';
@@ -80,6 +80,16 @@ export function CartDrawer() {
       setError(result.error);
     }
   }
+
+  useEffect(() => {
+    if (!isOpen || privacyOpen) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') handleClose();
+    }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, privacyOpen]);
 
   if (!isOpen) return null;
 
