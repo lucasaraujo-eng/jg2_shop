@@ -154,7 +154,7 @@ export default async function DownloadsPage() {
                   Em breve, novos materiais nesta categoria.
                 </p>
               ) : (
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {s.docs.map((doc) => (
                     <DocCard key={doc.title} doc={doc} />
                   ))}

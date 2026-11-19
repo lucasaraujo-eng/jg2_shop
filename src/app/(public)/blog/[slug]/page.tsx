@@ -100,7 +100,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       {related.length > 0 && (
         <section className="mx-auto max-w-[1340px] px-7 pb-16">
           <h2 className="mb-6 font-display text-2xl font-black text-ink">Leia também</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p) => (
               <PostCard key={p.slug} post={p} />
             ))}

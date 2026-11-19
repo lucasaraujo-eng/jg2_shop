@@ -37,7 +37,7 @@ export default async function SetoresIndexPage() {
       </section>
 
       <div className="mx-auto max-w-[1340px] px-7 py-12">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {setorArticles.map((p) => (
             <PostCard key={p.slug} post={p} />
           ))}

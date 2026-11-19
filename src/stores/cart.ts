@@ -61,6 +61,14 @@ export const useCart = create<CartState>()(
       close: () => set({ isOpen: false }),
       count: () => get().items.reduce((n, i) => n + i.quantity, 0),
     }),
-    { name: 'jg2_cart' },
+    {
+      name: 'jg2_cart',
+      // `isOpen` é estado de UI: persisti-lo reabria o drawer a cada recarga.
+      partialize: (s) => ({ items: s.items }),
+      merge: (persisted, current) => ({
+        ...current,
+        items: (persisted as Partial<CartState> | undefined)?.items ?? current.items,
+      }),
+    },
   ),
 );
